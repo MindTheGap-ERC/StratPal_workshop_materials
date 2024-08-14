@@ -1,0 +1,101 @@
+---
+title: "StratPal workshop materials"
+format: html
+---
+
+## Practical 1: Age-depth models and incompleteness
+
+This practical is an introduction to working with age-depth models.
+
+First, we load the `StratPal` package to have all required functionality and example data available
+
+```{r}
+library("StratPal")
+```
+
+We use the example data stored in the `scenarioA` variable that comes with the `StratPal` package. This data comes from [Hohmann et al. (2024)] add rreference. For details on this data use `?scenarioA`.
+
+### Creating age-depth models
+
+Age-depth models (ADMs) are constructed using `tp_to_adm` (tiepoint to age-depth model) from the `admtools` package. Here we construct the ADM 2 km from shore by passing the function the vectors of times and heights at that stratigraphic position:
+
+```{r}
+pos = "2km"
+
+adm = tp_to_adm(t = scenarioA$t_myr,
+               h = scenarioA$h_m[,"2km"],
+               T_unit = "Myr",
+               L_unit = "m")
+```
+
+Note that we immediately add time and length units to avoid confusion.
+
+### Plotting Age-depth models
+
+ADMs can be plotted using the standard `plot` command: 
+
+```{r}
+plot(adm,
+     lwd_acc = 2,   # plot thicker lines for intervals with sediment accumulation (lwd = line width)
+     lty_destr = 0) # don't plot destructive intervals/gaps (lty = line type)
+T_axis_lab()        # add time axis label
+L_axis_lab()        # add length axis label
+title("Age-depth model 2 km from shore")
+```
+
+See `?plot.adm` for more plotting options.
+
+### Extracting information from age-depth models
+
+ADMs contain a lot of stratigraphic information, e.g. on completeness or sedimentation rates. Some basic functionality is:
+
+```{r}
+get_total_duration(adm) # time interval covered by adm
+
+get_total_thickness(adm) # sediment accumulated 
+
+get_completeness(adm) # stratigraphic completeness
+
+summary(adm) # some summary statistics
+```
+
+You can find a comprehensive list of functions that extract information from ADMs [here](https://mindthegap-erc.github.io/admtools/articles/admtools_doc.html#s3-class-adm).
+
+### Piping
+
+For the modeling pipelines, we make extensive use of the pipe operator `|>` that is available in base R from version 4.2 onwards. You can read `|>` as "take what is on the left side of `|>` and use it as first argument on the right side of `|>`". For example, to plot a histogram of hiatus distributions, use 
+
+```{r}
+adm |>    
+  get_hiat_duration() |>
+  hist( xlab = paste("Hiatus duration", "[", get_T_unit(adm),"]"))
+```
+
+## Tasks
+
+Define age-depth models for the different locations along the onshore-offshore gradient. How does stratigraphic incompleteness and the number of gaps change along the onshore-offshore gradient? Can you make a plot?
+
+Generate histograms of hiatus durations at the different locations. Do you see any systematic changes? How does that connect to the stratigraphic architecture and the chronostratigraphic diagram shown in the introduction?
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+## References
