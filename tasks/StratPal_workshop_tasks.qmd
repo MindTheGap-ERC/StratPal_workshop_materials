@@ -1,41 +1,58 @@
 ---
-title: "StratPal workshop materials"
-format: html
+title: "Building Models for Stratigraphic Paleobiology in R: Workshop Materials and Cheat Sheets"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    embed-resources: true
 ---
 
-## Practical 1: Age-depth models and incompleteness
+This document contains the *tasks* and the *coding cheat sheets* for the workshop *Building Models for Stratigraphic Paleobiology in R*.
 
-This practical is an introduction to working with age-depth models.
+## Practical 1: Age-depth models and incompleteness (45 min)
 
-First, we load the `StratPal` package to have all required functionality and example data available
+This practical is an introduction to age-depth models.
+
+### Tasks
+
+1.  Define age-depth models for the different locations along the onshore-offshore gradient, and plot them. How do they connect to the chronostratigraphic diagram and the sea level curve shown in the introduction?
+2.  Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient. Can you make a plot?
+3.  Generate histograms of hiatus durations at the different distances from shore. Do you see any systematic changes?
+
+### Coding cheat sheet
+
+#### Loading the package and data
+
+Load the `StratPal` and `admtools` packages via 
 
 ```{r}
 library("StratPal")
+library("admtools")
+
 ```
 
-We use the example data stored in the `scenarioA` variable that comes with the `StratPal` package. This data comes from [Hohmann et al. (2024)] add rreference. For details on this data use `?scenarioA`.
+to have all required functionality and example data available. We use the example data stored in the `scenarioA` variable that comes with the `StratPal` package. You can find more details on the data using `?scenarioA`.
 
-### Creating age-depth models
+#### Creating age-depth models
 
 Age-depth models (ADMs) are constructed using `tp_to_adm` (tiepoint to age-depth model) from the `admtools` package. Here we construct the ADM 2 km from shore by passing the function the vectors of times and heights at that stratigraphic position:
 
 ```{r}
-pos = "2km"
-
-adm = tp_to_adm(t = scenarioA$t_myr,
-               h = scenarioA$h_m[,"2km"],
-               T_unit = "Myr",
-               L_unit = "m")
+pos = "2km"  # distance from shore
+adm_2km = tp_to_adm(t = scenarioA$t_myr,        # construct ADM
+                     h = scenarioA$h_m[,pos],
+                     T_unit = "Myr",
+                     L_unit = "m")
 ```
 
-Note that we immediately add time and length units to avoid confusion.
+Note that we immediately add time and length units to avoid downstream confusion.
 
-### Plotting Age-depth models
+#### Plotting Age-depth models
 
-ADMs can be plotted using the standard `plot` command: 
+ADMs can be plotted using the standard `plot` command:
 
 ```{r}
-plot(adm,
+plot(adm_2km,
      lwd_acc = 2,   # plot thicker lines for intervals with sediment accumulation (lwd = line width)
      lty_destr = 0) # don't plot destructive intervals/gaps (lty = line type)
 T_axis_lab()        # add time axis label
@@ -45,57 +62,199 @@ title("Age-depth model 2 km from shore")
 
 See `?plot.adm` for more plotting options.
 
-### Extracting information from age-depth models
+#### Extracting information from age-depth models
 
-ADMs contain a lot of stratigraphic information, e.g. on completeness or sedimentation rates. Some basic functionality is:
+ADMs contain a lot of stratigraphic information, e.g. on stratigraphic completeness, hiatuses, or sedimentation rates. Some basic functionality is:
 
 ```{r}
-get_total_duration(adm) # time interval covered by adm
+get_total_duration(adm_2km) # time interval covered by adm
 
-get_total_thickness(adm) # sediment accumulated 
+get_total_thickness(adm_2km) # sediment accumulated 
 
-get_completeness(adm) # stratigraphic completeness
+get_completeness(adm_2km) # stratigraphic completeness
 
-summary(adm) # some summary statistics
+get_hiat_duration(adm_2km) # extract hiatus durations
+
+summary(adm_2km) # some summary statistics
 ```
 
 You can find a comprehensive list of functions that extract information from ADMs [here](https://mindthegap-erc.github.io/admtools/articles/admtools_doc.html#s3-class-adm).
 
-### Piping
+#### Piping
 
-For the modeling pipelines, we make extensive use of the pipe operator `|>` that is available in base R from version 4.2 onwards. You can read `|>` as "take what is on the left side of `|>` and use it as first argument on the right side of `|>`". For example, to plot a histogram of hiatus distributions, use 
-
-```{r}
-adm |>    
-  get_hiat_duration() |>
-  hist( xlab = paste("Hiatus duration", "[", get_T_unit(adm),"]"))
-```
-
-## Tasks
-
-Define age-depth models for the different locations along the onshore-offshore gradient. How does stratigraphic incompleteness and the number of gaps change along the onshore-offshore gradient? Can you make a plot?
-
-Generate histograms of hiatus durations at the different locations. Do you see any systematic changes? How does that connect to the stratigraphic architecture and the chronostratigraphic diagram shown in the introduction?
-
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+For the modeling pipelines, we make extensive use of the pipe operator `|>` that is available in base R from version 4.2 onwards. You can read `|>` as "take what is on the left side of `|>` and use it as first argument on the right side of `|>`". For example, to plot a histogram of hiatus durations, use
 
 ```{r}
-1 + 1
+adm_2km |>                                                            # take ADM
+  get_hiat_duration() |>                                              # extract hiatus durations
+  hist(xlab = paste("Hiatus duration", "[", get_T_unit(adm_2km),"]"), # make histogram
+       main = "Distribution of hiatus duration 2 km from shore")
 ```
 
-You can add options to executable code like this
+Similarly, you can plot ADMs using
 
 ```{r}
-#| echo: false
-2 * 2
+adm_2km |>              # take ADM
+  plot(lwd_acc = 2,     # hand it to `plot`
+       lty_destr = 0) 
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+## Practical 2: Trait evolution (45 min)
 
-## References
+This practical explores how trait evolution is influenced by stratigraphic architectures.
+
+### Tasks
+
+1.  Plot the different modes of evolution in the time domain. What is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times), and which modes can be mistaken for each other?
+2.  Transform the different modes of evolution into the stratigraphic domain and plot them. Which modes are most affected by stratigraphic biases? Which are not affected? Do you see any systematic biases along the onshore/offshore gradient or with stratigraphic (in)completeness?
+
+### Coding cheat sheet
+
+#### Modes of evolution in the time domain
+
+There are three different modes of evolution implemented in the `StratPal` package: `stasis`, `random_walk`, and `ornstein_uhlenbeck`. You can plot them using piping via
+
+```{r}
+temp_res = 0.001 # temporal resolution in Myr
+seq(min_time(adm_2km), max_time(adm_2km), by = temp_res) |>   # time steps where the trait evolution is simulated
+  random_walk(sigma = 1, mu = 0, y0 = 0) |>                   # simulate trait evolution
+  plot(xlab = paste0("Time [",get_T_unit(adm_2km),"]"),       # plot
+       ylab = "Trait value",
+       type = "l") 
+  
+
+```
+
+To plot other modes, replace `random_walk` by one of the other modes.
+
+#### Transforming trait evolution into the stratigraphic domain
+
+To transform trait evolution into the stratigraphic domain, insert `time_to_strat` with the ADM of your choice into your pipeline:
+
+```{r}
+temp_res = 0.001 # temporal resolution in Myr
+seq(min_time(adm_2km), max_time(adm_2km), by = temp_res) |>   # time steps where the trait evolution is simulated
+  random_walk(sigma = 1, mu = 3, y0 = 0) |>                   # simulate trait evolution
+  time_to_strat(adm_2km, destructive = FALSE) |>              # transform into stratigraphic domain
+  plot(xlab = paste0("Stratigraphic position [",get_T_unit(adm_2km),"]"), # plot
+       ylab = "Trait value",
+       type = "l",
+       orientation = "lr") 
+```
+
+## Practical 3: Niche modeling and last occurrences (45 min)
+
+In this practical, we explore niche models, and how you can build your own mass extinction (BYOMA) using stratigraphic paleobiology.
+
+### Tasks niche modeling
+
+1.  Simulate an abundant taxon, and transform the fossil ages into the stratigraphic domain. At which locations and stratigraphic heights do you observe peaks in fossil abundance? With which stratigraphic effects are these peaks associated?
+2.  Define a niche for a taxon based on a preferred water depth and tolerance to water depth fluctuations. Add the niche model to your pipeline. How and why do your results change? How could you misinterpret the results?
+
+### Tasks last occurrences
+
+1.  Simulate last occurrences based on the assumption of a constant rate of last occurrences ^[We silently assume that the taxa of interest are sufficiently abundant. Why is this assumption is necessary?], and transform them into the stratigraphic domain. Where do you observe clusters of last occurrences? With what stratigraphic effects are these locations associated? How would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a "stratigraphic null hypothesis" for clusters of last occurrences.
+
+### Coding cheat sheet
+
+#### Simulating fossil occurrences
+
+Fossil locations or ages can be simulated using the `p3` function if the rate of fossil occurrences is constant:
+
+```{r}
+p3(rate = 300, from = 0, to = 1) |> # on avg. 300 fossils per Myr.
+  hist(main = "Fossil abundance",
+       xlab = "Time [Myr]",
+       ylab = "# Specimens")
+```
+
+For time-variable rates see `p3_var_rate`.
+
+#### Transforming fossil occurrences to the stratigraphic domain
+
+You can transform fossil ages directly using `time_to_strat`:
+
+```{r}
+foss_per_myr = 300
+p3(rate = foss_per_myr, from = min_time(adm_2km), to = max_time(adm_2km)) |> # constant rate in time domain
+  time_to_strat(adm_2km, destructive = TRUE) |>                              # transform into depth domain
+  hist(xlab = paste0("Stratigraphic height [",get_L_unit(adm_2km),"]"),      # plot
+       main = "Fossil abundance 2 km offshore",
+       ylab = "# Fossils",
+       breaks = seq(from = min_height(adm_2km), to = max_height(adm_2km), length.out = 20))
+```
+
+Note the option `destructive = TRUE` for `time_to_strat`. It makes sure fossils that coincide with hiatuses are destroyed.
+
+#### Define niche models
+
+You can define simple niche models with the functions `snp_niche` or `bounded_niche`:
+
+```{r}
+my_niche = snd_niche(opt = 10,       # preferred water depth 
+                     tol = 5,        # tolerance to water depth fluctuations
+                     cutoff_val = 0) # cut off negative values - the taxon does not survive on land
+```
+
+To visualize the niche you can plot it using the following code:
+
+```{r}
+max_wd = 60 # maximum water depth
+x = seq(-2, max_wd, by = 0.1)
+plot(x, my_niche(x),
+     type = "l",
+     xlab = "Water depth [m]",
+     ylab = "Collection probability",
+     main = "Collection probability of taxon")
+```
+
+#### Apply niche models
+
+To apply a niche model, we need two components: A niche model that specifies the niche of a taxon along a cline (water depth in this example - this is the function we defined above), and a function that describes how the cline changes with time.
+
+To define a function that returns the water depth with time, you can use the following code:
+
+```{r}
+pos = "2km" # position in the platform we want water depth from
+
+gc = approxfun(scenarioA$t_myr, scenarioA$wd_m[,pos]) #  use linear interpolation between known water depths
+```
+
+You can visualize this function using the following code:
+
+```{r}
+plot(x = scenarioA$t_myr,
+     y = gc(scenarioA$t_myr), 
+     type = "l", 
+     xlab = "Time [Myr]",
+     ylab = "Water depth [m]",
+     main = "Water depth 2 km offshore")
+```
+
+With both components (niche model and cline change with time) defined, you can insert the niche model into the modeling pipeline via the function `apply_niche`:
+
+```{r}
+p3(rate = foss_per_myr, from = min_time(adm_2km), to = max_time(adm_2km)) |> # model occurrences based on constant rate
+  apply_niche(niche_def = my_niche, gc = gc) |>                     # apply niche model
+  time_to_strat(adm_2km, destructive = TRUE) |>                     # transform into strat. domain, destroy fossils that coincide with hiatuses 
+  hist(xlab = paste0("Stratigraphic height [",get_L_unit(adm_2km) ,"]"), # plot results
+       main = "Fossil abundance 2 km from shore",
+       ylab = "# Fossils",
+       breaks = seq(from = min_height(adm_2km), to = max_height(adm_2km), length.out = 40))
+```
+
+#### Simulating and tansforming last occurences
+
+Timing of last occurrences can be simulated using `p3` or `p3_var_rate` just as fossil occurrence (or any other type of "event" data). They can be transformed using `time_to_strat`:
+
+```{r}
+rolo = 100 # rate of last occurrences
+p3(rate = rolo, from = min_time(adm_2km), to = max_time(adm_2km)) |> # constant rate of last occ
+  time_to_strat(adm_2km, destructive = FALSE) |>                    # non-destructive transformation!
+  hist(xlab = paste0("Stratigraphic height [",get_L_unit(adm_2km),"]"),# plot histogram
+       main = "Last occurrences 2 km offshore",
+       ylab = "# Last occurrences",
+       breaks = seq(from = min_height(adm_2km), to = max_height(adm_2km), length.out = 20))
+```
+
+Note that we use the option `destructive = FALSE` in `time_to_strat`. This is because last occurrences during a hiatus will appear at the hiatus surface in the stratigraphic domain.
