@@ -30,6 +30,12 @@ Copyright 2023-2024 Netherlands eScience Center and Utrecht University
 
 Apache 2.0 License, see LICENSE file for license text.
 
+## References
+
+This repository uses material from
+
+-   Hohmann, Niklas. 2024. "StratPal: R package for stratigraphic paleobiology modeling pipelines (v0.1.0)." Zenodo. <https://doi.org/10.5281/zenodo.12790995>.
+
 ## Funding information
 
 Funded by the European Union (ERC, MindTheGap, StG project no 101041077). Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Research Council. Neither the European Union nor the granting authority can be held responsible for them.
