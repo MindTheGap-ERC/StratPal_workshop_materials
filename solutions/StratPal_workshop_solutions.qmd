@@ -7,23 +7,216 @@ format:
     embed-resources: true
 ---
 
-## Quarto
+This document contains the *solutions* for the tasks of the workshop *Building Models for Stratigraphic Paleobiology in R*.
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+## Practical 1: Age-depth models and incompleteness
 
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this 
+### Task 1
+Question:  
+1.  Define age-depth models for different locations along the onshore-offshore gradient, and plot them. How do they connect to the chronostratigraphic diagram and the sea level curve shown in the introduction?
 
 ```{r}
-#| echo: false
-2 * 2
+# define all age-depth models
+library("admtools")
+library("StratPal")
+
+adm_list = list()
+dist = paste(seq(2, 12, by = 2), "km", sep = "") # distances from shore
+
+for (d in dist){ # construct ADMs for all distances
+  adm_list[[d]] = tp_to_adm(t = scenarioA$t_myr,        
+                     h = scenarioA$h_m[,d],
+                     T_unit = "Myr",
+                     L_unit = "m")
+}
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+
+```{r}
+# plot specific age-depth models
+pos = "2km" # insert distances from shore here
+stopifnot(pos %in% dist ) # validity check
+
+plot(adm_list[[pos]],
+     lwd_acc = 2,   # plot thicker lines for intervals with sediment accumulation (lwd = line width)
+     lty_destr = 0) # don't plot destructive intervals/gaps (lty = line type)
+T_axis_lab()        # add time axis label
+L_axis_lab()        # add length axis label
+title(paste0("Age-depth model ", pos, " from shore"))
+```
+
+Connection with the chronostratigraphid diagram and the basin transect
+
+### Task 2
+Question:  
+2.  Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient. Can you make a plot?
+
+```{r}
+p = seq(2, 12, by = 2) # position from shore
+inc = rep(NA, length(p))
+nhiat = rep(NA, length(p))
+
+for (i in seq_along(p)){
+  po = paste0(p[i], "km")
+  inc[i] = adm_list[[po]] |> 
+    get_incompleteness()
+  nhiat[i] = adm_list[[po]] |>
+    get_hiat_no()
+}
+
+plot(p, 100 * inc, 
+     xlab = "Distance from shore [km]", 
+     ylab = "Incompleteness [%]", 
+     type = "l",
+     ylim = c(0, 100))
+
+plot(p, nhiat, 
+     xlab = "Distance from shore [km]", 
+     ylab = "# Hiatuses", 
+     type = "l",
+     ylim = c(0, max(nhiat)))
+```
+
+
+### Task 3
+Questions:  
+3.  Generate histograms of hiatus durations at the different distances from shore. Do you see any systematic changes?
+
+```{r}
+pos = "2km" # position of adm
+stopifnot(pos %in%  dist) # validity check
+
+adm_list[[pos]] |>
+  get_hiat_duration() |>
+  hist(xlab = "Hiatus duration [Myr]",
+       main = paste0("Hiatus duration ", pos, " from shore"))
+```
+
+
+## Practical 2: Trait evolution
+
+### Task 1
+
+1.  Plot the different modes of evolution in the time domain. What is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times), and which modes can be mistaken for each other?
+
+```{r}
+min_t = 0      # beginning observation [Myr]
+max_t = 2      # end observation [Myr]
+t_step = 0.01  # temporal resolution [Myr]
+mean = 1        # model paramter, to modify
+sd = 1          # model parameter, to modify
+seq(from = min_t, to = max_t, by = t_step) |>
+  stasis(mean = mean, sd = sd) |>
+  plot(type = "l",
+       xlab = "Time [Myr]",
+       ylab = "Trait value",
+       main = "Trait evolution: Stasis")
+```
+
+```{r}
+min_t = 0      # beginning observation [Myr]
+max_t = 2      # end observation [Myr]
+t_step = 0.01  # temporal resolution [Myr]
+sigma = 1        # model paramter, to modify
+mu = 1            # model parameter, to modify
+y0 = 1          # model parameter, to modify
+seq(from = min_t, to = max_t, by = t_step) |>
+  random_walk(sigma = sigma, mu = mu, y0 = y0) |>
+  plot(type = "l",
+       xlab = "Time [Myr]",
+       ylab = "Trait value",
+       main = "Trait evolution: Random walk")
+```
+
+
+### Task 2
+
+2.  Transform the different modes of evolution into the stratigraphic domain and plot them. Which modes are most affected by stratigraphic biases? Which are not affected? Do you see any systematic biases along the onshore/offshore gradient or with stratigraphic (in)completeness?
+
+## Practical 3
+
+### Task 1
+
+1.  Simulate an abundant taxon, and transform the fossil ages into the stratigraphic domain. At which locations and stratigraphic heights do you observe peaks in fossil abundance? With which stratigraphic effects are these peaks associated?
+
+```{r}
+pos = "2km" # adjust to other in `dist` to run all analyses
+stopifnot(pos %in% dist)
+adm = adm_list[[pos]]
+
+rate = 100 # fossil occurrences per Myr
+sampl_bin = 5 # sampling bins in m
+
+p3(from = min_time(adm), to = max_time(adm), rate = rate) |>
+  time_to_strat(adm, destructive = TRUE) |>
+  hist(breaks = seq(from = min_height(adm), to = max_height(adm) + sampl_bin, by = sampl_bin),
+       xlab = "Stratigraphic height [m]",
+       main = paste0("Fossil abundance ", pos, " from shore"))
+```
+
+
+### Task 2
+
+2.  Define a niche for a taxon based on a preferred water depth and tolerance to water depth fluctuations. Add the niche model to your pipeline. How and why do your results change? How could you misinterpret the results?
+
+```{r}
+pos = "2km"
+stopifnot(pos %in% dist)
+niche = snd_niche(opt = 20, tol = 10, cutoff_val = 0)
+
+# plot niche
+max_wd = 60 # maximum water depth
+x = seq(-2, max_wd, by = 0.1)
+plot(x, niche(x),
+     type = "l",
+     xlab = "Water depth [m]",
+     ylab = "Collection probability",
+     main = "Collection probability of taxon")
+```
+
+```{r}
+wd_with_time = approxfun(scenarioA$t_myr, scenarioA$wd_m[,pos])
+
+plot(x = scenarioA$t_myr,
+     y = wd_with_time(scenarioA$t_myr), 
+     type = "l", 
+     xlab = "Time [Myr]",
+     ylab = "Water depth [m]",
+     main = paste0("Water depth ", pos, " offshore"))
+```
+
+Now combine all components:
+```{r}
+adm = adm_list[[pos]]
+rate = 100 # no fossils per Myr
+
+p3(rate = rate, from = min_time(adm), to = max_time(adm)) |> # model occurrences based on constant rate
+  apply_niche(niche_def = niche, gc = wd_with_time) |>                     # apply niche model
+  time_to_strat(adm, destructive = TRUE) |>                     # transform into strat. domain, destroy fossils that coincide with hiatuses 
+  hist(xlab = paste0("Stratigraphic height [",get_L_unit(adm) ,"]"), # plot results
+       main = paste0("Fossil abundance ", pos, " from shore"),
+       ylab = "# Fossils",
+       breaks = seq(from = min_height(adm), to = max_height(adm), length.out = 40))
+```
+
+
+
+### Task 3
+
+1.  Simulate last occurrences based on the assumption of a constant rate of last occurrences, and transform them into the stratigraphic domain. Where do you observe clusters of last occurrences? With what stratigraphic effects are these locations associated? How would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a "stratigraphic null hypothesis" for clusters of last occurrences.
+
+```{r}
+pos = "10km" # position along the onshore-offshore gradient
+stopifnot(pos %in% dist)  # validity check
+adm = adm_list[[pos]]
+rate = 100 # last occurrences per Myr
+binsize = 2 # size of sampling bins [m]
+
+p3(from = min_time(adm), to = max_time(adm), rate = rate) |>
+  time_to_strat(adm, destructive = FALSE) |>
+  hist(breaks = seq(from = min_height(adm), to = max_height(adm) + binsize, by = binsize),
+       xlab = "Height [m]",
+       main = paste0(" # Last occurrences ", pos, " from shore"))
+```
+
+

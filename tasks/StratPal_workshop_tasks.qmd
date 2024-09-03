@@ -15,7 +15,7 @@ This practical is an introduction to age-depth models.
 
 ### Tasks
 
-1.  Define age-depth models for the different locations along the onshore-offshore gradient, and plot them. How do they connect to the chronostratigraphic diagram and the sea level curve shown in the introduction?
+1.  Define age-depth models for different locations along the onshore-offshore gradient, and plot them. How do they connect to the chronostratigraphic diagram and the sea level curve shown in the introduction?
 2.  Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient. Can you make a plot?
 3.  Generate histograms of hiatus durations at the different distances from shore. Do you see any systematic changes?
 
