@@ -2,6 +2,10 @@
 
 Workshop materials for modeling pipelines in stratigraphic paleobiology using the StratPal package
 
+## Introduction
+
+This is an open educational resource (OER). It contains materials for 3 to 4 h workshop for modeling stratigraphic paleobiology in R. Provided materials are slides providing a theoretical background for the participants, task for the participants, coding cheat sheets with template code, and solutions.
+
 ## Authors
 
 __Niklas Hohmann__  
@@ -29,6 +33,18 @@ Copyright 2023-2024 Netherlands eScience Center and Utrecht University
 ## License
 
 Apache 2.0 License, see LICENSE file for license text.
+
+## Repository structure
+
+* figs: folder for figures
+* pres: folder with slides for presentation
+* refs: references for materials
+* solutions: solutions for the task
+* tasks: workshop tasks for the participants
+* .gitignore: untracked files
+* LICENSE: Apache 2.0 License text
+* README: Readme file
+* StratPal_workshop_materials.Rproj: Rproject file
 
 ## References
 
