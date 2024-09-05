@@ -62,7 +62,8 @@ adm_2km = tp_to_adm(t = scenarioA$t_myr,        # construct ADM
                      L_unit = "m")
 plot(adm_2km,
      lwd_acc = 4,   # plot thicker lines for intervals with sediment accumulation (lwd = line width)
-     lty_destr = 0) # don't plot destructive intervals/gaps (lty = line type)
+     lty_destr = 1,
+     col_destr = "red") # don't plot destructive intervals/gaps (lty = line type)
 T_axis_lab()        # add time axis label
 L_axis_lab()        # add length axis label
 title("Age-depth model")
