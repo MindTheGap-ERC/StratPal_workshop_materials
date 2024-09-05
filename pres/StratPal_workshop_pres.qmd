@@ -21,9 +21,13 @@ The fossil record is a joint expression of
 StratPal as interdisciplinary science
 :::
 
-## Examples
+## Example
 
-show some examples here
+![](../figs/PatzkowskyHolland_5-4.png)
+
+::: {.aside}
+From @patzkowsky2019stratigraphic
+:::
 
 ## Aims
 
