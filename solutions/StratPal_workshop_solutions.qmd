@@ -5,6 +5,7 @@ format:
     toc: true
     toc-depth: 3
     embed-resources: true
+bibliography: ../refs/refs.bib
 ---
 
 This document contains the *solutions* for the tasks of the workshop *Building Models for Stratigraphic Paleobiology in R*.
@@ -15,17 +16,16 @@ Both code and explanations are given.
 
 ### Task 1
 Question:  
-1.  Define age-depth models for different locations along the onshore-offshore gradient, and plot them. How do they connect to the chronostratigraphic diagram and the sea level curve shown in the introduction?
+1.  Define age-depth models for different locations along the onshore-offshore gradient, and plot them. How do they connect to the chronostratigraphic diagram and the sea level curve of the simulated platform?
 
 ```{r}
 # load packages
 library("admtools")
 library("StratPal")
 # define age-depth models
-adm_list = list()   # storage for age-depth models
-dist = paste(seq(2, 12, by = 2), "km", sep = "") # distances from shore
-
-for (pos in dist){ # construct ADMs for all distances
+adm_list = list()                                     # storage for age-depth models
+dist = paste(seq(2, 12, by = 2), "km", sep = "")      # distances from shore
+for (pos in dist){                                    # construct ADMs for all distances
   adm_list[[pos]] = tp_to_adm(t = scenarioA$t_myr,        
                              h = scenarioA$h_m[,pos],
                              T_unit = "Myr",
@@ -36,30 +36,29 @@ for (pos in dist){ # construct ADMs for all distances
 
 ```{r}
 # plot specific age-depth models
-pos = "2km" # insert distance from shore here
+pos = "2km"               # insert distance from shore here
 stopifnot(pos %in% dist ) # validity check
 
 plot(adm_list[[pos]],
-     lwd_acc = 2,   # plot thicker lines for intervals with sediment accumulation (lwd = line width)
-     lty_destr = 0) # don't plot destructive intervals/gaps (lty = line type)
-T_axis_lab()        # add time axis label
-L_axis_lab()        # add length axis label
+     lwd_acc = 2,         # plot thicker lines for intervals with sediment accumulation (lwd = line width)
+     lty_destr = 0)       # don't plot destructive intervals/hiatuses (lty = line type)
+T_axis_lab()              # add time axis label
+L_axis_lab()              # add length axis label
 title(paste0("Age-depth model ", pos, " from shore"))
 ```
 
 Age-depth model closer to shore are higher (up to 150 m), while those further offshore are shorter (a few 10s of meters). This is because sediment accumulation is much higher on the platform top (2-8 km) compared to the proximal (10 km) and distal (12 km) slope.  
-Age-depth models on the platform have a few long gaps that are represented as white space in the chronostratigraphic (Wheeler) diagram. These gaps correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer gaps as sediment accumulation is more continuous. Times of low sediment accumulation correspond to intervals of low sea level, and are due to lowstand shedding from the platform top. This generates intervals with sedimentary condensation (low sedimentation rate), expressed by a near-horizontal age-depth model.
+Age-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic (Wheeler) diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous. Times of low sediment accumulation correspond to intervals of low sea level, and are due to lowstand shedding from the platform edge. This generates intervals with sedimentary condensation (low sedimentation rate), expressed by a near-horizontal age-depth model.
 
 ### Task 2
 Question:  
-2.  Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient. Can you make a plot?
+2.  Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.
 
 ```{r}
-inc = rep(NA, length(dist))   # storage for incompleteness
-nhiat = rep(NA, length(dist)) # storage for number of hiatuses
-
+inc = rep(NA, length(dist))             # storage for incompleteness
+nhiat = rep(NA, length(dist))           # storage for number of hiatuses
 for (i in seq_along(dist)){
-  pos = dist[i]
+  pos = dist[i] # position in platform
   # determine incompleteness
   inc[i] = adm_list[[pos]] |> 
     get_incompleteness()
@@ -67,7 +66,7 @@ for (i in seq_along(dist)){
   nhiat[i] = adm_list[[pos]] |>
     get_hiat_no()
 }
-
+## Plotting
 p = seq(from = 2, to = 12, by = 2)       # dist from shore for plotting
 plot(p, 100 * inc,                       # transform into %
      xlab = "Distance from shore [km]", 
@@ -82,10 +81,10 @@ plot(p, nhiat,
      ylim = c(0, max(nhiat)))
 ```
 
-Incompleteness is highest in the onshore sections (more than 60 %), and decreases with distance from shore to values of around 30 % in the proximal slope.
+Incompleteness is highest in the onshore sections (more than 60 %), and decreases with distance from shore to values of around 30 % in the proximal slope. Note that this differs from Figure 4 in  @hohmann_identification_2024 as we are examining incompleteness on a coarser spatial scale.
 
-The number of hiatuses is low on the shoreside platform top (approx 10 gaps at 2 - 6 km), with increased values in the fore-reef (8 km). The most gaps are 10 km from shore with almost 150 gaps, which drops to around 50 in the distal slope.  
-The gaps on the platform are generated by long intervals of low sea level, which exposes the platform top. The high number of gaps in the proximal slope is generated by a high frequency of depositional events made of transported material from the platform edge. The effect of transported material decreases with distance from the platform edge, thus the decreased number of gaps on the distal slope.
+The number of hiatuses is low on the landwards platform top (approx. 10 hiatuses at 2 - 6 km), with increased values in the fore-reef (8 km). The most hiatuses are 10 km from shore with almost 150 hiatuses, which drops to around 50 in the distal slope.  
+The hiatuses on the platform are generated by long intervals of low sea level, which exposes the platform top. The high number of hiatuses in the proximal slope is generated by a high frequency of depositional events made of transported material from the platform edge. The effect of transported material decreases with distance from the platform edge, thus the decreased number of hiatuses on the distal slope.
 
 
 ### Task 3
@@ -102,9 +101,9 @@ adm_list[[pos]] |>
        main = paste0("Hiatus duration ", pos, " from shore"))
 ```
 
-Hiatus durations on the platform top are very similar: They consist of two long gaps (caused by the prolonged drops in the sea level curve), and a number of shorter gaps generated by the lower order sinusoidal sea level changes. At 8 km from shore, the number of short hiatuses increases to more than 30, indicating that sediment accumulation is more interrupted, potentially due to higher wave energy and more sediment transport.  
-On the slope, gaps are more abundant, but their duration is much shorter. This is most pronounced for the proximal slope.  
-Note the disconnect between the number of gaps and incompleteness: Onshore sections are the most incomplete, but have only a few gaps. In contrast, the proximal slope has the most gaps, but a low incompleteness. This is because gap duration in the onshore sections is much longer.
+Hiatus durations on the platform top are very similar: They consist of two long hiatuses (caused by the prolonged drops in the sea level curve), and a number of shorter hiatuses generated by the lower order sinusoidal sea level changes. At 8 km from shore, the number of short hiatuses increases to more than 30, indicating that sediment accumulation is more interrupted, potentially due to higher wave energy and more sediment transport.  
+On the slope, hiatuses are more abundant, but their duration is much shorter. This is most pronounced for the proximal slope.  
+Note the disconnect between the number of hiatuses and incompleteness: Onshore sections are the most incomplete, but have only a few hiatuses. In contrast, the proximal slope has the most hiatuses, but a low incompleteness. This is because hiatus duration in the onshore sections is much longer.
 
 ## Practical 2: Trait evolution
 
@@ -113,10 +112,10 @@ Note the disconnect between the number of gaps and incompleteness: Onshore secti
 1.  Plot the different modes of evolution in the time domain. What is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times), and which modes can be mistaken for each other?
 
 ```{r}
-min_t = 0      # beginning observation [Myr]
-max_t = 2      # end observation [Myr]
-t_step = 0.01  # temporal resolution [Myr]
-mean = 1        # model paramter, to modify
+min_t = 0       # beginning observation [Myr]
+max_t = 2       # end observation [Myr]
+t_step = 0.01   # temporal resolution [Myr]
+mean = 1        # model parameter, to modify
 sd = 1          # model parameter, to modify
 seq(from = min_t, to = max_t, by = t_step) |>
   stasis(mean = mean, sd = sd) |>
@@ -126,15 +125,15 @@ seq(from = min_t, to = max_t, by = t_step) |>
        main = "Trait evolution: Stasis")
 ```
 
-For stasis, the `mean` parameter determines the mean trait value, and the `sd` (standard deviation) parameter determines the spread of trait values. Trait values at individual times are uncorrelated, so if the temporal resolution is increased, trait evolution is more irregular.
+For stasis, the `mean` parameter determines the mean trait value, and the `sd` (standard deviation) parameter determines the spread of trait values. Trait values at individual times are uncorrelated, so if the temporal resolution is increased, trait evolution appears more irregular.
 
 ```{r}
 min_t = 0      # beginning observation [Myr]
 max_t = 2      # end observation [Myr]
 t_step = 0.01  # temporal resolution [Myr]
-sigma = 1        # model paramter, to modify
-mu = 1            # model parameter, to modify
-y0 = 1          # model parameter, to modify
+sigma = 1      # model parameter, to modify
+mu = 1         # model parameter, to modify
+y0 = 1         # model parameter, to modify
 seq(from = min_t, to = max_t, by = t_step) |>
   random_walk(sigma = sigma, mu = mu, y0 = y0) |>
   plot(type = "l",
@@ -143,17 +142,17 @@ seq(from = min_t, to = max_t, by = t_step) |>
        main = "Trait evolution: Random walk")
 ```
 
-For the random walk model, the `y0` paramter determines the initial trait value. The paramter `mu` determines the directionality, with positive (negative) values leading to increasing (decreasing) trait values with time. The `sigma` parameter determines the amount of randomness in the system, with larger values reflecting more randomness. Internal variability is high for larger values of `sigma`, meaning individual lineages simulated will differ a lot from each other.  
-Important endmembers are: `sigma` set to 0, trait evolution is purely deterministic and specified by `mu` and `y0`. If `mu` and `y0` are set to 0, trait evolution follows an unbiased random walk model. If `sigma` is set to 1, the model corresponds to a Brownian motion.
+For the random walk model, the `y0` parameter determines the initial trait value. The parameter `mu` determines the directionality, with positive (negative) values leading to increasing (decreasing) trait values with time. The `sigma` parameter determines the amount of randomness in the system, with larger values reflecting more randomness. Internal variability is high for larger values of `sigma`, meaning individual lineages simulated will differ a lot from each other.  
+Important endmembers are: `sigma` set to 0, trait evolution is purely deterministic and specified by `mu` and `y0`. If `mu` and `y0` are set to 0, trait evolution follows an unbiased random walk model. If `sigma` is set to 1, the model corresponds to a Brownian motion. For low values of `sigma` and `mu`, the random walk can be mistaken for stasis.
 
 ```{r}
 min_t = 0      # beginning observation [Myr]
 max_t = 2      # end observation [Myr]
 t_step = 0.01  # temporal resolution [Myr]
-theta = 1        # model paramter, to modify
-sigma = 0.1
-mu = 0            # model parameter, to modify
-y0 = 1          # model parameter, to modify
+theta = 1      # model parameter, to modify
+sigma = 0.1    # model parameter, to modify
+mu = 0         # model parameter, to modify
+y0 = 1         # model parameter, to modify
 seq(from = min_t, to = max_t, by = t_step) |>
   ornstein_uhlenbeck(mu = mu, theta = theta, sigma = sigma, y0 = y0) |>
   plot(type = "l",
@@ -162,7 +161,7 @@ seq(from = min_t, to = max_t, by = t_step) |>
        main = "Trait evolution: Ornstein-Uhlenbeck process")
 ```
 
-For the Ornstein-Uhlenbeck (OU) model, the parameter `y0` represents the initial trait value. The parameter `mu` determines the long term mean of the process, `theta` how fast this mean is approached, and `sigma` how strong the influence of randomness is. This model is used to model convergence from an intial trait value `y0` to an optimum `mu` under pressure of selection `theta` and random influences `sigma`.  
+For the Ornstein-Uhlenbeck (OU) model, the parameter `y0` represents the initial trait value. The parameter `mu` determines the long term mean of the process, `theta` how fast this mean is approached, and `sigma` how strong the influence of randomness is. This model is used to model convergence from an initial trait value `y0` to an optimum `mu` under pressure of selection `theta` and random influences `sigma`.  
 Internal variation is determined by the `sigma` parameter, where larger values result in greater variation in simulated trait values.  
 Important endmembers of the OU model are:
 
@@ -179,15 +178,13 @@ Important endmembers of the OU model are:
 Example code for the random walk model is provided. This can be expanded by replacing the random walk by stasis or the Ornstein-Uhlenbeck process.
 
 ```{r}
-pos = "2km" # position 
+pos = "2km"              # position on platform
 stopifnot(pos %in% dist) # validity check
-# case for random walk here
-mu = 2
-sigma = 1
-y0 = 0
-adm = adm_list[[pos]] # select age-depth model
-t_step = 0.001 # temporal resoluton [Myr]
-
+mu = 2                   # model parameters
+sigma = 1                # model parameters
+y0 = 0                   # model paramters
+adm = adm_list[[pos]]    # select age-depth model
+t_step = 0.001           # temporal resolution [Myr]
 ## plot trait evolution in the time domain
 seq(from  = min_time(adm), to = max_time(adm), by = t_step) |>
   random_walk(sigma = sigma, mu = mu, y0 = y0) |>
@@ -199,17 +196,17 @@ seq(from  = min_time(adm), to = max_time(adm), by = t_step) |>
        main = paste0("Trait evolution ", pos, " from shore") )
 ```
 
-Stasis is unaffected by stratigraphic biases. This is because if there is no net change of traits in the time domain, losing some because of gaps does not affect the overall pattern.
+Stasis is unaffected by stratigraphic biases. This is because if there is no net change of traits in the time domain, losing parts of the lineage because of hiatuses does not affect the overall pattern.
 
-For the random walk and the Ornstein-Uhlenbeck process, the degree of  bias depends on the directionality of evolution. The more the traits change over a gap or a condensed interval, the more the stratigraphic expression of trait evolution differs from the one in the time domain. As a result, stratigraphic biases are strongest in the random walk model for large `mu`, and in the Ornstein-Uhlenbeck model for large differences between `y0` and `mu`.
+For the random walk and the Ornstein-Uhlenbeck process, the degree of  bias depends on the directionality of evolution. The more the traits change over a hiatus or a condensed interval, the more the stratigraphic expression of trait evolution differs from the one in the time domain. As a result, stratigraphic biases are strongest in the random walk model for large `mu`, and in the Ornstein-Uhlenbeck model for large differences between `y0` and `mu`.
 
 The effects are strongest if
 
-1. There are long gaps or
+1. There are long hiatuses or
 
 2. There are long intervals of sedimentary condensation.
 
-As a result, stratigraphic biases are driven by maximum gap duration on the platform top, and driven by sedimentary condensation on the slope (see task on age-depth models).
+As a result, stratigraphic biases are driven by maximum hiatus duration on the platform top, and driven by sedimentary condensation on the slope (see task on age-depth models). This effect is more pronounced the more directional evolution is.
 
 ## Practical 3: Niche modeling and last occurrences
 
@@ -218,13 +215,12 @@ As a result, stratigraphic biases are driven by maximum gap duration on the plat
 1.  Simulate an abundant taxon, and transform the fossil ages into the stratigraphic domain. At which locations and stratigraphic heights do you observe peaks in fossil abundance? With which stratigraphic effects are these peaks associated?
 
 ```{r}
-pos = "2km" # adjust to other in `dist` to run all analyses
+pos = "2km"              # position in the platform, to modify
 stopifnot(pos %in% dist) # validity check
-adm = adm_list[[pos]]
-
-rate = 200 # fossil occurrences per Myr
-sampl_bin = 2 # sampling bins in m
-
+adm = adm_list[[pos]]    # select ADM
+rate = 200               # fossil occurrences per Myr
+sampl_bin = 2            # sampling bins in m
+# Plot fossil abundance in the section
 p3(from = min_time(adm), to = max_time(adm), rate = rate) |>
   time_to_strat(adm, destructive = TRUE) |>
   hist(breaks = seq(from = min_height(adm), to = max_height(adm) + sampl_bin, by = sampl_bin),
@@ -232,49 +228,49 @@ p3(from = min_time(adm), to = max_time(adm), rate = rate) |>
        main = paste0("Fossil abundance ", pos, " from shore"))
 ```
 
-In the slope sections (10 and 12 km), there are peaks in fossil abundance associated with the intervals with stratigraphic condensation, which are coeval to drops in sea level. These peaks are not visible on the platform top. This is because here the sea level drops result in gaps, which destroys the fossils (as specified by the option `destructive = TRUE`).
+In the slope sections (10 and 12 km), there are peaks in fossil abundance associated with the intervals with stratigraphic condensation, which are coeval to drops in sea level. These peaks are not visible on the platform top. This is because here the sea level drops result in hiatuses, which destroys the fossils (as specified by the option `destructive = TRUE`).
 
 ### Task 2
 
 2.  Define a niche for a taxon based on a preferred water depth and tolerance to water depth fluctuations. Add the niche model to your pipeline. How and why do your results change? How could you misinterpret the results?
 
 ```{r}
-pos = "8km" # select position
+pos = "8km"              # select position on the platform
 stopifnot(pos %in% dist) # check validity
-adm = adm_list[[pos]] # select age-depth model
-rate = 200 # no fossils per Myr
+adm = adm_list[[pos]]    # select age-depth model
+rate = 200               # no. of fossils per Myr
 # define niche
 niche = snd_niche(opt = 20, tol = 10, cutoff_val = 0)
-
 # plot niche
-max_wd = 60 # maximum water depth
+max_wd = 60                    # maximum water depth for plotting
 x = seq(-2, max_wd, by = 0.1)
 plot(x, niche(x),
      type = "l",
      xlab = "Water depth [m]",
      ylab = "Collection probability",
      main = "Collection probability of taxon")
-
 ## change in cline with time
-wd_with_time = approxfun(scenarioA$t_myr, scenarioA$wd_m[,pos])
-
-plot(x = scenarioA$t_myr,
-     y = wd_with_time(scenarioA$t_myr), 
+t = scenarioA$t_myr        # time steps where the water depth is determined by the model
+wd = scenarioA$wd_m[,pos]  # water depth at the specified position
+wd_with_time = approxfun(t, wd)
+## Plotting
+plot(x = t,
+     y = wd_with_time(t), 
      type = "l", 
      xlab = "Time [Myr]",
      ylab = "Water depth [m]",
      main = paste0("Water depth ", pos, " offshore"))
 ## add niche model to pipeline
-p3(rate = rate, from = min_time(adm), to = max_time(adm)) |> # model occurrences based on constant rate
-  apply_niche(niche_def = niche, gc = wd_with_time) |>                     # apply niche model
-  time_to_strat(adm, destructive = TRUE) |>                     # transform into strat. domain, destroy fossils that coincide with hiatuses 
+p3(rate = rate, from = min_time(adm), to = max_time(adm)) |>         # model occurrences based on constant rate
+  apply_niche(niche_def = niche, gc = wd_with_time) |>               # apply niche model
+  time_to_strat(adm, destructive = TRUE) |>                          # transform into strat. domain, destroy fossils that coincide with hiatuses 
   hist(xlab = paste0("Stratigraphic height [",get_L_unit(adm) ,"]"), # plot results
        main = paste0("Fossil abundance ", pos, " from shore"),
        ylab = "# Fossils",
        breaks = seq(from = min_height(adm), to = max_height(adm), length.out = 40))
 ```
 
-Depending on the preffered water depth and tolerance to water depth changes, it can appear as if the taxon goes extinct because fossil abundance drops to 0. However, this is because the taxon tracks its niche, and there is a systematic change in water depth with time.  
+Depending on the preferred water depth and tolerance to water depth changes, it can appear as if the taxon goes extinct because fossil abundance drops to 0. However, this is because the taxon tracks its niche, and there is a systematic change in water depth with time.  
 For example, the water depth on the platform decreases with time, as the carbonate production rate outpaces the subsidence. As a result, taxa with low tolerance to shallow water will vanish over time from the platform top. Conversely, the water depth on the slope increase with time. This leads to the local extinction (extirpation) of shallow water taxa on the slope as time progresses. However, this local extinction does not mean that the taxon is extinct, just that the environment at that location became unfavorable for it. Without the ability to examine multiple sections in the samples, this might be mistaken as a true extinction event.
 
 ### Task 3
@@ -282,19 +278,20 @@ For example, the water depth on the platform decreases with time, as the carbona
 1.  Simulate last occurrences based on the assumption of a constant rate of last occurrences, and transform them into the stratigraphic domain. Where do you observe clusters of last occurrences? With what stratigraphic effects are these locations associated? How would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a "stratigraphic null hypothesis" for clusters of last occurrences.
 
 ```{r}
-pos = "2km" # position along the onshore-offshore gradient
+pos = "2km"               # position along the onshore-offshore gradient
 stopifnot(pos %in% dist)  # validity check
-adm = adm_list[[pos]]
-rate = 100 # last occurrences per Myr
-binsize = 2 # size of sampling bins [m]
+adm = adm_list[[pos]]     # select age-depth model
+rate = 100                # last occurrences per Myr
+binsize = 2               # size of sampling bins [m]
 
-p3(from = min_time(adm), to = max_time(adm), rate = rate) |>
+# Plot last occurrences at the specified position
+p3(from = min_time(adm), to = max_time(adm), rate = rate) |>  
   time_to_strat(adm, destructive = FALSE) |>
   hist(breaks = seq(from = min_height(adm), to = max_height(adm) + binsize, by = binsize),
        xlab = "Height [m]",
        main = paste0(" # Last occurrences ", pos, " from shore"))
 ```
 
-On the platform, the clusters are associated with prolonged gaps, caused by drops in sea level. On the slope, the clusters are associated with intervals of stratigraphic condensation (low sedimentation rate), also caused by drops in sea level.  
+On the platform, the clusters are associated with prolonged hiatuses, caused by drops in sea level. On the slope, the clusters are associated with intervals of stratigraphic condensation (low sedimentation rate), also caused by drops in sea level.  
 In the absence of stratigraphic information, these clusters could be misinterpreted as extinction intervals, as there is an elevated rate of last occurrences. If information on sea level change is available, this could be misinterpreted as a causal relationship between sea level and extinction rate, where drops in sea level increase extinction rates.  
-A stratigraphic null hypothesis might be that times of dropping sea level cause gaps (close to shore) and condensation (on the slope), which lead apparent elevated extinction rates.
+A stratigraphic null hypothesis might be that times of dropping sea level cause hiatuses (close to shore) and condensation (on the slope), which lead apparent elevated extinction rates.
