@@ -1,13 +1,53 @@
 ---
 title: "Building Models for Stratigraphic Paleobiology in R"
-autor: "Niklas Hohmann, Xianyi Liu, Emilia Jarochowska"
+autor: Niklas Hohmann, Xianyi Liu, Emilia Jarochowska
 format: 
   revealjs:
     embed-resources: true
+title-slide-attributes: 
+  data-notes: introduce speakers, this is the first time we hold this workshop - we want to improve, please give us feedback. 3.5 h workshop with three breaks
+bibliography: ../refs/refs.bib
 ---
 
 ## Stratigraphic Paleobiology
 
+The fossil record is a joint expression of 
+
+* Stratigraphy
+* Taphonomy
+* Biology (ecology & evolution)
+
+::: {.notes}
+StratPal as interdisciplinary science
+:::
+
+## Examples
+
+show some examples here
+
+## Aims
+
+Combine models of stratigraphy with evolutionary biology and ecology into stratigraphic paleobiology modeling pipeline
+
+Focus:  
+
+1. Age-depth models and incompleteness
+
+2. Trait evolution
+
+3. Fossil abundance, ecology, and last occurrences
+
+::: {.notes}
+45 mins on each topic working independently, then we will discuss the results together.
+:::
+
+## Example data
+
+![](..figs/scenarioA_transect.jpg)
+
+:::aside
+data simulated using CarboCAT [@burgess_2013;@burgess_2023], figure modified from @hohmann_identification_2024
+:::
 
 
 ## Age-depth models (ADMs)
@@ -26,67 +66,160 @@ plot(adm_2km,
 T_axis_lab()        # add time axis label
 L_axis_lab()        # add length axis label
 title("Age-depth model")
-
 ```
 
+::: {.notes}
+* Age-depth models are a key tool in stratigraphy
+* They connect the time domain (x axis) with the stratigraphic domain (y axis).
+* allow to determine age of a sample, or predict stratigraphic position of a sample of given age
+* contain more info: empty spaces are hiatuses, slope is sedimentation rate
+:::
 
 ## Piping
 
 
 ```{r}
 #| echo: true
-1 + 1
+rnorm(500) |>                          # generate 500 normally distributed random numbers
+  hist(main = "Normal distribution")   # plot histogram
 ```
 
-## Example data
+`|>` is the pipe operator  
+Read the code like text!
 
-![](..figs/scenarioA_transect.jpg)
-
-:::aside
-Hohmann et al. 2024: Identifying the mode of evolution in incomplete carbonate successions
+::: {.notes}
+We use piping to create pipelines
+advantages:
+you can read the code like text: from top left to bottom right
+syntactically, |> means: take what is left of |> and use it as first argument on the right side
+less intermediate variables
 :::
 
+## Piping example
 
-## Example data
+```{r}
+#| echo: true
+seq(from = 0, to = 1, by = 0.01) |>  # time steps of evaluation
+  random_walk() |>                   # simulate random walk
+  plot(type = "l",                   # plot
+       xlab = "Time",
+       ylab = "Value")                   
+```
 
-![](../figs/scenarioA_chronostrat.jpg)
-
-:::aside
-Hohmann et al. 2024: Identifying the mode of evolution in incomplete carbonate successions
+::: {.notes}
+More than one pipe can be combined. This allows to build more elaborate pipeline
+we make heavy use of these pipelines
 :::
+
 
 ## Tasks ADMs and incompleteness (45 min)
 
-1. Define age-depth models for different locations along the onshore-offshore gradient, and plot them.  
-How do they connect to the chronostratigraphic diagram and the sea level curve shown in the introduction?
+1. Define age-depth models for different locations along the onshore-offshore gradient, and plot them. 
+    * How do they connect to the chronostratigraphic diagram and the sea level curve?
 2. Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.
 3. Generate histograms of hiatus durations at the different distances from shore.  
-Do you see any systematic changes?
+    * Do you see any systematic changes?
+
+::: {.notes}
+These task (incl. the basin transect and Wheeler diagram) are in the material we send to you.  
+Includes template code and cheat sheets
+Go through the tasks, ask us any questions
+In 40 mins we discuss the results
+Participants presents
+Then 15 mins break
+:::
+
+## Results
 
 ## Break (15 min)
+
+## Trait evolution
+
+Traits are measurable characteristics of an organism  
+How do traits evolve in a lineage?
+
+## Modes of evolution
+
+* **Stasis** - no net change
+
+* **Random walk** - random accumulation of change
+
+* **Ornstein-Uhlenbeck (OU) process** - convergence towards an optimum
+
+## Question
+
+* How do stratigraphic biases change our perception of the mode of evolution?
+
+::: {.aside}
+See @hohmann_identification_2024 for a detailed study
+:::
 
 ## Tasks trait evolution (45 min)
 
 1.  Plot the different modes of evolution in the time domain.  
-What is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times), and which modes can be mistaken for each other?
+
+    * What is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times)?  
+    * What is the biological meaning of the model parameters?
+
 2.  Transform the different modes of evolution into the stratigraphic domain and plot them.  
-Which modes are most affected by stratigraphic biases? Which are not affected? Do you see any systematic biases along the onshore/offshore gradient or with stratigraphic (in)completeness?
+    * Which modes are most/least affected by stratigraphic biases?  
+    * Do you see any systematic changes?
+
+::: {.notes}
+These task are in the material we send to you.  
+Includes template code and cheat sheets
+Keep the stratigraphic context in mind (Wheeler diagram, basin transect)
+Go through the tasks, ask us any questions
+In 40 mins we discuss the results
+Participants presents
+Then 15 mins break
+:::
+
+## Results
 
 ## Break (15 min)
 
-## Tasks data (45 min)
+## Niche modeling and last occurrences
 
-### Niche modeling
+* Taxa track their preferred niche
 
-1.  Simulate an abundant taxon, and transform the fossil ages into the stratigraphic domain. At which locations and stratigraphic heights do you observe peaks in fossil abundance? With which stratigraphic effects are these peaks associated?
-2.  Define a niche for a taxon, and add the niche model to your pipeline. How and why do your results change? How could you misinterpret the results?
+* Environmental conditions at a place change with time
 
-### Tasks last occurrences
+## Questions
 
-1.  Simulate last occurrences based on the assumption of a constant rate of last occurrences  and transform them into the stratigraphic domain. Where do you observe clusters of last occurrences? With what stratigraphic effects are these locations associated? How would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a "stratigraphic null hypothesis" for clusters of last occurrences.
+* How does ecology change fossil abundance?
+
+* How does stratigraphy influence extinction rate estimates?
+
+## Tasks ecology and last occurrences (45 min) {.smaller}
+
+### Ecology
+
+1.  Simulate an abundant taxon, and transform the fossil ages into the stratigraphic domain.  
+    * At which locations and stratigraphic heights do you observe peaks in fossil abundance?  
+    * With which stratigraphic effects are these peaks associated?
+2.  Define a niche for a taxon, and add the niche model to your pipeline.  
+    * How and why do your results change?
+    * How could you misinterpret the results?
+
+## Tasks ecology and last occurrences (45 min) {.smaller}
+
+### Last occurrences
+
+3.  Simulate last occurrences based on the assumption of a constant rate of last occurrences  and transform them into the stratigraphic domain.  
+    * Where do you observe clusters of last occurrences?  
+    * With what stratigraphic effects are these locations associated?  
+    * How would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a "stratigraphic null hypothesis" for clusters of last occurrences.
+    
+## Results
 
 ## Advanced usage
 
 * Other forward models
 * Other biological models (niches, trait evolution)
+* Other data structures (phylogenetic trees)
+
+Contributors welcome!
+
+## References
 

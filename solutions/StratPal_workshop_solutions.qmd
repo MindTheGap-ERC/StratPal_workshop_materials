@@ -6,6 +6,8 @@ format:
     toc-depth: 3
     embed-resources: true
 bibliography: ../refs/refs.bib
+author: 
+  - Niklas Hohmann
 ---
 
 This document contains the *solutions* for the tasks of the workshop *Building Models for Stratigraphic Paleobiology in R*.

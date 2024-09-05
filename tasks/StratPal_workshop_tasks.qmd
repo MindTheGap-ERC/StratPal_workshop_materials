@@ -5,6 +5,8 @@ format:
     toc: true
     toc-depth: 3
     embed-resources: true
+author: 
+  - Niklas Hohmann
 ---
 
 This document contains the *tasks* and the *coding cheat sheets* for the workshop *Building Models for Stratigraphic Paleobiology in R*.
