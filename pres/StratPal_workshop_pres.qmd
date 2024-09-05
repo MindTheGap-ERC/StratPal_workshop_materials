@@ -33,7 +33,7 @@ From @patzkowsky2019stratigraphic
 
 Combine models of stratigraphy with evolutionary biology and ecology into stratigraphic paleobiology modeling pipeline
 
-Focus:  
+**Focus:**  
 
 1. Age-depth models and incompleteness
 
@@ -57,6 +57,7 @@ data simulated using CarboCAT [@burgess_2013;@burgess_2023], figure modified fro
 ## Age-depth models (ADMs)
 
 ```{r}
+set.seed(13)
 library("admtools")
 library("StratPal")
 pos = "2km"  # distance from shore
@@ -108,7 +109,8 @@ seq(from = 0, to = 1, by = 0.01) |>  # time steps of evaluation
   random_walk() |>                   # simulate random walk
   plot(type = "l",                   # plot
        xlab = "Time",
-       ylab = "Value")                   
+       ylab = "Value",
+       lwd = 2)                   
 ```
 
 ::: {.notes}
@@ -117,7 +119,7 @@ we make heavy use of these pipelines
 :::
 
 
-## Tasks ADMs and incompleteness (45 min)
+## Tasks ADMs and incompleteness (45 min) {.smaller}
 
 1. Define age-depth models for different locations along the onshore-offshore gradient, and plot them. 
     * How do they connect to the chronostratigraphic diagram and the sea level curve?
@@ -159,7 +161,7 @@ How do traits evolve in a lineage?
 See @hohmann_identification_2024 for a detailed study
 :::
 
-## Tasks trait evolution (45 min)
+## Tasks trait evolution (45 min) {.smaller}
 
 1.  Plot the different modes of evolution in the time domain.  
 
