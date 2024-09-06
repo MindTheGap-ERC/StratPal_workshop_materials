@@ -31,7 +31,7 @@ From @patzkowsky2012stratigraphic
 
 ## Aims
 
-Combine models of stratigraphy with evolutionary biology and ecology into stratigraphic paleobiology modeling pipeline
+Combine models of stratigraphy with evolutionary biology and ecology into stratigraphic paleobiology modeling pipelines
 
 **Focus:**  
 
@@ -105,9 +105,9 @@ less intermediate variables
 
 ```{r}
 #| echo: true
-seq(from = 0, to = 1, by = 0.01) |>  # time steps of evaluation
+seq(from = 0, to = 1, by = 0.01) |>  # fix time steps of evaluation
   random_walk() |>                   # simulate random walk
-  plot(type = "l",                   # plot
+  plot(type = "l",                   # plot results
        xlab = "Time",
        ylab = "Value",
        lwd = 2)                   
