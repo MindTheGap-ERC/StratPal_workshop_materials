@@ -21,6 +21,10 @@ This practical is an introduction to age-depth models.
 2.  Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.
 3.  Generate histograms of hiatus durations at the different distances from shore. Do you see any systematic changes?
 
+### Basin transect and chronostratigraphic diagram
+
+![](../figs/ScenarioA.png)
+
 ### Coding cheat sheet
 
 #### Loading the package and data

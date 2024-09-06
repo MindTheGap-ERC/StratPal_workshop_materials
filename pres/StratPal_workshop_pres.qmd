@@ -26,7 +26,7 @@ StratPal as interdisciplinary science
 ![](../figs/PatzkowskyHolland_5-4.png)
 
 ::: {.aside}
-From @patzkowsky2019stratigraphic
+From @patzkowsky2012stratigraphic
 :::
 
 ## Aims
@@ -45,9 +45,9 @@ Combine models of stratigraphy with evolutionary biology and ecology into strati
 45 mins on each topic working independently, then we will discuss the results together.
 :::
 
-## Example data
+## Example data {.smaller}
 
-![](..figs/scenarioA_transect.jpg)
+![](../figs/ScenarioA.png)
 
 :::aside
 data simulated using CarboCAT [@burgess_2013;@burgess_2023], figure modified from @hohmann_identification_2024
