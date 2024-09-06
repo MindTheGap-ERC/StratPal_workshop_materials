@@ -32,7 +32,7 @@ Copyright 2023-2024 Netherlands eScience Center and Utrecht University
 
 ## License
 
-Apache 2.0 License, see LICENSE file for license text.
+Code in this repository is published under an Apache 2.0 License, see LICENSE file for full license text. All text and figures (with the exception of the figure taken from Patzkowsky and Holland (2012)) are published under a [CC-BY 4.0 License](https://creativecommons.org/licenses/by/4.0/deed.en).
 
 ## Repository structure
 
