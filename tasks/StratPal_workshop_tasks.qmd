@@ -13,17 +13,17 @@ This document contains the *tasks* and the *coding cheat sheets* for the worksho
 
 ## Getting help
 
-To find the documentation of a function, prepend its name with a question mark and execute it in the console (e.g., `?random_walk`). The help pages are also available on the package webpage (https://mindthegap-erc.github.io/StratPal/) under "Reference".  
+To find the documentation of a function, prepend its name with a question mark and execute it in the console (e.g., `?random_walk`). The help pages are also available on the package webpage ([mindthegap-erc.github.io/StratPal/](https://mindthegap-erc.github.io/StratPal/)) under "Reference".  
 Long form documentation (vignettes) can be found on the webpage under "Articles" or via `browseVignettes("StratPal")`.
 
 ## Practical 1: Age-depth models and incompleteness (45 min)
 
-This practical is an introduction to age-depth models.
+This practical is an introduction to age-depth models and stratigraphic (in)completeness.
 
 ### Tasks
 
 1. Define age-depth models for different locations along the onshore-offshore gradient, and plot them. 
-    * How do they connect to the chronostratigraphic diagram and the sea level curve?
+    * How do they connect to the chronostratigraphic diagram and the sea level curve shows below?
 2. Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.
 3. Generate histograms of hiatus durations at the different distances from shore.  
     * Do you see any systematic changes?
@@ -58,11 +58,11 @@ adm = tp_to_adm(t = scenarioA$t_myr,        # construct age-depth model
                 L_unit = "m")
 ```
 
-Note that we immediately add time and length units to avoid downstream confusion.
+Note that we immediately add time and length units to avoid downstream confusion. The example data contains model outputs at 2, 4, 6, 8, 10, and 12 km from shore.
 
 #### Plotting Age-depth models
 
-age-depth models can be plotted using the standard `plot` command:
+Age-depth models can be plotted using the standard `plot` command:
 
 ```{r}
 plot(adm,           # Plot age-depth model
@@ -77,7 +77,7 @@ See `?plot.adm` for more plotting options.
 
 #### Extracting information from age-depth models
 
-age-depth models contain a lot of stratigraphic information, e.g. on stratigraphic completeness, hiatuses, or sedimentation rates. Some basic functionality is:
+Age-depth models contain a lot of stratigraphic information, e.g. on stratigraphic completeness, hiatuses, or sedimentation rates. Some basic functionality to extract this information is:
 
 ```{r}
 get_total_duration(adm)  # time interval covered by age-depth model
@@ -156,6 +156,8 @@ seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where
        type = "l",
        orientation = "lr") 
 ```
+
+This will transform your simulations from the time domain into the stratigraphic domain.
 
 ## Practical 3: Niche modeling and last occurrences (45 min)
 
