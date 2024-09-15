@@ -4,6 +4,7 @@ autor: Niklas Hohmann, Xianyi Liu, Emilia Jarochowska
 format: 
   revealjs:
     embed-resources: true
+    incremental: true
 title-slide-attributes: 
   data-notes: introduce speakers, this is the first time we hold this workshop - we want to improve, please give us feedback. 3.5 h workshop with three breaks
 bibliography: ../refs/refs.bib
@@ -14,14 +15,18 @@ bibliography: ../refs/refs.bib
 The fossil record is a joint expression of 
 
 * Stratigraphy
-* Taphonomy
+* Preservation
 * Biology (ecology & evolution)
 
 ::: {.notes}
 StratPal as interdisciplinary science
 :::
 
-## Example
+## Example: evolution in the time domain {.smaller}
+
+![](../figs/evolution.png)
+
+## Example: evolution in the stratigraphic domain {.smaller}
 
 ![](../figs/PatzkowskyHolland_5-4.png)
 
