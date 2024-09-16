@@ -115,6 +115,8 @@ Note the disconnect between the number of hiatuses and incompleteness: Onshore s
 
 ## Practical 2: Trait evolution
 
+You can also explore this topic interactively using [DarwinCAT](https://stratigraphicpaleobiology.shinyapps.io/DarwinCAT/).
+
 ### Task 1
 
 1.  Plot the different modes of evolution in the time domain.  
