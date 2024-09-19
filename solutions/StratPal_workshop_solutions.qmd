@@ -26,7 +26,6 @@ Question:
 ```{r}
 # load packages
 library("admtools")
-library("StratPal")
 # define age-depth models
 adm_list = list()                                     # storage for age-depth models
 dist = paste(seq(2, 12, by = 2), "km", sep = "")      # distances from shore
