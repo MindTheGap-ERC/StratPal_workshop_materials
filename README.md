@@ -1,5 +1,7 @@
 # StratPal_workshop_materials
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13769443.svg)](https://doi.org/10.5281/zenodo.13769443)
+
 Workshop materials for modeling pipelines in stratigraphic paleobiology using the StratPal package
 
 ## Introduction
@@ -55,6 +57,12 @@ This repository uses material from
 The figure `figs/PatzkowskyHolland_5-4.png` is from
 
 -   Patzkowsky, Mark E., and Steven M. Holland. 2019. "Stratigraphic paleobiology: understanding the distribution of fossil taxa in time and space." University of Chicago Press.
+
+## Citation
+
+To cite these materials, please use 
+
+* Hohmann, N., Liu, X., & Jarochowska, E. (2024). Materials for workshop on building modeling pipelines in stratigraphic paleobiology (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.13769443
 
 ## Funding information
 

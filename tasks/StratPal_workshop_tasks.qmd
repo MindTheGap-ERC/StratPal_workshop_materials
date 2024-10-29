@@ -151,7 +151,7 @@ temp_res = 0.001                                              # temporal resolut
 seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where the trait evolution is simulated
   random_walk(sigma = 1, mu = 3, y0 = 0) |>                   # simulate trait evolution
   time_to_strat(adm, destructive = FALSE) |>                  # transform into stratigraphic domain
-  plot(xlab = paste0("Stratigraphic position [",get_T_unit(adm),"]"), # plot
+  plot(xlab = paste0("Stratigraphic position [",get_L_unit(adm),"]"), # plot
        ylab = "Trait value",
        type = "l",
        orientation = "lr") 
