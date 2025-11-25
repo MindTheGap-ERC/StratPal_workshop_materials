@@ -1,0 +1,268 @@
+[
+  {
+    "objectID": "tasks/StratPal_workshop_tasks.html",
+    "href": "tasks/StratPal_workshop_tasks.html",
+    "title": "Building Models for Stratigraphic Paleobiology in R: Workshop Materials and Cheat Sheets",
+    "section": "",
+    "text": "This document contains the tasks and the coding cheat sheets for the workshop Building Models for Stratigraphic Paleobiology in R."
+  },
+  {
+    "objectID": "tasks/StratPal_workshop_tasks.html#getting-help",
+    "href": "tasks/StratPal_workshop_tasks.html#getting-help",
+    "title": "Building Models for Stratigraphic Paleobiology in R: Workshop Materials and Cheat Sheets",
+    "section": "Getting help",
+    "text": "Getting help\nTo find the documentation of a function, prepend its name with a question mark and execute it in the console (e.g., ?random_walk). The help pages are also available on the package webpage (mindthegap-erc.github.io/StratPal/) under “Reference”.\nLong form documentation (vignettes) can be found on the webpage under “Articles” or via browseVignettes(\"StratPal\")."
+  },
+  {
+    "objectID": "tasks/StratPal_workshop_tasks.html#practical-1-age-depth-models-and-incompleteness-45-min",
+    "href": "tasks/StratPal_workshop_tasks.html#practical-1-age-depth-models-and-incompleteness-45-min",
+    "title": "Building Models for Stratigraphic Paleobiology in R: Workshop Materials and Cheat Sheets",
+    "section": "Practical 1: Age-depth models and incompleteness (45 min)",
+    "text": "Practical 1: Age-depth models and incompleteness (45 min)\nThis practical is an introduction to age-depth models and stratigraphic (in)completeness.\n\nTasks\n\nDefine age-depth models for different locations along the onshore-offshore gradient, and plot them.\n\nHow do they connect to the chronostratigraphic diagram and the sea level curve shows below?\n\nExamine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.\nGenerate histograms of hiatus durations at the different distances from shore.\n\nDo you see any systematic changes?\n\n\n\n\nBasin transect and chronostratigraphic diagram\n\n\n\nCoding cheat sheet\n\nLoading the package and data\nLoad the StratPal and admtools packages via\n\nlibrary(\"StratPal\")\nlibrary(\"admtools\")\n\nto have all required functionality and example data available. We use the example data stored in the scenarioA variable that comes with the StratPal package. You can find more details on the data using ?scenarioA.\n\n\nCreating age-depth models\nAge-depth models are constructed using tp_to_adm (tie point to age-depth model) from the admtools package. Here we construct the age-depth model 2 km from shore by passing the function the vectors of times and heights at that stratigraphic position:\n\npos = \"2km\"                                 # distance from shore\nadm = tp_to_adm(t = scenarioA$t_myr,        # construct age-depth model\n                h = scenarioA$h_m[,pos],\n                T_unit = \"Myr\",\n                L_unit = \"m\")\n\nNote that we immediately add time and length units to avoid downstream confusion. The example data contains model outputs at 2, 4, 6, 8, 10, and 12 km from shore.\n\n\nPlotting Age-depth models\nAge-depth models can be plotted using the standard plot command:\n\nplot(adm,           # Plot age-depth model\n     lwd_acc = 2,   # plot thicker lines for intervals with sediment accumulation (lwd = line width)\n     lty_destr = 0) # don't plot destructive intervals/gaps (lty = line type)\nT_axis_lab()        # add time axis label\nL_axis_lab()        # add length axis label\ntitle(\"Age-depth model 2 km from shore\")\n\n\n\n\n\n\n\n\nSee ?plot.adm for more plotting options.\n\n\nExtracting information from age-depth models\nAge-depth models contain a lot of stratigraphic information, e.g. on stratigraphic completeness, hiatuses, or sedimentation rates. Some basic functionality to extract this information is:\n\nget_total_duration(adm)  # time interval covered by age-depth model\n\n[1] 1.999\n\nget_total_thickness(adm) # sediment accumulated \n\n[1] 145.9416\n\nget_completeness(adm)    # stratigraphic completeness\n\n[1] 0.3261631\n\nget_hiat_duration(adm)   # extract hiatus durations\n\n [1] 0.001 0.031 0.054 0.513 0.042 0.041 0.055 0.061 0.511 0.038\n\nsummary(adm)             # some summary statistics\n\nage-depth model \nTotal duration: 1.999 Myr\nTotal thickness: 145.9416 m\nStratigraphic completeness: 32.61631 % \n10 hiatus(es)\n\n\nYou can find a comprehensive list of functions that extract information from age-depth models here.\n\n\nPiping\nFor the modeling pipelines, we make extensive use of the pipe operator |&gt; that is available in base R from version 4.2 onwards. You can read |&gt; as “take what is on the left side of |&gt; and use it as first argument on the right side of |&gt;”. For example, to plot a histogram of hiatus durations, use\n\nadm |&gt;                                                            # take age-depth model\n  get_hiat_duration() |&gt;                                          # extract hiatus durations\n  hist(xlab = paste(\"Hiatus duration\", \"[\", get_T_unit(adm),\"]\"), # make histogram\n       main = \"Distribution of hiatus duration 2 km from shore\")\n\n\n\n\n\n\n\n\nSimilarly, you can plot age-depth models using\n\nadm |&gt;                # take age-depth model\n  plot(lwd_acc = 2,   # hand it to `plot`\n       lty_destr = 0)"
+  },
+  {
+    "objectID": "tasks/StratPal_workshop_tasks.html#practical-2-trait-evolution-45-min",
+    "href": "tasks/StratPal_workshop_tasks.html#practical-2-trait-evolution-45-min",
+    "title": "Building Models for Stratigraphic Paleobiology in R: Workshop Materials and Cheat Sheets",
+    "section": "Practical 2: Trait evolution (45 min)",
+    "text": "Practical 2: Trait evolution (45 min)\nThis practical explores how trait evolution is influenced by stratigraphic architectures.\n\nTasks\n\nPlot the different modes of evolution in the time domain.\n\nWhat is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times)?\n\nWhat is the biological meaning of the model parameters?\n\nTransform the different modes of evolution into the stratigraphic domain and plot them.\n\nWhich modes are most/least affected by stratigraphic biases?\n\nDo you see any systematic changes?\n\n\n\n\nCoding cheat sheet\n\nModes of evolution in the time domain\nThere are three different modes of evolution implemented in the StratPal package: stasis, random_walk, and ornstein_uhlenbeck. You can plot them using piping via\n\ntemp_res = 0.001                                              # temporal resolution in Myr\nseq(min_time(adm), max_time(adm), by = temp_res) |&gt;           # time steps where the trait evolution is simulated\n  random_walk(sigma = 1, mu = 0, y0 = 0) |&gt;                   # simulate trait evolution\n  plot(xlab = paste0(\"Time [\",get_T_unit(adm),\"]\"),           # plot\n       ylab = \"Trait value\",\n       type = \"l\") \n\n\n\n\n\n\n\n\nTo plot other modes, replace random_walk by one of the other modes (stasis or ornstein_uhlenbeck).\n\n\nTransforming trait evolution into the stratigraphic domain\nTo transform trait evolution into the stratigraphic domain, insert time_to_strat with the age-depth model of your choice into your pipeline:\n\ntemp_res = 0.001                                              # temporal resolution in Myr\nseq(min_time(adm), max_time(adm), by = temp_res) |&gt;           # time steps where the trait evolution is simulated\n  random_walk(sigma = 1, mu = 3, y0 = 0) |&gt;                   # simulate trait evolution\n  time_to_strat(adm, destructive = FALSE) |&gt;                  # transform into stratigraphic domain\n  plot(xlab = paste0(\"Stratigraphic position [\",get_L_unit(adm),\"]\"), # plot\n       ylab = \"Trait value\",\n       type = \"l\",\n       orientation = \"lr\") \n\n\n\n\n\n\n\n\nThis will transform your simulations from the time domain into the stratigraphic domain."
+  },
+  {
+    "objectID": "tasks/StratPal_workshop_tasks.html#practical-3-niche-modeling-and-last-occurrences-45-min",
+    "href": "tasks/StratPal_workshop_tasks.html#practical-3-niche-modeling-and-last-occurrences-45-min",
+    "title": "Building Models for Stratigraphic Paleobiology in R: Workshop Materials and Cheat Sheets",
+    "section": "Practical 3: Niche modeling and last occurrences (45 min)",
+    "text": "Practical 3: Niche modeling and last occurrences (45 min)\nIn this practical, we explore niche models, and how you can build your own mass extinction (BYOME) using stratigraphic paleobiology.\n\nTasks niche modeling\n\nSimulate an abundant taxon, and transform the fossil ages into the stratigraphic domain.\n\nAt which locations and stratigraphic heights do you observe peaks in fossil abundance?\n\nWith which stratigraphic effects are these peaks associated?\n\nDefine a niche for a taxon, and add the niche model to your pipeline.\n\nHow and why do your results change?\nHow could you misinterpret the results?\n\n\n\n\nTasks last occurrences\n\nSimulate last occurrences based on the assumption of a constant rate of last occurrences and transform them into the stratigraphic domain.\n\nWhere do you observe clusters of last occurrences?\n\nWith what stratigraphic effects are these locations associated?\n\nHow would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a “stratigraphic null hypothesis” for clusters of last occurrences.\n\n\n\n\nCoding cheat sheet\n\nSimulating fossil occurrences\nFossil locations or ages can be simulated using the p3 function if the rate of fossil occurrences is constant:\n\nrate = 300                           # 300 fossils per Myr\np3(rate = rate, from = 0, to = 1) |&gt; \n  hist(main = \"Fossil abundance\",\n       xlab = \"Time [Myr]\",\n       ylab = \"# Specimens\")\n\n\n\n\n\n\n\n\nFor time-variable rates see p3_var_rate.\n\n\nTransforming fossil occurrences to the stratigraphic domain\nYou can transform fossil ages directly using time_to_strat:\n\nfoss_per_myr = 300                                                           # fossils per Myr\np3(rate = foss_per_myr, from = min_time(adm), to = max_time(adm)) |&gt;         # constant rate in time domain\n  time_to_strat(adm, destructive = TRUE) |&gt;                                  # transform into depth domain\n  hist(xlab = paste0(\"Stratigraphic height [\",get_L_unit(adm),\"]\"),          # plot\n       main = \"Fossil abundance 2 km offshore\",\n       ylab = \"# Fossils\",\n       breaks = seq(from = min_height(adm), to = max_height(adm), length.out = 20))\n\n\n\n\n\n\n\n\nNote the option destructive = TRUE for time_to_strat. It makes sure fossils that coincide with hiatuses are destroyed.\n\n\nDefine niche models\nYou can define simple niche models with the functions snp_niche or bounded_niche:\n\nmy_niche = snd_niche(opt = 10,       # preferred water depth \n                     tol = 5,        # tolerance to water depth fluctuations\n                     cutoff_val = 0) # cut off negative values - the taxon does not survive on land\n\nTo visualize the niche you can plot it using the following code:\n\nmax_wd = 60                                     # maximum water depth\nx = seq(-2, max_wd, by = 0.1)\nplot(x, my_niche(x),\n     type = \"l\",\n     xlab = \"Water depth [m]\",\n     ylab = \"Collection probability\",\n     main = \"Collection probability of taxon\")\n\n\n\n\n\n\n\n\n\n\nApply niche models\nTo apply a niche model, we need two components: A niche definition that specifies the niche of a taxon along a cline (water depth in this example - this is the function we defined above), and a function that describes how the cline changes with time.\nTo define a function that returns the water depth with time, you can use the following code:\n\npos = \"2km\"                 # position in the platform we want water depth from\nt = scenarioA$t_myr         # time steps where water depth is determined by the model\nwd = scenarioA$wd_m[,pos]   # water depth 2 km from shore\ngc = approxfun(t, wd)       # use linear interpolation between known water depths\n\nYou can visualize this function using the following code:\n\nplot(x = t,\n     y = gc(t), \n     type = \"l\", \n     xlab = \"Time [Myr]\",\n     ylab = \"Water depth [m]\",\n     main = \"Water depth 2 km offshore\")\n\n\n\n\n\n\n\n\nWith both components (niche definition and cline change with time) defined, you can insert the niche model into the modeling pipeline via the function apply_niche:\n\np3(rate = foss_per_myr, from = min_time(adm), to = max_time(adm)) |&gt;         # model occurrences based on constant rate\n  apply_niche(niche_def = my_niche, gc = gc) |&gt;                              # apply niche model\n  time_to_strat(adm, destructive = TRUE) |&gt;                                  # transform into strat. domain, destroy fossils that coincide with hiatuses \n  hist(xlab = paste0(\"Stratigraphic height [\",get_L_unit(adm) ,\"]\"),         # plot results\n       main = \"Fossil abundance 2 km from shore\",\n       ylab = \"# Fossils\",\n       breaks = seq(from = min_height(adm), to = max_height(adm), length.out = 40))\n\n\n\n\n\n\n\n\n\n\nSimulating and transforming last occurrences\nTiming of last occurrences can be simulated using p3 or p3_var_rate just as fossil occurrence (or any other type of “event” data). They can be transformed using time_to_strat:\n\nrolo = 100                                                               # rate of last occurrences [per Myr]\np3(rate = rolo, from = min_time(adm), to = max_time(adm)) |&gt;             # constant rate of last occ\n  time_to_strat(adm, destructive = FALSE) |&gt;                             # non-destructive transformation!\n  hist(xlab = paste0(\"Stratigraphic height [\",get_L_unit(adm),\"]\"),      # plot histogram\n       main = \"Last occurrences 2 km offshore\",\n       ylab = \"# Last occurrences\",\n       breaks = seq(from = min_height(adm), to = max_height(adm), length.out = 20))\n\n\n\n\n\n\n\n\nNote that we use the option destructive = FALSE in time_to_strat. This is because last occurrences during a hiatus will appear at the hiatus surface in the stratigraphic domain1."
+  },
+  {
+    "objectID": "tasks/StratPal_workshop_tasks.html#footnotes",
+    "href": "tasks/StratPal_workshop_tasks.html#footnotes",
+    "title": "Building Models for Stratigraphic Paleobiology in R: Workshop Materials and Cheat Sheets",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nWhat implicit assumption have we made here?↩︎"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#stratigraphic-paleobiology",
+    "href": "pres/StratPal_workshop_pres.html#stratigraphic-paleobiology",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Stratigraphic Paleobiology",
+    "text": "Stratigraphic Paleobiology\nThe fossil record is a joint expression of\n\nStratigraphy\nPreservation\nBiology (ecology & evolution)\n\n\nStratPal as interdisciplinary science"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#example-evolution-in-the-time-domain",
+    "href": "pres/StratPal_workshop_pres.html#example-evolution-in-the-time-domain",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Example: evolution in the time domain",
+    "text": "Example: evolution in the time domain"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#example-evolution-in-the-stratigraphic-domain",
+    "href": "pres/StratPal_workshop_pres.html#example-evolution-in-the-stratigraphic-domain",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Example: evolution in the stratigraphic domain",
+    "text": "Example: evolution in the stratigraphic domain\n\n\n\nFrom Patzkowsky and Holland (2012)"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#aims",
+    "href": "pres/StratPal_workshop_pres.html#aims",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Aims",
+    "text": "Aims\nCombine models of stratigraphy with evolutionary biology and ecology into stratigraphic paleobiology modeling pipelines\nFocus:\n\nAge-depth models and incompleteness\nTrait evolution\nFossil abundance, ecology, and last occurrences\n\n\n45 mins on each topic working independently, then we will discuss the results together."
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#example-data",
+    "href": "pres/StratPal_workshop_pres.html#example-data",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Example data",
+    "text": "Example data\n\n\n\ndata simulated using CarboCAT (Burgess 2013, 2023), figure modified from Hohmann et al. (2024)"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#age-depth-models-adms",
+    "href": "pres/StratPal_workshop_pres.html#age-depth-models-adms",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Age-depth models (ADMs)",
+    "text": "Age-depth models (ADMs)\n\n\n\nAge-depth models are a key tool in stratigraphy\nThey connect the time domain (x axis) with the stratigraphic domain (y axis).\nallow to determine age of a sample, or predict stratigraphic position of a sample of given age\ncontain more info: empty spaces are hiatuses, slope is sedimentation rate"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#piping",
+    "href": "pres/StratPal_workshop_pres.html#piping",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Piping",
+    "text": "Piping\n\nrnorm(500) |&gt;                          # generate 500 normally distributed random numbers\n  hist(main = \"Normal distribution\")   # plot histogram\n\n\n|&gt; is the pipe operator\nRead the code like text!\n\nWe use piping to create pipelines advantages: you can read the code like text: from top left to bottom right syntactically, |&gt; means: take what is left of |&gt; and use it as first argument on the right side less intermediate variables"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#piping-example",
+    "href": "pres/StratPal_workshop_pres.html#piping-example",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Piping example",
+    "text": "Piping example\n\nseq(from = 0, to = 1, by = 0.01) |&gt;  # fix time steps of evaluation\n  random_walk() |&gt;                   # simulate random walk\n  plot(type = \"l\",                   # plot results\n       xlab = \"Time\",\n       ylab = \"Value\",\n       lwd = 2)                   \n\n\n\nMore than one pipe can be combined. This allows to build more elaborate pipeline we make heavy use of these pipelines"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#tasks-adms-and-incompleteness-45-min",
+    "href": "pres/StratPal_workshop_pres.html#tasks-adms-and-incompleteness-45-min",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Tasks ADMs and incompleteness (45 min)",
+    "text": "Tasks ADMs and incompleteness (45 min)\n\nDefine age-depth models for different locations along the onshore-offshore gradient, and plot them.\n\nHow do they connect to the chronostratigraphic diagram and the sea level curve?\n\nExamine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.\nGenerate histograms of hiatus durations at the different distances from shore.\n\nDo you see any systematic changes?\n\n\n\nThese task (incl. the basin transect and Wheeler diagram) are in the material we send to you.\nIncludes template code and cheat sheets Go through the tasks, ask us any questions In 40 mins we discuss the results Participants presents Then 15 mins break"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#results",
+    "href": "pres/StratPal_workshop_pres.html#results",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Results",
+    "text": "Results"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#break-15-min",
+    "href": "pres/StratPal_workshop_pres.html#break-15-min",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Break (15 min)",
+    "text": "Break (15 min)"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#trait-evolution",
+    "href": "pres/StratPal_workshop_pres.html#trait-evolution",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Trait evolution",
+    "text": "Trait evolution\nTraits are measurable characteristics of an organism\nHow do traits evolve in a lineage?"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#modes-of-evolution",
+    "href": "pres/StratPal_workshop_pres.html#modes-of-evolution",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Modes of evolution",
+    "text": "Modes of evolution\n\nStasis - no net change\nRandom walk - random accumulation of change\nOrnstein-Uhlenbeck (OU) process - convergence towards an optimum"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#question",
+    "href": "pres/StratPal_workshop_pres.html#question",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Question",
+    "text": "Question\n\nHow do stratigraphic biases change our perception of the mode of evolution?\n\n\n\nSee Hohmann et al. (2024) for a detailed study"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#tasks-trait-evolution-45-min",
+    "href": "pres/StratPal_workshop_pres.html#tasks-trait-evolution-45-min",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Tasks trait evolution (45 min)",
+    "text": "Tasks trait evolution (45 min)\n\nPlot the different modes of evolution in the time domain.\n\nWhat is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times)?\n\nWhat is the biological meaning of the model parameters?\n\nTransform the different modes of evolution into the stratigraphic domain and plot them.\n\nWhich modes are most/least affected by stratigraphic biases?\n\nDo you see any systematic changes?\n\n\n\nThese task are in the material we send to you.\nIncludes template code and cheat sheets Keep the stratigraphic context in mind (Wheeler diagram, basin transect) Go through the tasks, ask us any questions In 40 mins we discuss the results Participants presents Then 15 mins break"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#results-1",
+    "href": "pres/StratPal_workshop_pres.html#results-1",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Results",
+    "text": "Results"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#break-15-min-1",
+    "href": "pres/StratPal_workshop_pres.html#break-15-min-1",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Break (15 min)",
+    "text": "Break (15 min)"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#niche-modeling-and-last-occurrences",
+    "href": "pres/StratPal_workshop_pres.html#niche-modeling-and-last-occurrences",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Niche modeling and last occurrences",
+    "text": "Niche modeling and last occurrences\n\nTaxa track their preferred niche\nEnvironmental conditions at a place change with time"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#questions",
+    "href": "pres/StratPal_workshop_pres.html#questions",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Questions",
+    "text": "Questions\n\nHow does ecology change fossil abundance?\nHow does stratigraphy influence extinction rate estimates?"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#tasks-ecology-and-last-occurrences-45-min",
+    "href": "pres/StratPal_workshop_pres.html#tasks-ecology-and-last-occurrences-45-min",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Tasks ecology and last occurrences (45 min)",
+    "text": "Tasks ecology and last occurrences (45 min)\nEcology\n\nSimulate an abundant taxon, and transform the fossil ages into the stratigraphic domain.\n\nAt which locations and stratigraphic heights do you observe peaks in fossil abundance?\n\nWith which stratigraphic effects are these peaks associated?\n\nDefine a niche for a taxon, and add the niche model to your pipeline.\n\nHow and why do your results change?\nHow could you misinterpret the results?"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#tasks-ecology-and-last-occurrences-45-min-1",
+    "href": "pres/StratPal_workshop_pres.html#tasks-ecology-and-last-occurrences-45-min-1",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Tasks ecology and last occurrences (45 min)",
+    "text": "Tasks ecology and last occurrences (45 min)\nLast occurrences\n\nSimulate last occurrences based on the assumption of a constant rate of last occurrences and transform them into the stratigraphic domain.\n\nWhere do you observe clusters of last occurrences?\n\nWith what stratigraphic effects are these locations associated?\n\nHow would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a “stratigraphic null hypothesis” for clusters of last occurrences."
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#results-2",
+    "href": "pres/StratPal_workshop_pres.html#results-2",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Results",
+    "text": "Results"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#advanced-usage",
+    "href": "pres/StratPal_workshop_pres.html#advanced-usage",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Advanced usage",
+    "text": "Advanced usage\n\nOther forward models\nOther biological models (niches, trait evolution)\nOther data structures (phylogenetic trees)\n\nContributors welcome!"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#references",
+    "href": "pres/StratPal_workshop_pres.html#references",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "References",
+    "text": "References\n\n\n\n\nBurgess, Peter. 2013. “CarboCAT: A Cellular Automata Model of Heterogeneous Carbonate Strata.” Computers & Geosciences 53: 129–40. https://doi.org/https://doi.org/10.1016/j.cageo.2011.08.026.\n\n\n———. 2023. “CarboCATLite.” Zenodo. https://doi.org/10.5281/zenodo.8402578.\n\n\nHohmann, Niklas, Joël R. Koelewijn, Peter Burgess, and Emilia Jarochowska. 2024. “Identification of the Mode of Evolution in Incomplete Carbonate Successions.” BMC Ecology and Evolution 24 (1): 113. https://doi.org/10.1186/s12862-024-02287-2.\n\n\nPatzkowsky, Mark E, and Steven M Holland. 2012. Stratigraphic Paleobiology: Understanding the Distribution of Fossil Taxa in Time and Space. University of Chicago Press."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Untitled",
+    "section": "",
+    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org. Hohmann et al. (2024)"
+  },
+  {
+    "objectID": "index.html#quarto",
+    "href": "index.html#quarto",
+    "title": "Untitled",
+    "section": "",
+    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org. Hohmann et al. (2024)"
+  },
+  {
+    "objectID": "index.html#running-code",
+    "href": "index.html#running-code",
+    "title": "Untitled",
+    "section": "Running Code",
+    "text": "Running Code\nWhen you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n1 + 1\n\n[1] 2\n\n\nYou can add options to executable code like this\n\n\n[1] 4\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
+  },
+  {
+    "objectID": "solutions/StratPal_workshop_solutions.html",
+    "href": "solutions/StratPal_workshop_solutions.html",
+    "title": "Building Models for Stratigraphic Paleobiology in R: Solutions",
+    "section": "",
+    "text": "This document contains the solutions for the tasks of the workshop Building Models for Stratigraphic Paleobiology in R. Both code and explanations are given."
+  },
+  {
+    "objectID": "solutions/StratPal_workshop_solutions.html#practical-1-age-depth-models-and-incompleteness",
+    "href": "solutions/StratPal_workshop_solutions.html#practical-1-age-depth-models-and-incompleteness",
+    "title": "Building Models for Stratigraphic Paleobiology in R: Solutions",
+    "section": "Practical 1: Age-depth models and incompleteness",
+    "text": "Practical 1: Age-depth models and incompleteness\n\nTask 1\nQuestion:\n\nDefine age-depth models for different locations along the onshore-offshore gradient, and plot them.\n\nHow do they connect to the chronostratigraphic diagram and the sea level curve?\n\n\n\n# load packages\nlibrary(\"admtools\")\nlibrary(\"StratPal\")\n# define age-depth models\nadm_list = list()                                     # storage for age-depth models\ndist = paste(seq(2, 12, by = 2), \"km\", sep = \"\")      # distances from shore\nfor (pos in dist){                                    # construct ADMs for all distances\n  adm_list[[pos]] = tp_to_adm(t = scenarioA$t_myr,        \n                             h = scenarioA$h_m[,pos],\n                             T_unit = \"Myr\",\n                             L_unit = \"m\")\n}\n\n\n# plot specific age-depth models\npos = \"2km\"               # insert distance from shore here\nstopifnot(pos %in% dist ) # validity check\n\nplot(adm_list[[pos]],\n     lwd_acc = 2,         # plot thicker lines for intervals with sediment accumulation (lwd = line width)\n     lty_destr = 0)       # don't plot destructive intervals/hiatuses (lty = line type)\nT_axis_lab()              # add time axis label\nL_axis_lab()              # add length axis label\ntitle(paste0(\"Age-depth model \", pos, \" from shore\"))\n\n\n\n\n\n\n\n\nAge-depth model closer to shore are higher (up to 150 m), while those further offshore are shorter (a few 10s of meters). This is because sediment accumulation is much higher on the platform top (2-8 km) compared to the proximal (10 km) and distal (12 km) slope.\nAge-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic (Wheeler) diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous. Times of low sediment accumulation correspond to intervals of low sea level, and are due to lowstand shedding from the platform edge. This generates intervals with sedimentary condensation (low sedimentation rate), expressed by a near-horizontal age-depth model.\n\n\nTask 2\nQuestion:\n2. Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.\n\ninc = rep(NA, length(dist))             # storage for incompleteness\nnhiat = rep(NA, length(dist))           # storage for number of hiatuses\nfor (i in seq_along(dist)){\n  pos = dist[i] # position in platform\n  # determine incompleteness\n  inc[i] = adm_list[[pos]] |&gt; \n    get_incompleteness()\n  # determine no. of hiatuses\n  nhiat[i] = adm_list[[pos]] |&gt;\n    get_hiat_no()\n}\n## Plotting\np = seq(from = 2, to = 12, by = 2)       # dist from shore for plotting\nplot(p, 100 * inc,                       # transform into %\n     xlab = \"Distance from shore [km]\", \n     ylab = \"Incompleteness [%]\", \n     type = \"l\",\n     ylim = c(0, 100))\n\n\n\n\n\n\n\nplot(p, nhiat, \n     xlab = \"Distance from shore [km]\", \n     ylab = \"# Hiatuses\", \n     type = \"l\",\n     ylim = c(0, max(nhiat)))\n\n\n\n\n\n\n\n\nIncompleteness is highest in the onshore sections (more than 60 %), and decreases with distance from shore to values of around 30 % in the proximal slope. Note that this differs from Figure 4 in Hohmann et al. (2024) as we are examining incompleteness on a coarser spatial scale.\nThe number of hiatuses is low on the landwards platform top (approx. 10 hiatuses at 2 - 6 km), with increased values in the fore-reef (8 km). The most hiatuses are 10 km from shore with almost 150 hiatuses, which drops to around 50 in the distal slope.\nThe hiatuses on the platform are generated by long intervals of low sea level, which exposes the platform top. The high number of hiatuses in the proximal slope is generated by a high frequency of depositional events made of transported material from the platform edge. The effect of transported material decreases with distance from the platform edge, thus the decreased number of hiatuses on the distal slope.\n\n\nTask 3\nQuestions:\n\nGenerate histograms of hiatus durations at the different distances from shore.\n\nDo you see any systematic changes?\n\n\n\npos = \"2km\" # position of adm\nstopifnot(pos %in%  dist) # validity check\n\nadm_list[[pos]] |&gt;\n  get_hiat_duration() |&gt;\n  hist(xlab = \"Hiatus duration [Myr]\",\n       main = paste0(\"Hiatus duration \", pos, \" from shore\"))\n\n\n\n\n\n\n\n\nHiatus durations on the platform top are very similar: They consist of two long hiatuses (caused by the prolonged drops in the sea level curve), and a number of shorter hiatuses generated by the lower order sinusoidal sea level changes. At 8 km from shore, the number of short hiatuses increases to more than 30, indicating that sediment accumulation is more interrupted, potentially due to higher wave energy and more sediment transport.\nOn the slope, hiatuses are more abundant, but their duration is much shorter. This is most pronounced for the proximal slope.\nNote the disconnect between the number of hiatuses and incompleteness: Onshore sections are the most incomplete, but have only a few hiatuses. In contrast, the proximal slope has the most hiatuses, but a low incompleteness. This is because hiatus duration in the onshore sections is much longer."
+  },
+  {
+    "objectID": "solutions/StratPal_workshop_solutions.html#practical-2-trait-evolution",
+    "href": "solutions/StratPal_workshop_solutions.html#practical-2-trait-evolution",
+    "title": "Building Models for Stratigraphic Paleobiology in R: Solutions",
+    "section": "Practical 2: Trait evolution",
+    "text": "Practical 2: Trait evolution\nYou can also explore this topic interactively using DarwinCAT.\n\nTask 1\n\nPlot the different modes of evolution in the time domain.\n\nWhat is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times)?\n\nWhat is the biological meaning of the model parameters?\n\n\n\nmin_t = 0       # beginning observation [Myr]\nmax_t = 2       # end observation [Myr]\nt_step = 0.01   # temporal resolution [Myr]\nmean = 1        # model parameter, to modify\nsd = 1          # model parameter, to modify\nseq(from = min_t, to = max_t, by = t_step) |&gt;\n  stasis(mean = mean, sd = sd) |&gt;\n  plot(type = \"l\",\n       xlab = \"Time [Myr]\",\n       ylab = \"Trait value\",\n       main = \"Trait evolution: Stasis\")\n\n\n\n\n\n\n\n\nFor stasis, the mean parameter determines the mean trait value, and the sd (standard deviation) parameter determines the spread of trait values. Trait values at individual times are uncorrelated, so if the temporal resolution is increased, trait evolution appears more irregular.\n\nmin_t = 0      # beginning observation [Myr]\nmax_t = 2      # end observation [Myr]\nt_step = 0.01  # temporal resolution [Myr]\nsigma = 1      # model parameter, to modify\nmu = 1         # model parameter, to modify\ny0 = 1         # model parameter, to modify\nseq(from = min_t, to = max_t, by = t_step) |&gt;\n  random_walk(sigma = sigma, mu = mu, y0 = y0) |&gt;\n  plot(type = \"l\",\n       xlab = \"Time [Myr]\",\n       ylab = \"Trait value\",\n       main = \"Trait evolution: Random walk\")\n\n\n\n\n\n\n\n\nFor the random walk model, the y0 parameter determines the initial trait value. The parameter mu determines the directionality, with positive (negative) values leading to increasing (decreasing) trait values with time. The sigma parameter determines the amount of randomness in the system, with larger values reflecting more randomness. Internal variability is high for larger values of sigma, meaning individual lineages simulated will differ a lot from each other.\nImportant endmembers are: sigma set to 0, trait evolution is purely deterministic and specified by mu and y0. If mu and y0 are set to 0, trait evolution follows an unbiased random walk model. If sigma is set to 1, the model corresponds to a Brownian motion. For low values of sigma and mu, the random walk can be mistaken for stasis.\n\nmin_t = 0      # beginning observation [Myr]\nmax_t = 2      # end observation [Myr]\nt_step = 0.01  # temporal resolution [Myr]\ntheta = 1      # model parameter, to modify\nsigma = 0.1    # model parameter, to modify\nmu = 0         # model parameter, to modify\ny0 = 1         # model parameter, to modify\nseq(from = min_t, to = max_t, by = t_step) |&gt;\n  ornstein_uhlenbeck(mu = mu, theta = theta, sigma = sigma, y0 = y0) |&gt;\n  plot(type = \"l\",\n       xlab = \"Time [Myr]\",\n       ylab = \"Trait value\",\n       main = \"Trait evolution: Ornstein-Uhlenbeck process\")\n\n\n\n\n\n\n\n\nFor the Ornstein-Uhlenbeck (OU) model, the parameter y0 represents the initial trait value. The parameter mu determines the long term mean of the process, theta how fast this mean is approached, and sigma how strong the influence of randomness is. This model is used to model convergence from an initial trait value y0 to an optimum mu under pressure of selection theta and random influences sigma.\nInternal variation is determined by the sigma parameter, where larger values result in greater variation in simulated trait values.\nImportant endmembers of the OU model are:\n\nautocorrelated stasis, when y0 = mu (start in the optimum)\ndirectional evolution when the optimum mu is far away from the initial trait value y0, and selection is present\nrandom walk when selection theta is 0\n\n\n\nTask 2\n\nTransform the different modes of evolution into the stratigraphic domain and plot them.\n\nWhich modes are most/least affected by stratigraphic biases?\n\nDo you see any systematic changes?\n\n\nExample code for the random walk model is provided. This can be expanded by replacing the random walk by stasis or the Ornstein-Uhlenbeck process.\n\npos = \"2km\"              # position on platform\nstopifnot(pos %in% dist) # validity check\nmu = 2                   # model parameters\nsigma = 1                # model parameters\ny0 = 0                   # model paramters\nadm = adm_list[[pos]]    # select age-depth model\nt_step = 0.001           # temporal resolution [Myr]\n## plot trait evolution in the time domain\nseq(from  = min_time(adm), to = max_time(adm), by = t_step) |&gt;\n  random_walk(sigma = sigma, mu = mu, y0 = y0) |&gt;\n  time_to_strat(adm, destructive = FALSE) |&gt;\n  plot(ylab = \"Trait value\",\n       type = \"l\",\n       orientation = \"lr\",\n       xlab = \"Height [m]\",\n       main = paste0(\"Trait evolution \", pos, \" from shore\") )\n\n\n\n\n\n\n\n\nStasis is unaffected by stratigraphic biases. This is because if there is no net change of traits in the time domain, losing parts of the lineage because of hiatuses does not affect the overall pattern.\nFor the random walk and the Ornstein-Uhlenbeck process, the degree of bias depends on the directionality of evolution. The more the traits change over a hiatus or a condensed interval, the more the stratigraphic expression of trait evolution differs from the one in the time domain. As a result, stratigraphic biases are strongest in the random walk model for large mu, and in the Ornstein-Uhlenbeck model for large differences between y0 and mu.\nThe effects are strongest if\n\nThere are long hiatuses or\nThere are long intervals of sedimentary condensation.\n\nAs a result, stratigraphic biases are driven by maximum hiatus duration on the platform top, and driven by sedimentary condensation on the slope (see task on age-depth models). This effect is more pronounced the more directional evolution is."
+  },
+  {
+    "objectID": "solutions/StratPal_workshop_solutions.html#practical-3-niche-modeling-and-last-occurrences",
+    "href": "solutions/StratPal_workshop_solutions.html#practical-3-niche-modeling-and-last-occurrences",
+    "title": "Building Models for Stratigraphic Paleobiology in R: Solutions",
+    "section": "Practical 3: Niche modeling and last occurrences",
+    "text": "Practical 3: Niche modeling and last occurrences\n\nTask 1\n\nSimulate an abundant taxon, and transform the fossil ages into the stratigraphic domain.\n\nAt which locations and stratigraphic heights do you observe peaks in fossil abundance?\n\nWith which stratigraphic effects are these peaks associated?\n\n\n\npos = \"2km\"              # position in the platform, to modify\nstopifnot(pos %in% dist) # validity check\nadm = adm_list[[pos]]    # select ADM\nrate = 200               # fossil occurrences per Myr\nsampl_bin = 2            # sampling bins in m\n# Plot fossil abundance in the section\np3(from = min_time(adm), to = max_time(adm), rate = rate) |&gt;\n  time_to_strat(adm, destructive = TRUE) |&gt;\n  hist(breaks = seq(from = min_height(adm), to = max_height(adm) + sampl_bin, by = sampl_bin),\n       xlab = \"Stratigraphic height [m]\",\n       main = paste0(\"Fossil abundance \", pos, \" from shore\"))\n\n\n\n\n\n\n\n\nIn the slope sections (10 and 12 km), there are peaks in fossil abundance associated with the intervals with stratigraphic condensation, which are coeval to drops in sea level. These peaks are not visible on the platform top. This is because here the sea level drops result in hiatuses, which destroys the fossils (as specified by the option destructive = TRUE).\n\n\nTask 2\n\nDefine a niche for a taxon, and add the niche model to your pipeline.\n\nHow and why do your results change?\nHow could you misinterpret the results?\n\n\n\npos = \"8km\"              # select position on the platform\nstopifnot(pos %in% dist) # check validity\nadm = adm_list[[pos]]    # select age-depth model\nrate = 200               # no. of fossils per Myr\n# define niche\nniche = snd_niche(opt = 20, tol = 10, cutoff_val = 0)\n# plot niche\nmax_wd = 60                    # maximum water depth for plotting\nx = seq(-2, max_wd, by = 0.1)\nplot(x, niche(x),\n     type = \"l\",\n     xlab = \"Water depth [m]\",\n     ylab = \"Collection probability\",\n     main = \"Collection probability of taxon\")\n\n\n\n\n\n\n\n## change in cline with time\nt = scenarioA$t_myr        # time steps where the water depth is determined by the model\nwd = scenarioA$wd_m[,pos]  # water depth at the specified position\nwd_with_time = approxfun(t, wd)\n## Plotting\nplot(x = t,\n     y = wd_with_time(t), \n     type = \"l\", \n     xlab = \"Time [Myr]\",\n     ylab = \"Water depth [m]\",\n     main = paste0(\"Water depth \", pos, \" offshore\"))\n\n\n\n\n\n\n\n## add niche model to pipeline\np3(rate = rate, from = min_time(adm), to = max_time(adm)) |&gt;         # model occurrences based on constant rate\n  apply_niche(niche_def = niche, gc = wd_with_time) |&gt;               # apply niche model\n  time_to_strat(adm, destructive = TRUE) |&gt;                          # transform into strat. domain, destroy fossils that coincide with hiatuses \n  hist(xlab = paste0(\"Stratigraphic height [\",get_L_unit(adm) ,\"]\"), # plot results\n       main = paste0(\"Fossil abundance \", pos, \" from shore\"),\n       ylab = \"# Fossils\",\n       breaks = seq(from = min_height(adm), to = max_height(adm), length.out = 40))\n\n\n\n\n\n\n\n\nDepending on the preferred water depth and tolerance to water depth changes, it can appear as if the taxon goes extinct because fossil abundance drops to 0. However, this is because the taxon tracks its niche, and there is a systematic change in water depth with time.\nFor example, the water depth on the platform decreases with time, as the carbonate production rate outpaces the subsidence. As a result, taxa with low tolerance to shallow water will vanish over time from the platform top. Conversely, the water depth on the slope increase with time. This leads to the local extinction (extirpation) of shallow water taxa on the slope as time progresses. However, this local extinction does not mean that the taxon is extinct, just that the environment at that location became unfavorable for it. Without the ability to examine multiple sections in the samples, this might be mistaken as a true extinction event.\n\n\nTask 3\n\nSimulate last occurrences based on the assumption of a constant rate of last occurrences and transform them into the stratigraphic domain.\n\nWhere do you observe clusters of last occurrences?\n\nWith what stratigraphic effects are these locations associated?\n\nHow would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a “stratigraphic null hypothesis” for clusters of last occurrences.\n\n\n\npos = \"2km\"               # position along the onshore-offshore gradient\nstopifnot(pos %in% dist)  # validity check\nadm = adm_list[[pos]]     # select age-depth model\nrate = 100                # last occurrences per Myr\nbinsize = 2               # size of sampling bins [m]\n\n# Plot last occurrences at the specified position\np3(from = min_time(adm), to = max_time(adm), rate = rate) |&gt;  \n  time_to_strat(adm, destructive = FALSE) |&gt;\n  hist(breaks = seq(from = min_height(adm), to = max_height(adm) + binsize, by = binsize),\n       xlab = \"Height [m]\",\n       main = paste0(\" # Last occurrences \", pos, \" from shore\"))\n\n\n\n\n\n\n\n\nOn the platform, the clusters are associated with prolonged hiatuses, caused by drops in sea level. On the slope, the clusters are associated with intervals of stratigraphic condensation (low sedimentation rate), also caused by drops in sea level.\nIn the absence of stratigraphic information, these clusters could be misinterpreted as extinction intervals, as there is an elevated rate of last occurrences. If information on sea level change is available, this could be misinterpreted as a causal relationship between sea level and extinction rate, where drops in sea level increase extinction rates.\nA stratigraphic null hypothesis might be that times of dropping sea level cause hiatuses (close to shore) and condensation (on the slope), which lead apparent elevated extinction rates."
+  }
+]
