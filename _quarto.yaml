@@ -3,11 +3,20 @@ project:
   output-dir: docs
 
 website:
-  title: "aa"
+  title: "Modeling Stratigraphic Paleobiology in R"
+  page-footer: "Stratigraphic Paleobiology in R"
   navbar:
     left:
       - href: index.qmd
         text: Home
+      - getting_started.qmd
+      - href: strat_architecture.qmd
+        text: Stratigraphic Architectures
+      - trait_evol.qmd
+      - href: event_data.qmd
+        text: Event Data
+      - href: advanced_topics.qmd
+        text: Advanced Topics
       - about.qmd
 
 format:

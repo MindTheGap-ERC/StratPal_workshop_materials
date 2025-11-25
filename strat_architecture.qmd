@@ -1,0 +1,108 @@
+---
+title: "Stratigraphic Architectures and age-depth models"
+format: html
+editor: visual
+bibliography: refs/refs.bib
+---
+
+## Stratigraphic Architectures and Age-Depth Models
+
+This part of the workshop gives a first overview on the stratigraphic architecture used, and will familiarize you with the concepts of age-depth models and (stratigraphic) incompleteness. The duration is approx. 45 minutes.
+
+## Example Stratigraphic Architecture
+
+In this workshop, we use an example stratigraphic architecture simulated using CarboKitten.jl @hidding_2025 that emulates scenario A of @hohmann_identification_2024. Here, we provide a quick overview of the setup. If you are curious you can inspect the source code underlying the simulation [here](https://github.com/MindTheGap-ERC/StratPal_data_prep) (and modify it if you like).
+
+The simulated carbonate platform consists of three carbonate producing factories, one euphotic, one oligophotic, and one aphotic. The production profile of the factories are shown below.
+
+![Production profiles of the three carbonate factories.](figs/platform_production_curve.png)
+
+The tree factories compete for space and propagate according to a cellular automaton as described in @burgess_2013. The simulation was run for 2 Myr in increments of 1 kyr. Platform growth is driven by a sinusoidal sea level curve consisting of third and fifth order sea level changes with a period of 1 and 0.112 Myr and an amplitude of 20 and 2 m, respectively.
+
+```{r, echo=FALSE}
+library(StratPal)
+plot(x = scenarioA$t_myr, 
+     y = scenarioA$sl_m,
+     type = "l",
+     xlab = "Time [Myr]",
+     ylab = "Sea Level [m]",
+     main = "Eustatic Sea Level")
+
+```
+
+![](figs/platform_profile.png)
+
+::: callout-tip
+### Task
+:::
+
+::: {.callout-caution collapse="true"}
+## Solution
+
+This is an example of a 'folded' caution callout that can be expanded by the user. You can use `collapse="true"` to collapse it by default or `collapse="false"` to make a collapsible callout that is expanded by default.
+:::
+
+### Coding cheat sheet
+
+#### Loading the package and data
+
+Load the `StratPal` and `admtools` packages via
+
+```{r}
+library("StratPal")
+library("admtools")
+
+```
+
+to have all required functionality and example data available. We use the example data stored in the `scenarioA` variable that comes with the `StratPal` package. You can find more details on the data using `?scenarioA`.
+
+#### Creating age-depth models
+
+Age-depth models are constructed using `tp_to_adm` (tie point to age-depth model) from the `admtools` package. Here we construct the age-depth model 2 km from shore by passing the function the vectors of times and heights at that stratigraphic position:
+
+```{r}
+pos = "2km"                                 # distance from shore
+adm = tp_to_adm(t = scenarioA$t_myr,        # construct age-depth model
+                h = scenarioA$h_m[,pos],
+                T_unit = "Myr",
+                L_unit = "m")
+```
+
+Note that we immediately add time and length units to avoid downstream confusion. The example data contains model outputs at 2, 4, 6, 8, 10, and 12 km from shore.
+
+#### Plotting Age-depth models
+
+Age-depth models can be plotted using the standard `plot` command:
+
+```{r}
+plot(adm,           # Plot age-depth model
+     lwd_acc = 2,   # plot thicker lines for intervals with sediment accumulation (lwd = line width)
+     lty_destr = 0) # don't plot destructive intervals/gaps (lty = line type)
+T_axis_lab()        # add time axis label
+L_axis_lab()        # add length axis label
+title("Age-depth model 2 km from shore")
+```
+
+See `?plot.adm` for more plotting options.
+
+#### Extracting information from age-depth models
+
+Age-depth models contain a lot of stratigraphic information, e.g. on stratigraphic completeness, hiatuses, or sedimentation rates. Some basic functionality to extract this information is:
+
+```{r}
+get_total_duration(adm)  # time interval covered by age-depth model
+get_total_thickness(adm) # sediment accumulated 
+get_completeness(adm)    # stratigraphic completeness
+get_hiat_duration(adm)   # extract hiatus durations
+summary(adm)             # some summary statistics
+```
+
+You can find a comprehensive list of functions that extract information from age-depth models [here](https://mindthegap-erc.github.io/admtools/articles/admtools_doc.html#s3-class-adm).
+
+### Tasks
+
+1.  Define age-depth models for different locations along the onshore-offshore gradient, and plot them.
+    -   How do they connect to the chronostratigraphic diagram and the sea level curve shows below?
+2.  Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.
+3.  Generate histograms of hiatus durations at the different distances from shore.
+    -   Do you see any systematic changes?

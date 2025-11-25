@@ -1,0 +1,140 @@
+---
+title: "Event Data and Niche Modeling"
+format: html
+editor: visual
+---
+
+## 
+
+## Practical 3: Niche modeling and last occurrences (45 min)
+
+In this practical, we explore niche models, and how you can build your own mass extinction (BYOME) using stratigraphic paleobiology.
+
+### Tasks niche modeling
+
+1.  Simulate an abundant taxon, and transform the fossil ages into the stratigraphic domain.
+    -   At which locations and stratigraphic heights do you observe peaks in fossil abundance?\
+    -   With which stratigraphic effects are these peaks associated?
+2.  Define a niche for a taxon, and add the niche model to your pipeline.
+    -   How and why do your results change?
+    -   How could you misinterpret the results?
+
+### Tasks last occurrences
+
+3.  Simulate last occurrences based on the assumption of a constant rate of last occurrences and transform them into the stratigraphic domain.
+    -   Where do you observe clusters of last occurrences?\
+    -   With what stratigraphic effects are these locations associated?\
+    -   How would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a "stratigraphic null hypothesis" for clusters of last occurrences.
+
+### Coding cheat sheet
+
+#### Simulating fossil occurrences
+
+Fossil locations or ages can be simulated using the `p3` function if the rate of fossil occurrences is constant:
+
+```{r}
+library(StratPal)
+library(admtools)
+pos = "2km"
+adm = tp_to_adm(t = scenarioA$t_myr,        
+                             h = scenarioA$h_m[,pos],
+                             T_unit = "Myr",
+                             L_unit = "m")
+rate = 300                           # 300 fossils per Myr
+p3(rate = rate, from = 0, to = 1) |> 
+  hist(main = "Fossil abundance",
+       xlab = "Time [Myr]",
+       ylab = "# Specimens")
+```
+
+For time-variable rates see `p3_var_rate`.
+
+#### Transforming fossil occurrences to the stratigraphic domain
+
+You can transform fossil ages directly using `time_to_strat`:
+
+```{r}
+foss_per_myr = 300                                                           # fossils per Myr
+p3(rate = foss_per_myr, from = min_time(adm), to = max_time(adm)) |>         # constant rate in time domain
+  time_to_strat(adm, destructive = TRUE) |>                                  # transform into depth domain
+  hist(xlab = paste0("Stratigraphic height [",get_L_unit(adm),"]"),          # plot
+       main = "Fossil abundance 2 km offshore",
+       ylab = "# Fossils",
+       breaks = seq(from = min_height(adm), to = max_height(adm), length.out = 20))
+```
+
+Note the option `destructive = TRUE` for `time_to_strat`. It makes sure fossils that coincide with hiatuses are destroyed.
+
+#### Define niche models
+
+You can define simple niche models with the functions `snp_niche` or `bounded_niche`:
+
+```{r}
+my_niche = snd_niche(opt = 10,       # preferred water depth 
+                     tol = 5,        # tolerance to water depth fluctuations
+                     cutoff_val = 0) # cut off negative values - the taxon does not survive on land
+```
+
+To visualize the niche you can plot it using the following code:
+
+```{r}
+max_wd = 60                                     # maximum water depth
+x = seq(-2, max_wd, by = 0.1)
+plot(x, my_niche(x),
+     type = "l",
+     xlab = "Water depth [m]",
+     ylab = "Collection probability",
+     main = "Collection probability of taxon")
+```
+
+#### Apply niche models
+
+To apply a niche model, we need two components: A niche definition that specifies the niche of a taxon along a cline (water depth in this example - this is the function we defined above), and a function that describes how the cline changes with time.
+
+To define a function that returns the water depth with time, you can use the following code:
+
+```{r}
+pos = "2km"                 # position in the platform we want water depth from
+t = scenarioA$t_myr         # time steps where water depth is determined by the model
+wd = scenarioA$wd_m[,pos]   # water depth 2 km from shore
+gc = approxfun(t, wd)       # use linear interpolation between known water depths
+```
+
+You can visualize this function using the following code:
+
+```{r}
+plot(x = t,
+     y = gc(t), 
+     type = "l", 
+     xlab = "Time [Myr]",
+     ylab = "Water depth [m]",
+     main = "Water depth 2 km offshore")
+```
+
+With both components (niche definition and cline change with time) defined, you can insert the niche model into the modeling pipeline via the function `apply_niche`:
+
+```{r}
+p3(rate = foss_per_myr, from = min_time(adm), to = max_time(adm)) |>         # model occurrences based on constant rate
+  apply_niche(niche_def = my_niche, gc = gc) |>                              # apply niche model
+  time_to_strat(adm, destructive = TRUE) |>                                  # transform into strat. domain, destroy fossils that coincide with hiatuses 
+  hist(xlab = paste0("Stratigraphic height [",get_L_unit(adm) ,"]"),         # plot results
+       main = "Fossil abundance 2 km from shore",
+       ylab = "# Fossils",
+       breaks = seq(from = min_height(adm), to = max_height(adm), length.out = 40))
+```
+
+#### Simulating and transforming last occurrences
+
+Timing of last occurrences can be simulated using `p3` or `p3_var_rate` just as fossil occurrence (or any other type of "event" data). They can be transformed using `time_to_strat`:
+
+```{r}
+rolo = 100                                                               # rate of last occurrences [per Myr]
+p3(rate = rolo, from = min_time(adm), to = max_time(adm)) |>             # constant rate of last occ
+  time_to_strat(adm, destructive = FALSE) |>                             # non-destructive transformation!
+  hist(xlab = paste0("Stratigraphic height [",get_L_unit(adm),"]"),      # plot histogram
+       main = "Last occurrences 2 km offshore",
+       ylab = "# Last occurrences",
+       breaks = seq(from = min_height(adm), to = max_height(adm), length.out = 20))
+```
+
+Note that we use the option `destructive = FALSE` in `time_to_strat`. This is because last occurrences during a hiatus will appear at the hiatus surface in the stratigraphic domain

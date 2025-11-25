@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Modeling Stratigraphic Paleobiology in R</title>
+<title>Getting Started – Modeling Stratigraphic Paleobiology in R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -110,11 +145,11 @@ div.csl-indent {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./getting_started.html"> 
+    <a class="nav-link active" href="./getting_started.html" aria-current="page"> 
 <span class="menu-text">Getting Started</span></a>
   </li>  
   <li class="nav-item">
@@ -153,11 +188,10 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#structure" id="toc-structure" class="nav-link" data-scroll-target="#structure">Structure</a></li>
-  <li><a href="#citation" id="toc-citation" class="nav-link" data-scroll-target="#citation">Citation</a></li>
-  <li><a href="#contributing" id="toc-contributing" class="nav-link" data-scroll-target="#contributing">Contributing</a></li>
-  <li><a href="#funding" id="toc-funding" class="nav-link" data-scroll-target="#funding">Funding</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#requirements" id="toc-requirements" class="nav-link" data-scroll-target="#requirements">Requirements</a></li>
+  <li><a href="#package-installation" id="toc-package-installation" class="nav-link" data-scroll-target="#package-installation">Package installation</a></li>
+  <li><a href="#piping" id="toc-piping" class="nav-link" data-scroll-target="#piping">Piping</a></li>
   </ul>
 </nav>
     </div>
@@ -166,7 +200,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Modeling Stratigraphic Paleobiology in R</h1>
+<h1 class="title">Getting Started</h1>
 </div>
 
 
@@ -183,44 +217,95 @@ div.csl-indent {
 </header>
 
 
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>This document describes how to set up your machine so you can use the workshop materials</p>
 </section>
-<section id="structure" class="level2">
-<h2 class="anchored" data-anchor-id="structure">Structure</h2>
-<p>The webpage and workshop is structured as follows:</p>
+<section id="requirements" class="level2">
+<h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
+<p>The workshop materials requires R version 4.2 or later, which can be downloaded on <a href="https://cran.r-project.org/">CRAN</a>. You can use R from the terminal or use an IDE of your choice, e.g., <a href="https://posit.co/download/rstudio-desktop/">Rstudio</a>.</p>
+<p>The workshop assumes basic knowledge of R, meaning you should be able to write short code snippets and execute them. However, the focus of the workshop is the scientific content, so we provide code templates and snippets for you to work through. If you’re unsure of your R level you can work through <a href="https://swcarpentry.github.io/r-novice-inflammation/">this course</a> by the software carpentry, which provides a good bases.</p>
+</section>
+<section id="package-installation" class="level2">
+<h2 class="anchored" data-anchor-id="package-installation">Package installation</h2>
+<p>The workshop relies on the <code>StratPal</code> and <code>admtools</code> packages <span class="citation" data-cites="hohmann_stratpal_mee_2025">Niklas Hohmann and Jarochowska (<a href="#ref-hohmann_stratpal_mee_2025" role="doc-biblioref">2025</a>)</span> <span class="citation" data-cites="hohmann_admtools_gchron_2025">N. Hohmann et al. (<a href="#ref-hohmann_admtools_gchron_2025" role="doc-biblioref">2025</a>)</span> , which you can install from CRAN using the command</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"StratPal"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"admtools"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This also installs all dependencies, e.g., the <code>FossilSim</code> package for simulating fossils and the <code>paleoTS</code> package for analysis of fossil time series <span class="citation" data-cites="barido-sottani2019">Barido-Sottani et al. (<a href="#ref-barido-sottani2019" role="doc-biblioref">2019</a>)</span> <span class="citation" data-cites="hunt2006">Hunt and G. (<a href="#ref-hunt2006" role="doc-biblioref">2006</a>)</span>.</p>
+<p>The two packages have different responsibilities:</p>
 <ul>
-<li><p><a href="./getting_started.html"><strong>Getting Started</strong></a> covers software dependencies, package installation and loading, and a brief introduction to the <em>pipe operator</em> in base R (10 min).</p></li>
-<li><p><a href="./strat_architecture.html"><strong>Stratigraphic Architectures</strong></a> provides an overview of the example stratigraphic architecture used in the workshop, and introduces age-depth models (45 min).</p></li>
-<li><p><a href="trait_evolution.qmd"><strong>Trait Evolution</strong></a> explores how stratigraphic effects changes patterns of phenotypic evolution (45 min).</p></li>
-<li><p><a href="./event_data.html"><strong>Event Data</strong></a> discusses how data such as fossil abundance or last occurrences are modified by ecological, taphonomic, and stratigraphic effects (45 min).</p></li>
-<li><p><a href="./advanced_topics.html"><strong>Advanced Topics</strong></a> covers miscellaneous topics, e.g., combining niche models with trait evolution, and modification of phylogenetic trees.</p></li>
+<li><p><code>admtools</code> takes care of the <em>stratigraphy</em> components, e.g., work with age-depth models and incompleteness</p></li>
+<li><p><code>StratPal</code> takes care of the <code>Paleobiology</code> components, e.g., trait simulations, niche modeling, and taphonomy, and provides example stratigraphic architectures.</p></li>
 </ul>
 </section>
-<section id="citation" class="level2">
-<h2 class="anchored" data-anchor-id="citation">Citation</h2>
-<p>To cite this repository, please use</p>
+<section id="piping" class="level2">
+<h2 class="anchored" data-anchor-id="piping">Piping</h2>
+<p>We will make extensive use of the <em>piping operator</em> <code>|&gt;</code> in this workshop, which is a feature of base R since version 4.2.</p>
+<p>You can read <code>|&gt;</code> as “take what is on the left side of <code>|&gt;</code> and use it as first argument on the right side of <code>|&gt;</code>”. For example, to plot a histogram of normally distributed random variables, you can use</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">100</span>) <span class="sc">|&gt;</span>    <span class="co"># 100 normally distrubuted random variables                      </span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="st">"x"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Normal distribution"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="getting_started_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>You can chain as many pipe operators together as you like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span> <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>() <span class="sc">|&gt;</span>    <span class="co"># 100 normally distrubuted random variables                      </span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="st">"x"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Normal distribution"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="getting_started_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This solves two problems:</p>
 <ul>
-<li><p>REPO CITATION TBA</p></li>
-<li><p>Package citation version 0.7</p></li>
-<li><p><span class="citation" data-cites="hohmann_stratpal_mee_2025">Hohmann and Jarochowska (<a href="#ref-hohmann_stratpal_mee_2025" role="doc-biblioref">2025</a>)</span></p></li>
+<li><p>There is no need to assign intermediate variables that will then clutter your workspace. For example, to calculate the mean of the square root of uniformly distributed random numbers, it is tempting to do</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">1000</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">=</span> <span class="fu">sqrt</span>(t1)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">mean</span>(t2) <span class="co"># creates 2 unnecessary variables t2 and t2</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">1000</span>) <span class="sc">|&gt;</span> <span class="fu">sqrt</span>() <span class="sc">|&gt;</span> <span class="fu">mean</span>() <span class="co"># only the intended result is saved</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
 </ul>
-</section>
-<section id="contributing" class="level2">
-<h2 class="anchored" data-anchor-id="contributing">Contributing</h2>
-<p>Did you find a typo, a mistake, or do you thing some topics are not sufficiently covered? Please post your</p>
-</section>
-<section id="funding" class="level2">
-<h2 class="anchored" data-anchor-id="funding">Funding</h2>
-<p>Funded by the European Union (ERC, MindTheGap, StG project no 101041077). Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Research Council. Neither the European Union nor the granting authority can be held responsible for them. <img src="https://erc.europa.eu/sites/default/files/2023-06/LOGO_ERC-FLAG_FP.png" class="img-fluid" alt="European Union and European Research Council logos"></p>
+<!-- -->
+<ul>
+<li><p>You can read the code from left to right, making it easier to comprehend as the order of execution follows the order of reading. Continuing the above, it is tempting to write</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">mean</span>(<span class="fu">sqrt</span>(<span class="fu">runif</span>(<span class="dv">1000</span>))) <span class="co"># has to be read from "inside out" (right to left)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># instead of left to right, following the order of execution</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">1000</span>) <span class="sc">|&gt;</span> <span class="fu">sqrt</span>() <span class="sc">|&gt;</span> <span class="fu">mean</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+</ul>
 
 
 
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-barido-sottani2019" class="csl-entry" role="listitem">
+Barido-Sottani, Joëlle, Walker Pett, Joseph E. O’Reilly, and Rachel C. M. Warnock. 2019. <span>“FossilSim: An r Package for Simulating Fossil Occurrence Data Under Mechanistic Models of Preservation and Recovery.”</span> <em>Methods in Ecology and Evolution</em> 10 (6): 835–40. <a href="https://doi.org/10.1111/2041-210X.13170">https://doi.org/10.1111/2041-210X.13170</a>.
+</div>
+<div id="ref-hohmann_admtools_gchron_2025" class="csl-entry" role="listitem">
+Hohmann, N., D. De Vleeschouwer, S. Batenburg, and E. Jarochowska. 2025. <span>“Nonparametric Estimation of Age–Depth Models from Sedimentological and Stratigraphic Information.”</span> <em>Geochronology</em> 7 (3): 427–48. <a href="https://doi.org/10.5194/gchron-7-427-2025">https://doi.org/10.5194/gchron-7-427-2025</a>.
+</div>
 <div id="ref-hohmann_stratpal_mee_2025" class="csl-entry" role="listitem">
 Hohmann, Niklas, and Emilia Jarochowska. 2025. <span>“StratPal: An r Package for Creating Stratigraphic Paleobiology Modelling Pipelines.”</span> <em>Methods in Ecology and Evolution</em> 16 (4): 678–86. https://doi.org/<a href="https://doi.org/10.1111/2041-210X.14507">https://doi.org/10.1111/2041-210X.14507</a>.
+</div>
+<div id="ref-hunt2006" class="csl-entry" role="listitem">
+Hunt, and G. 2006. <span>“Fitting and Comparing Models of Phyletic Evolution: Random Walks and Beyond.”</span> <em>Paleobiology</em> 32 (4): –23. <a href="https://doi.org/10.1666/05070.1">https://doi.org/10.1666/05070.1</a>.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

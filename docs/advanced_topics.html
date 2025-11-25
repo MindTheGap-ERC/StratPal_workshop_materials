@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Modeling Stratigraphic Paleobiology in R</title>
+<title>Advanced Topics – Modeling Stratigraphic Paleobiology in R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +20,42 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -110,7 +125,7 @@ div.csl-indent {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -130,7 +145,7 @@ div.csl-indent {
 <span class="menu-text">Event Data</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./advanced_topics.html"> 
+    <a class="nav-link active" href="./advanced_topics.html" aria-current="page"> 
 <span class="menu-text">Advanced Topics</span></a>
   </li>  
   <li class="nav-item">
@@ -153,11 +168,8 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#structure" id="toc-structure" class="nav-link" data-scroll-target="#structure">Structure</a></li>
-  <li><a href="#citation" id="toc-citation" class="nav-link" data-scroll-target="#citation">Citation</a></li>
-  <li><a href="#contributing" id="toc-contributing" class="nav-link" data-scroll-target="#contributing">Contributing</a></li>
-  <li><a href="#funding" id="toc-funding" class="nav-link" data-scroll-target="#funding">Funding</a></li>
+  <li><a href="#quarto" id="toc-quarto" class="nav-link active" data-scroll-target="#quarto">Quarto</a></li>
+  <li><a href="#running-code" id="toc-running-code" class="nav-link" data-scroll-target="#running-code">Running Code</a></li>
   </ul>
 </nav>
     </div>
@@ -166,7 +178,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Modeling Stratigraphic Paleobiology in R</h1>
+<h1 class="title">Advanced Topics</h1>
 </div>
 
 
@@ -183,46 +195,31 @@ div.csl-indent {
 </header>
 
 
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="quarto" class="level2">
+<h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
+<p>Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <a href="https://quarto.org" class="uri">https://quarto.org</a>.</p>
 </section>
-<section id="structure" class="level2">
-<h2 class="anchored" data-anchor-id="structure">Structure</h2>
-<p>The webpage and workshop is structured as follows:</p>
-<ul>
-<li><p><a href="./getting_started.html"><strong>Getting Started</strong></a> covers software dependencies, package installation and loading, and a brief introduction to the <em>pipe operator</em> in base R (10 min).</p></li>
-<li><p><a href="./strat_architecture.html"><strong>Stratigraphic Architectures</strong></a> provides an overview of the example stratigraphic architecture used in the workshop, and introduces age-depth models (45 min).</p></li>
-<li><p><a href="trait_evolution.qmd"><strong>Trait Evolution</strong></a> explores how stratigraphic effects changes patterns of phenotypic evolution (45 min).</p></li>
-<li><p><a href="./event_data.html"><strong>Event Data</strong></a> discusses how data such as fossil abundance or last occurrences are modified by ecological, taphonomic, and stratigraphic effects (45 min).</p></li>
-<li><p><a href="./advanced_topics.html"><strong>Advanced Topics</strong></a> covers miscellaneous topics, e.g., combining niche models with trait evolution, and modification of phylogenetic trees.</p></li>
-</ul>
-</section>
-<section id="citation" class="level2">
-<h2 class="anchored" data-anchor-id="citation">Citation</h2>
-<p>To cite this repository, please use</p>
-<ul>
-<li><p>REPO CITATION TBA</p></li>
-<li><p>Package citation version 0.7</p></li>
-<li><p><span class="citation" data-cites="hohmann_stratpal_mee_2025">Hohmann and Jarochowska (<a href="#ref-hohmann_stratpal_mee_2025" role="doc-biblioref">2025</a>)</span></p></li>
-</ul>
-</section>
-<section id="contributing" class="level2">
-<h2 class="anchored" data-anchor-id="contributing">Contributing</h2>
-<p>Did you find a typo, a mistake, or do you thing some topics are not sufficiently covered? Please post your</p>
-</section>
-<section id="funding" class="level2">
-<h2 class="anchored" data-anchor-id="funding">Funding</h2>
-<p>Funded by the European Union (ERC, MindTheGap, StG project no 101041077). Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Research Council. Neither the European Union nor the granting authority can be held responsible for them. <img src="https://erc.europa.eu/sites/default/files/2023-06/LOGO_ERC-FLAG_FP.png" class="img-fluid" alt="European Union and European Research Council logos"></p>
-
-
-
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-hohmann_stratpal_mee_2025" class="csl-entry" role="listitem">
-Hohmann, Niklas, and Emilia Jarochowska. 2025. <span>“StratPal: An r Package for Creating Stratigraphic Paleobiology Modelling Pipelines.”</span> <em>Methods in Ecology and Evolution</em> 16 (4): 678–86. https://doi.org/<a href="https://doi.org/10.1111/2041-210X.14507">https://doi.org/10.1111/2041-210X.14507</a>.
+<section id="running-code" class="level2">
+<h2 class="anchored" data-anchor-id="running-code">Running Code</h2>
+<p>When you click the <strong>Render</strong> button a document will be generated that includes both content and the output of embedded code. You can embed code like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
 </div>
-</div></section></div></main> <!-- /main -->
+</div>
+<p>You can add options to executable code like this</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+<p>The <code>echo: false</code> option disables the printing of code (only output is displayed).</p>
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

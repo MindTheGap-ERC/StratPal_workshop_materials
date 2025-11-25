@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>About – Modeling Stratigraphic Paleobiology in R</title>
+<title>Event Data and Niche Modeling – Modeling Stratigraphic Paleobiology in R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -141,7 +141,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Trait Evolution</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./event_data.html"> 
+    <a class="nav-link active" href="./event_data.html" aria-current="page"> 
 <span class="menu-text">Event Data</span></a>
   </li>  
   <li class="nav-item">
@@ -149,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Advanced Topics</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./about.html" aria-current="page"> 
+    <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -163,15 +163,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section"></a></li>
+  <li><a href="#practical-3-niche-modeling-and-last-occurrences-45-min" id="toc-practical-3-niche-modeling-and-last-occurrences-45-min" class="nav-link" data-scroll-target="#practical-3-niche-modeling-and-last-occurrences-45-min">Practical 3: Niche modeling and last occurrences (45 min)</a>
+  <ul class="collapse">
+  <li><a href="#tasks-niche-modeling" id="toc-tasks-niche-modeling" class="nav-link" data-scroll-target="#tasks-niche-modeling">Tasks niche modeling</a></li>
+  <li><a href="#tasks-last-occurrences" id="toc-tasks-last-occurrences" class="nav-link" data-scroll-target="#tasks-last-occurrences">Tasks last occurrences</a></li>
+  <li><a href="#coding-cheat-sheet" id="toc-coding-cheat-sheet" class="nav-link" data-scroll-target="#coding-cheat-sheet">Coding cheat sheet</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">About</h1>
+<h1 class="title">Event Data and Niche Modeling</h1>
 </div>
 
 
@@ -188,15 +200,185 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>About this site</p>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+</section>
+<section id="practical-3-niche-modeling-and-last-occurrences-45-min" class="level2">
+<h2 class="anchored" data-anchor-id="practical-3-niche-modeling-and-last-occurrences-45-min">Practical 3: Niche modeling and last occurrences (45 min)</h2>
+<p>In this practical, we explore niche models, and how you can build your own mass extinction (BYOME) using stratigraphic paleobiology.</p>
+<section id="tasks-niche-modeling" class="level3">
+<h3 class="anchored" data-anchor-id="tasks-niche-modeling">Tasks niche modeling</h3>
+<ol type="1">
+<li>Simulate an abundant taxon, and transform the fossil ages into the stratigraphic domain.
+<ul>
+<li>At which locations and stratigraphic heights do you observe peaks in fossil abundance?<br>
+</li>
+<li>With which stratigraphic effects are these peaks associated?</li>
+</ul></li>
+<li>Define a niche for a taxon, and add the niche model to your pipeline.
+<ul>
+<li>How and why do your results change?</li>
+<li>How could you misinterpret the results?</li>
+</ul></li>
+</ol>
+</section>
+<section id="tasks-last-occurrences" class="level3">
+<h3 class="anchored" data-anchor-id="tasks-last-occurrences">Tasks last occurrences</h3>
+<ol start="3" type="1">
+<li>Simulate last occurrences based on the assumption of a constant rate of last occurrences and transform them into the stratigraphic domain.
+<ul>
+<li>Where do you observe clusters of last occurrences?<br>
+</li>
+<li>With what stratigraphic effects are these locations associated?<br>
+</li>
+<li>How would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a “stratigraphic null hypothesis” for clusters of last occurrences.</li>
+</ul></li>
+</ol>
+</section>
+<section id="coding-cheat-sheet" class="level3">
+<h3 class="anchored" data-anchor-id="coding-cheat-sheet">Coding cheat sheet</h3>
+<section id="simulating-fossil-occurrences" class="level4">
+<h4 class="anchored" data-anchor-id="simulating-fossil-occurrences">Simulating fossil occurrences</h4>
+<p>Fossil locations or ages can be simulated using the <code>p3</code> function if the rate of fossil occurrences is constant:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(StratPal)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(admtools)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">L_unit =</span> <span class="st">"m"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>rate <span class="ot">=</span> <span class="dv">300</span>                           <span class="co"># 300 fossils per Myr</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">p3</span>(<span class="at">rate =</span> rate, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">main =</span> <span class="st">"Fossil abundance"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"# Specimens"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="event_data_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
+</div>
+<p>For time-variable rates see <code>p3_var_rate</code>.</p>
+</section>
+<section id="transforming-fossil-occurrences-to-the-stratigraphic-domain" class="level4">
+<h4 class="anchored" data-anchor-id="transforming-fossil-occurrences-to-the-stratigraphic-domain">Transforming fossil occurrences to the stratigraphic domain</h4>
+<p>You can transform fossil ages directly using <code>time_to_strat</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>foss_per_myr <span class="ot">=</span> <span class="dv">300</span>                                                           <span class="co"># fossils per Myr</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">p3</span>(<span class="at">rate =</span> foss_per_myr, <span class="at">from =</span> <span class="fu">min_time</span>(adm), <span class="at">to =</span> <span class="fu">max_time</span>(adm)) <span class="sc">|&gt;</span>         <span class="co"># constant rate in time domain</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span>                                  <span class="co"># transform into depth domain</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="fu">paste0</span>(<span class="st">"Stratigraphic height ["</span>,<span class="fu">get_L_unit</span>(adm),<span class="st">"]"</span>),          <span class="co"># plot</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Fossil abundance 2 km offshore"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"# Fossils"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min_height</span>(adm), <span class="at">to =</span> <span class="fu">max_height</span>(adm), <span class="at">length.out =</span> <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="event_data_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Note the option <code>destructive = TRUE</code> for <code>time_to_strat</code>. It makes sure fossils that coincide with hiatuses are destroyed.</p>
+</section>
+<section id="define-niche-models" class="level4">
+<h4 class="anchored" data-anchor-id="define-niche-models">Define niche models</h4>
+<p>You can define simple niche models with the functions <code>snp_niche</code> or <code>bounded_niche</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>my_niche <span class="ot">=</span> <span class="fu">snd_niche</span>(<span class="at">opt =</span> <span class="dv">10</span>,       <span class="co"># preferred water depth </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">tol =</span> <span class="dv">5</span>,        <span class="co"># tolerance to water depth fluctuations</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">cutoff_val =</span> <span class="dv">0</span>) <span class="co"># cut off negative values - the taxon does not survive on land</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To visualize the niche you can plot it using the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>max_wd <span class="ot">=</span> <span class="dv">60</span>                                     <span class="co"># maximum water depth</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, max_wd, <span class="at">by =</span> <span class="fl">0.1</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="fu">my_niche</span>(x),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Water depth [m]"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Collection probability"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Collection probability of taxon"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="event_data_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="apply-niche-models" class="level4">
+<h4 class="anchored" data-anchor-id="apply-niche-models">Apply niche models</h4>
+<p>To apply a niche model, we need two components: A niche definition that specifies the niche of a taxon along a cline (water depth in this example - this is the function we defined above), and a function that describes how the cline changes with time.</p>
+<p>To define a function that returns the water depth with time, you can use the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span>                 <span class="co"># position in the platform we want water depth from</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> scenarioA<span class="sc">$</span>t_myr         <span class="co"># time steps where water depth is determined by the model</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>wd <span class="ot">=</span> scenarioA<span class="sc">$</span>wd_m[,pos]   <span class="co"># water depth 2 km from shore</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>gc <span class="ot">=</span> <span class="fu">approxfun</span>(t, wd)       <span class="co"># use linear interpolation between known water depths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can visualize this function using the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> t,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">gc</span>(t), </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>, </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Water depth [m]"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Water depth 2 km offshore"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="event_data_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>With both components (niche definition and cline change with time) defined, you can insert the niche model into the modeling pipeline via the function <code>apply_niche</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p3</span>(<span class="at">rate =</span> foss_per_myr, <span class="at">from =</span> <span class="fu">min_time</span>(adm), <span class="at">to =</span> <span class="fu">max_time</span>(adm)) <span class="sc">|&gt;</span>         <span class="co"># model occurrences based on constant rate</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply_niche</span>(<span class="at">niche_def =</span> my_niche, <span class="at">gc =</span> gc) <span class="sc">|&gt;</span>                              <span class="co"># apply niche model</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span>                                  <span class="co"># transform into strat. domain, destroy fossils that coincide with hiatuses </span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="fu">paste0</span>(<span class="st">"Stratigraphic height ["</span>,<span class="fu">get_L_unit</span>(adm) ,<span class="st">"]"</span>),         <span class="co"># plot results</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Fossil abundance 2 km from shore"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"# Fossils"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min_height</span>(adm), <span class="at">to =</span> <span class="fu">max_height</span>(adm), <span class="at">length.out =</span> <span class="dv">40</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="event_data_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="simulating-and-transforming-last-occurrences" class="level4">
+<h4 class="anchored" data-anchor-id="simulating-and-transforming-last-occurrences">Simulating and transforming last occurrences</h4>
+<p>Timing of last occurrences can be simulated using <code>p3</code> or <code>p3_var_rate</code> just as fossil occurrence (or any other type of “event” data). They can be transformed using <code>time_to_strat</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rolo <span class="ot">=</span> <span class="dv">100</span>                                                               <span class="co"># rate of last occurrences [per Myr]</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">p3</span>(<span class="at">rate =</span> rolo, <span class="at">from =</span> <span class="fu">min_time</span>(adm), <span class="at">to =</span> <span class="fu">max_time</span>(adm)) <span class="sc">|&gt;</span>             <span class="co"># constant rate of last occ</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span>                             <span class="co"># non-destructive transformation!</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="fu">paste0</span>(<span class="st">"Stratigraphic height ["</span>,<span class="fu">get_L_unit</span>(adm),<span class="st">"]"</span>),      <span class="co"># plot histogram</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Last occurrences 2 km offshore"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"# Last occurrences"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min_height</span>(adm), <span class="at">to =</span> <span class="fu">max_height</span>(adm), <span class="at">length.out =</span> <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="event_data_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Note that we use the option <code>destructive = FALSE</code> in <code>time_to_strat</code>. This is because last occurrences during a hiatus will appear at the hiatus surface in the stratigraphic domain</p>
 
 
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -599,6 +781,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Stratigraphic Paleobiology in R</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
 
 
 

@@ -1,0 +1,85 @@
+---
+title: "Trait Evolution"
+format: html
+editor: visual
+---
+
+## Practical 2: Trait evolution (45 min)
+
+This practical explores how trait evolution is influenced by stratigraphic architectures.
+
+### Tasks
+
+1.  Plot the different modes of evolution in the time domain.
+
+    -   What is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times)?\
+    -   What is the biological meaning of the model parameters?
+
+2.  Transform the different modes of evolution into the stratigraphic domain and plot them.
+
+    -   Which modes are most/least affected by stratigraphic biases?\
+    -   Do you see any systematic changes?
+
+### Coding cheat sheet
+
+#### Modes of evolution in the time domain
+
+There are three different modes of evolution implemented in the `StratPal` package: `stasis`, `random_walk`, and `ornstein_uhlenbeck`. You can plot them using piping via
+
+```{r}
+library(StratPal)
+library(admtools)
+pos = "2km"
+adm = tp_to_adm(t = scenarioA$t_myr,        
+                             h = scenarioA$h_m[,pos],
+                             T_unit = "Myr",
+                             L_unit = "m")
+temp_res = 0.001                                              # temporal resolution in Myr
+seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where the trait evolution is simulated
+  random_walk(sigma = 1, mu = 0, y0 = 0) |>                   # simulate trait evolution
+  plot(xlab = paste0("Time [",get_T_unit(adm),"]"),           # plot
+       ylab = "Trait value",
+       type = "l") 
+  
+
+```
+
+To plot other modes, replace `random_walk` by one of the other modes (`stasis` or `ornstein_uhlenbeck`).
+
+#### Transforming trait evolution into the stratigraphic domain
+
+To transform trait evolution into the stratigraphic domain, insert `time_to_strat` with the age-depth model of your choice into your pipeline:
+
+```{r}
+temp_res = 0.001                                              # temporal resolution in Myr
+seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where the trait evolution is simulated
+  random_walk(sigma = 1, mu = 3, y0 = 0) |>                   # simulate trait evolution
+  time_to_strat(adm, destructive = FALSE) |>                  # transform into stratigraphic domain
+  plot(xlab = paste0("Stratigraphic position [",get_L_unit(adm),"]"), # plot
+       ylab = "Trait value",
+       type = "l",
+       orientation = "lr") 
+```
+
+This will transform your simulations from the time domain into the stratigraphic domain.
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
