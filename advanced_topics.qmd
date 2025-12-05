@@ -4,23 +4,79 @@ format: html
 editor: visual
 ---
 
-## Quarto
+TODO:
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+* everything
+* update solutions to match new data [to be done Wed!]
 
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+set.seed(30790)
 ```
 
-You can add options to executable code like this
+## Advanced topics in Stratigraphic Paleobiology
+
+In this practical, we go through some advanced topics, such as modeling taphonomic effects, and transforming phylogenetic data (time trees and fossils)
+
+## Introduction
+
+TBA
+
+## Code cheat sheet
+
+### Modeling taphonomy
+
+Modeling taphonomy follows the same principles as modeling ecology. You need to define two function:
+
+* a function `ctc` describing the change in taphonomic conditions with time (corresponding to the change in gradient with time for ecology)
+
+* a function `pres_potential` that specifies how likely a fossil is to be preserved given some taphonomic conditions (equivalent to the niche definiton for ecology)
+
+Both can then be passed to the function `apply_taphonomy` (instead of `apply_ecology`)
 
 ```{r}
-#| echo: false
-2 * 2
+# insert example here
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+Just as ecology, this can also be used for trait evolution
+
+```{r}
+# instert example with paleoTS here
+```
+
+
+## Tasks
+
+::: {.callout-important}
+### Task 1: Taphonomic effects
+
+Model a taxon that has a preservation probability of 0.5 in water depths lower than 20 m and a preservation probablity of 0.9 in water deeper than 20 m.
+
+How abundant is this taxon at different locations on the platform?
+From your modeling results along, is there any way to distinguish these taphonomic effect from an ecological effect?
+
+:::
+
+::: {.callout-important}
+### Task 2: Phylogenetic trees in stratigraphic context
+
+Simulate an FBD (time)tree over the duration of the age-depth model and transform it at different locations using the age-depth model.
+
+Simulate some fossils along the tree using the `FossilSim` package. 
+
+How are the trees affected at the different locations? What are the most obvious visual changes in their topology?
+
+:::
+
+
+## Solutions
+
+::: {.callout-note collapse="true"}
+### Solution Task 1: Taphonomic effects
+
+:::
+
+::: {.callout-note collapse="true"}
+### Solution Task 2: Phylogenetic trees in stratigraphic context
+
+:::

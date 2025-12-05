@@ -5,13 +5,22 @@ editor: visual
 bibliography: refs/refs.bib
 ---
 
+TODO: \* update solutions to match new data \[to be done Wed!\]
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+set.seed(57405)
+```
+
 ## Stratigraphic Architectures and Age-Depth Models
 
 This part of the workshop gives a first overview on the stratigraphic architecture used, and will familiarize you with the concepts of age-depth models and (stratigraphic) incompleteness. The duration is approx. 45 minutes.
 
-## Example Stratigraphic Architecture
+## Introduction
 
-In this workshop, we use an example stratigraphic architecture simulated using CarboKitten.jl @hidding_2025 that emulates scenario A of @hohmann_identification_2024. Here, we provide a quick overview of the setup. If you are curious you can inspect the source code underlying the simulation [here](https://github.com/MindTheGap-ERC/StratPal_data_prep) (and modify it if you like).
+### Example Stratigraphic Architecture
+
+In this workshop, we use an example stratigraphic architecture simulated using CarboKitten.jl [@hidding_2025] that emulates scenario A of @hohmann_identification_2024. Here, we provide a quick overview of the setup. If you are curious you can inspect the source code underlying the simulation [here](https://github.com/MindTheGap-ERC/StratPal_data_prep) (and modify it if you like).
 
 The simulated carbonate platform consists of three carbonate producing factories, one euphotic, one oligophotic, and one aphotic. The production profile of the factories are shown below.
 
@@ -21,6 +30,7 @@ The tree factories compete for space and propagate according to a cellular autom
 
 ```{r, echo=FALSE}
 library(StratPal)
+library(admtools)
 plot(x = scenarioA$t_myr, 
      y = scenarioA$sl_m,
      type = "l",
@@ -30,21 +40,43 @@ plot(x = scenarioA$t_myr,
 
 ```
 
+This results in the following synthetic carbonate platform:
+
 ![](figs/platform_profile.png)
 
-::: callout-tip
-### Task
-:::
+Note how the platform top is dominated by the euphotic and oligophotic facies (yellow and blue), while the more distal parts are dominated by the aphotic (green) facies.
 
-::: {.callout-caution collapse="true"}
-## Solution
+### Age-Depth Models
 
-This is an example of a 'folded' caution callout that can be expanded by the user. You can use `collapse="true"` to collapse it by default or `collapse="false"` to make a collapsible callout that is expanded by default.
-:::
+A core concept we use are age-depth models: The translate information between the stratigraphic domain (SI units m) where we make our observations and the time domain (SI units s or derived units such as Myr) where the biotic change we are interested is happening.
 
-### Coding cheat sheet
+```{r, echo=FALSE}
+adm = tp_to_adm(t = scenarioA$t_myr, h = scenarioA$h_m[,"2km"],
+                T_unit = "Myr",
+                L_unit = "m")
+plot(adm, lty_destr = 0)
+T_axis_lab()
+L_axis_lab()
 
-#### Loading the package and data
+```
+
+Age-depth models are crucial tools for stratigraphy, as they contain a lot of information:
+
+-   The gaps in the age-depth model correspond to hiatuses, caused by nondeposition or erosion.
+
+-   The slope of the age-depth model corresponds to the sedimentation rate - the higher the slope, the faster sediment accumulates.
+
+-   Naturally, they can be used to determine the absolute age of events and samples from the stratigraphic domain. Conversely, they can be used to simulate data in the time domain and then predict their stratigraphic expression.
+
+## Coding cheat sheet
+
+Here you find a list of useful functions and code snippets that you can use to solve the tasks.
+
+### Getting help
+
+To find the documentation of a function, prepend its name with a question mark and execute it in the console (e.g., `?random_walk)`. The help pages are also available on the package webpage (mindthegap-erc.github.io/StratPal/) under "Reference".Long form documentation (vignettes) can be found on the webpage under "Articles" or via `browseVignettes("StratPal")`.
+
+### Loading the package and data
 
 Load the `StratPal` and `admtools` packages via
 
@@ -56,7 +88,7 @@ library("admtools")
 
 to have all required functionality and example data available. We use the example data stored in the `scenarioA` variable that comes with the `StratPal` package. You can find more details on the data using `?scenarioA`.
 
-#### Creating age-depth models
+### Creating age-depth models
 
 Age-depth models are constructed using `tp_to_adm` (tie point to age-depth model) from the `admtools` package. Here we construct the age-depth model 2 km from shore by passing the function the vectors of times and heights at that stratigraphic position:
 
@@ -70,7 +102,7 @@ adm = tp_to_adm(t = scenarioA$t_myr,        # construct age-depth model
 
 Note that we immediately add time and length units to avoid downstream confusion. The example data contains model outputs at 2, 4, 6, 8, 10, and 12 km from shore.
 
-#### Plotting Age-depth models
+### Plotting Age-depth models
 
 Age-depth models can be plotted using the standard `plot` command:
 
@@ -85,7 +117,7 @@ title("Age-depth model 2 km from shore")
 
 See `?plot.adm` for more plotting options.
 
-#### Extracting information from age-depth models
+### Extracting information from age-depth models
 
 Age-depth models contain a lot of stratigraphic information, e.g. on stratigraphic completeness, hiatuses, or sedimentation rates. Some basic functionality to extract this information is:
 
@@ -99,10 +131,148 @@ summary(adm)             # some summary statistics
 
 You can find a comprehensive list of functions that extract information from age-depth models [here](https://mindthegap-erc.github.io/admtools/articles/admtools_doc.html#s3-class-adm).
 
-### Tasks
+### Extracting water depth
 
-1.  Define age-depth models for different locations along the onshore-offshore gradient, and plot them.
-    -   How do they connect to the chronostratigraphic diagram and the sea level curve shows below?
-2.  Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.
+Water depth at the simulation runs is stored in the variable `scenarionA`
+
+```{r}
+pos = "2km"
+wd = scenarioA$wd_m[,"2km"]
+t = scenarioA$t_myr
+plot(x = t,
+     y = wd,
+     type = "l",
+     xlab = "Time [Myr]",
+     ylab = "Water depth [m]",
+     main = "Water depth 2 km from shore")
+```
+
+## Tasks
+
+::: callout-important
+### Task 1: Getting to know age-depth models
+
+Define age-depth models for different locations along the onshore-offshore gradient, and plot them.
+
+How do they connect to the chronostratigraphic diagram and the sea level curve shows below?
+:::
+
+::: callout-important
+### Task 2: Incompleteness across the onshore-offshore gradient
+
+Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.
+:::
+
+::: callout-important
+### Task 3: Hiatus duration and water depth
+
+Generate histograms of hiatus durations and plots of water depth at the different distances from shore.
+
+Do you see any systematic changes?
+:::
+
+## Solutions
+
+::: {.callout-note collapse="true"}
+### Solution Task 1: Getting to know age-depth models
+
+```{r}
+# load packages
+library("admtools")
+library("StratPal")
+# define age-depth models
+adm_list = list()                                     # storage for age-depth models
+dist = paste(seq(2, 12, by = 2), "km", sep = "")      # distances from shore
+for (pos in dist){                                    # construct ADMs for all distances
+  adm_list[[pos]] = tp_to_adm(t = scenarioA$t_myr,        
+                             h = scenarioA$h_m[,pos],
+                             T_unit = "Myr",
+                             L_unit = "m")
+}
+```
+
+```{r}
+# plot specific age-depth models
+pos = "2km"               # insert distance from shore here
+stopifnot(pos %in% dist ) # validity check
+
+plot(adm_list[[pos]],
+     lwd_acc = 2,         # plot thicker lines for intervals with sediment accumulation (lwd = line width)
+     lty_destr = 0)       # don't plot destructive intervals/hiatuses (lty = line type)
+T_axis_lab()              # add time axis label
+L_axis_lab()              # add length axis label
+title(paste0("Age-depth model ", pos, " from shore"))
+```
+
+Age-depth model closer to shore are higher (up to 150 m), while those further offshore are shorter (a few 10s of meters). This is because sediment accumulation is much higher on the platform top (2-8 km) compared to the proximal (10 km) and distal (12 km) slope.\
+Age-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic (Wheeler) diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous. Times of low sediment accumulation correspond to intervals of low sea level, and are due to lowstand shedding from the platform edge. This generates intervals with sedimentary condensation (low sedimentation rate), expressed by a near-horizontal age-depth model.
+:::
+
+::: {.callout-note collapse="true"}
+### Solution Task 2: Incompleteness across the onshore-offshore gradient
+
+Question:\
+2. Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.
+
+```{r}
+inc = rep(NA, length(dist))             # storage for incompleteness
+nhiat = rep(NA, length(dist))           # storage for number of hiatuses
+for (i in seq_along(dist)){
+  pos = dist[i] # position in platform
+  # determine incompleteness
+  inc[i] = adm_list[[pos]] |> 
+    get_incompleteness()
+  # determine no. of hiatuses
+  nhiat[i] = adm_list[[pos]] |>
+    get_hiat_no()
+}
+## Plotting
+p = seq(from = 2, to = 12, by = 2)       # dist from shore for plotting
+plot(p, 100 * inc,                       # transform into %
+     xlab = "Distance from shore [km]", 
+     ylab = "Incompleteness [%]", 
+     type = "l",
+     ylim = c(0, 100))
+
+plot(p, nhiat, 
+     xlab = "Distance from shore [km]", 
+     ylab = "# Hiatuses", 
+     type = "l",
+     ylim = c(0, max(nhiat)))
+```
+
+Incompleteness is highest in the onshore sections (more than 60 %), and decreases with distance from shore to values of around 30 % in the proximal slope. Note that this differs from Figure 4 in @hohmann_identification_2024 as we are examining incompleteness on a coarser spatial scale.
+
+The number of hiatuses is low on the landwards platform top (approx. 10 hiatuses at 2 - 6 km), with increased values in the fore-reef (8 km). The most hiatuses are 10 km from shore with almost 150 hiatuses, which drops to around 50 in the distal slope.\
+The hiatuses on the platform are generated by long intervals of low sea level, which exposes the platform top. The high number of hiatuses in the proximal slope is generated by a high frequency of depositional events made of transported material from the platform edge. The effect of transported material decreases with distance from the platform edge, thus the decreased number of hiatuses on the distal slope.
+:::
+
+::: {.callout-note collapse="true"}
+### Solution Task 3: Hiatus duration and water depth
+
+Questions:
+
 3.  Generate histograms of hiatus durations at the different distances from shore.
+
     -   Do you see any systematic changes?
+
+```{r}
+pos = "2km" # position of adm
+stopifnot(pos %in%  dist) # validity check
+
+adm_list[[pos]] |>
+  get_hiat_duration() |>
+  hist(xlab = "Hiatus duration [Myr]",
+       main = paste0("Hiatus duration ", pos, " from shore"))
+
+plot(scenarioA$t_myr, scenarioA$wd_m[,pos],
+     xlab = "Time [Myr]",
+     ylab = "Water depth [m]",
+     type = "l",
+     main = paste0("Water depth ", pos, " from shore"))
+```
+
+Hiatus durations on the platform top are very similar: They consist of two long hiatuses (caused by the prolonged drops in the sea level curve), and a number of shorter hiatuses generated by the lower order sinusoidal sea level changes. At 8 km from shore, the number of short hiatuses increases to more than 30, indicating that sediment accumulation is more interrupted, potentially due to higher wave energy and more sediment transport.\
+On the slope, hiatuses are more abundant, but their duration is much shorter. This is most pronounced for the proximal slope.\
+Note the disconnect between the number of hiatuses and incompleteness: Onshore sections are the most incomplete, but have only a few hiatuses. In contrast, the proximal slope has the most hiatuses, but a low incompleteness. This is because hiatus duration in the onshore sections is much longer.
+:::

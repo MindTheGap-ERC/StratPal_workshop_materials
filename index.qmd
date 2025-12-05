@@ -15,7 +15,7 @@ The webpage and workshop is structured as follows:
 
 -   [**Stratigraphic Architectures**](strat_architecture.qmd) provides an overview of the example stratigraphic architecture used in the workshop, and introduces age-depth models (45 min).
 
--   [**Trait Evolution**](trait_evolution.qmd) explores how stratigraphic effects changes patterns of phenotypic evolution (45 min).
+-   [**Trait Evolution**](trait_evol.qmd) explores how stratigraphic effects changes patterns of phenotypic evolution (45 min).
 
 -   [**Event Data**](event_data.qmd) discusses how data such as fossil abundance or last occurrences are modified by ecological, taphonomic, and stratigraphic effects (45 min).
 
