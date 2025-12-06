@@ -7,6 +7,20 @@ bibliography: refs/refs.bib
 
 ## Introduction
 
+## Learning Objectives
+
+By the end of this workshop, you will be able to
+
+1\. build age-depth models to quantify stratigraphic incompleteness and hiatus distributions across depositional environments,
+
+2\. simulate and analyze different modes of trait evolution (stasis, random walk, and Ornstein-Uhlenbeck processes) and identify how stratigraphy affects their expression in the fossil record,
+
+3\. model ecological niche preferences and understand how environmental gradients control fossil abundance patterns, and
+
+4\. simulate last occurrence data to recognize how stratigraphic phenomena like hiatuses and condensation surfaces can create artifactual "mass extinction" signals.
+
+You will develop proficiency in using R's pipe operator `|>` to build reproducible, modular analysis workflows that combine the `StratPal` and `admtools` packages.
+
 ## Structure
 
 The webpage and workshop is structured as follows:
