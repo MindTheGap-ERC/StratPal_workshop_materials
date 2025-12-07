@@ -82,6 +82,12 @@ plot(x, my_niche(x),
 
 To apply a niche model, we need two components: A niche definition that specifies the niche of a taxon along a cline (water depth in this example - this is the function we defined above), and a function that describes how the cline changes with time.
 
+::: callout-tip
+## Cline
+
+A cline is an environmental gradient, e.g. altitude is a cline important for plant diversity. Ecological niches are often defined in terms of distributions of occurrence probability along a cline.
+:::
+
 To define a function that returns the water depth with time, you can use the following code:
 
 ```{r}
@@ -161,7 +167,7 @@ Simulate last occurrences based on the assumption of a constant rate of last occ
 
 Where do you observe clusters of last occurrences?\
 With what stratigraphic effects are these locations associated?\
-How would you misinterpret the results in the absence of stratigraphic information? \
+How would you misinterpret the results in the absence of stratigraphic information?\
 Use your results to formulate a "stratigraphic null hypothesis" for clusters of last occurrences.
 :::
 
@@ -179,9 +185,13 @@ How do your results change when you add a niche model to your code?
 ::: {.callout-note collapse="true"}
 ### Solution Task 1
 
-1.  Simulate an abundant taxon, and transform the fossil ages into the stratigraphic domain.
-    -   At which locations and stratigraphic heights do you observe peaks in fossil abundance?\
-    -   With which stratigraphic effects are these peaks associated?
+Simulate an abundant taxon, and transform the fossil ages into the stratigraphic domain.
+
+```         
+-   At which locations and stratigraphic heights do you observe peaks in fossil abundance?
+
+-   With which stratigraphic effects are these peaks associated?
+```
 
 ```{r}
 
@@ -214,9 +224,7 @@ In the slope sections (10 and 12 km), there are peaks in fossil abundance associ
 ::: {.callout-note collapse="true"}
 ### Solution Task 2
 
-2.  Define a niche for a taxon, and add the niche model to your pipeline.
-    -   How and why do your results change?
-    -   How could you misinterpret the results?
+Define a niche for a taxon, and add the niche model to your pipeline. - How and why do your results change? - How could you misinterpret the results?
 
 ```{r}
 pos = "8km"              # select position on the platform
@@ -254,17 +262,21 @@ p3(rate = rate, from = min_time(adm), to = max_time(adm)) |>         # model occ
        breaks = seq(from = min_height(adm), to = max_height(adm), length.out = 40))
 ```
 
-Depending on the preferred water depth and tolerance to water depth changes, it can appear as if the taxon goes extinct because fossil abundance drops to 0. However, this is because the taxon tracks its niche, and there is a systematic change in water depth with time.\
+Depending on the preferred water depth and tolerance to water depth changes, it can appear as if the taxon goes extinct because fossil abundance drops to 0. However, this is because the taxon tracks its niche, and there is a systematic change in water depth with time.
+
 For example, the water depth on the platform decreases with time, as the carbonate production rate outpaces the subsidence. As a result, taxa with low tolerance to shallow water will vanish over time from the platform top. Conversely, the water depth on the slope increase with time. This leads to the local extinction (extirpation) of shallow water taxa on the slope as time progresses. However, this local extinction does not mean that the taxon is extinct, just that the environment at that location became unfavorable for it. Without the ability to examine multiple sections in the samples, this might be mistaken as a true extinction event.
 :::
 
 ::: {.callout-note collapse="true"}
 ### Solution Task 3
 
-3.  Simulate last occurrences based on the assumption of a constant rate of last occurrences and transform them into the stratigraphic domain.
-    -   Where do you observe clusters of last occurrences?\
-    -   With what stratigraphic effects are these locations associated?\
-    -   How would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a "stratigraphic null hypothesis" for clusters of last occurrences.
+Simulate last occurrences based on the assumption of a constant rate of last occurrences and transform them into the stratigraphic domain
+
+-   Where do you observe clusters of last occurrences?
+
+-   With what stratigraphic effects are these locations associated?
+
+-   How would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a "stratigraphic null hypothesis" for clusters of last occurrences.
 
 ```{r}
 pos = "2km"               # position along the onshore-offshore gradient
@@ -281,8 +293,10 @@ p3(from = min_time(adm), to = max_time(adm), rate = rate) |>
        main = paste0(" # Last occurrences ", pos, " from shore"))
 ```
 
-On the platform, the clusters are associated with prolonged hiatuses, caused by drops in sea level. On the slope, the clusters are associated with intervals of stratigraphic condensation (low sedimentation rate), also caused by drops in sea level.\
-In the absence of stratigraphic information, these clusters could be misinterpreted as extinction intervals, as there is an elevated rate of last occurrences. If information on sea level change is available, this could be misinterpreted as a causal relationship between sea level and extinction rate, where drops in sea level increase extinction rates.\
+On the platform, the clusters are associated with prolonged hiatuses, caused by drops in sea level. On the slope, the clusters are associated with intervals of stratigraphic condensation (low sedimentation rate), also caused by drops in sea level.
+
+In the absence of stratigraphic information, these clusters could be misinterpreted as extinction intervals, as there is an elevated rate of last occurrences. If information on sea level change is available, this could be misinterpreted as a causal relationship between sea level and extinction rate, where drops in sea level increase extinction rates.
+
 A stratigraphic null hypothesis might be that times of dropping sea level cause hiatuses (close to shore) and condensation (on the slope), which lead apparent elevated extinction rates.
 :::
 
