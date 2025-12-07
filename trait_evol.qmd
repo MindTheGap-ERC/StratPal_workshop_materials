@@ -25,7 +25,7 @@ This practical explores how trait evolution is influenced by stratigraphic archi
 
 ### Modes of evolution in the time domain
 
-There are three different modes of evolution implemented in the `StratPal` package: `stasis`, `random_walk`, and `ornstein_uhlenbeck`. You can plot them using piping via
+There are three modes of evolution implemented in the `StratPal` package: `stasis`, `random_walk`, and `ornstein_uhlenbeck`. You can plot them using piping via
 
 ```{r}
 library(StratPal)
@@ -45,7 +45,7 @@ seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where
 
 ```
 
-To plot other modes, replace `random_walk` by one of the other modes (`stasis` or `ornstein_uhlenbeck`).
+To plot other modes, replace `random_walk` by one of the other modes (`stasis` or `ornstein_uhlenbeck`). If you use stasis, remove the unused arguments - this mode of evolution is simulated using fewer parameters than the others.
 
 ### Transforming trait evolution into the stratigraphic domain
 
@@ -66,7 +66,7 @@ This will transform your simulations from the time domain into the stratigraphic
 
 ### Model selection using the paleoTS package
 
-To work with model selection, we need to simulate traits of individual specimems, not just means of populations. This is indicated by using the suffix `_sl` (for "specimen level") in the simulation.
+To work with model selection, we need to simulate traits of individuals, not just means of populations. This is indicated by using the suffix `_sl` (for "specimen level") in the simulation.
 
 ```{r}
 library(paleoTS)
@@ -90,6 +90,8 @@ seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where
   fit4models()
 ```
 
+See `?fit4models` to understand the output; more information can be found in [@hunt2006].
+
 ## Tasks
 
 You can also solve the first two tasks interactively using [DarwinCAT](https://utrecht-university.shinyapps.io/DarwinCAT/).
@@ -97,7 +99,7 @@ You can also solve the first two tasks interactively using [DarwinCAT](https://u
 ::: callout-important
 ### Task 1: Trait evolution in the time domain
 
-Plot the different modes of evolution in the time domain.
+Plot the three modes of evolution in the time domain, varying the parameters.
 
 What is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times)?\
 What is the biological meaning of the model parameters?
@@ -106,9 +108,9 @@ What is the biological meaning of the model parameters?
 ::: callout-important
 ### Task 2: Stratigraphic effects on trait evolution
 
-Transform the different modes of evolution into the stratigraphic domain and plot them.
+Transform the modes of evolution you simulated in the previous step into the stratigraphic domain and plot them.
 
-Which modes are most/least affected by stratigraphic biases?\
+Which modes are the most/least affected by stratigraphic biases?\
 Do you see any systematic changes?
 :::
 

@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -222,7 +242,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="coding-cheat-sheet">Coding cheat sheet</h2>
 <section id="modes-of-evolution-in-the-time-domain" class="level3">
 <h3 class="anchored" data-anchor-id="modes-of-evolution-in-the-time-domain">Modes of evolution in the time domain</h3>
-<p>There are three different modes of evolution implemented in the <code>StratPal</code> package: <code>stasis</code>, <code>random_walk</code>, and <code>ornstein_uhlenbeck</code>. You can plot them using piping via</p>
+<p>There are three modes of evolution implemented in the <code>StratPal</code> package: <code>stasis</code>, <code>random_walk</code>, and <code>ornstein_uhlenbeck</code>. You can plot them using piping via</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(StratPal)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(admtools)</span>
@@ -245,7 +265,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>To plot other modes, replace <code>random_walk</code> by one of the other modes (<code>stasis</code> or <code>ornstein_uhlenbeck</code>).</p>
+<p>To plot other modes, replace <code>random_walk</code> by one of the other modes (<code>stasis</code> or <code>ornstein_uhlenbeck</code>). If you use stasis, remove the unused arguments - this mode of evolution is simulated using fewer parameters than the others.</p>
 </section>
 <section id="transforming-trait-evolution-into-the-stratigraphic-domain" class="level3">
 <h3 class="anchored" data-anchor-id="transforming-trait-evolution-into-the-stratigraphic-domain">Transforming trait evolution into the stratigraphic domain</h3>
@@ -271,7 +291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="model-selection-using-the-paleots-package" class="level3">
 <h3 class="anchored" data-anchor-id="model-selection-using-the-paleots-package">Model selection using the paleoTS package</h3>
-<p>To work with model selection, we need to simulate traits of individual specimems, not just means of populations. This is indicated by using the suffix <code>_sl</code> (for “specimen level”) in the simulation.</p>
+<p>To work with model selection, we need to simulate traits of individuals, not just means of populations. This is indicated by using the suffix <code>_sl</code> (for “specimen level”) in the simulation.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paleoTS)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>temp_res <span class="ot">=</span> <span class="fl">0.001</span>                                              <span class="co"># temporal resolution in Myr</span></span>
@@ -313,6 +333,7 @@ Stasis        -432.5207 2  869.1021  422.610171     0.000
 StrictStasis -4191.1228 1 8384.2658 7937.773865     0.000</code></pre>
 </div>
 </div>
+<p>See <code>?fit4models</code> to understand the output; more information can be found in <span class="citation" data-cites="hunt2006">(<a href="#ref-hunt2006" role="doc-biblioref">Hunt and G. 2006</a>)</span>.</p>
 </section>
 </section>
 <section id="tasks" class="level2">
@@ -328,7 +349,7 @@ StrictStasis -4191.1228 1 8384.2658 7937.773865     0.000</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Plot the different modes of evolution in the time domain.</p>
+<p>Plot the three modes of evolution in the time domain, varying the parameters.</p>
 <p>What is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times)?<br>
 What is the biological meaning of the model parameters?</p>
 </div>
@@ -343,8 +364,8 @@ What is the biological meaning of the model parameters?</p>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Transform the different modes of evolution into the stratigraphic domain and plot them.</p>
-<p>Which modes are most/least affected by stratigraphic biases?<br>
+<p>Transform the modes of evolution you simulated in the previous step into the stratigraphic domain and plot them.</p>
+<p>Which modes are the most/least affected by stratigraphic biases?<br>
 Do you see any systematic changes?</p>
 </div>
 </div>
@@ -585,9 +606,14 @@ GRW-Stasis    -12.74023 6  43.48046   0.000000     0.897</code></pre>
 </div>
 
 
+
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-hunt2006" class="csl-entry" role="listitem">
+Hunt, and G. 2006. <span>“Fitting and Comparing Models of Phyletic Evolution: Random Walks and Beyond.”</span> <em>Paleobiology</em> 32 (4): –23. <a href="https://doi.org/10.1666/05070.1">https://doi.org/10.1666/05070.1</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
