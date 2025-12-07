@@ -74,7 +74,7 @@ Here you find a list of useful functions and code snippets that you can use to s
 
 ### Getting help
 
-To find the documentation of a function, prepend its name with a question mark and execute it in the console (e.g., `?random_walk)`. The help pages are also available on the package webpage (mindthegap-erc.github.io/StratPal/) under "Reference".Long form documentation (vignettes) can be found on the webpage under "Articles" or via `browseVignettes("StratPal")`.
+To find the documentation of a function, prepend its name with a question mark and execute it in the console (e.g., `?random_walk)`. The help pages are also available on the package webpage ([mindthegap-erc.github.io/StratPal/](https://mindthegap-erc.github.io/StratPal/)) under "[Reference](https://mindthegap-erc.github.io/StratPal/reference/index.html)". Long form documentation (vignettes) can be found on [the webpage](https://mindthegap-erc.github.io/StratPal/) under "Articles" or via `browseVignettes("StratPal")`.
 
 ### Loading the package and data
 
@@ -129,6 +129,8 @@ get_hiat_duration(adm)   # extract hiatus durations
 summary(adm)             # some summary statistics
 ```
 
+**Stratigraphic completeness** is the proportion of deposition time represented in the geological section. Here it is calculated per stratigraphic column (1 D section), but it can also be expressed per a horizontal section (slice, 2 D) or basin (3 D).
+
 You can find a comprehensive list of functions that extract information from age-depth models [here](https://mindthegap-erc.github.io/admtools/articles/admtools_doc.html#s3-class-adm).
 
 ### Extracting water depth
@@ -152,9 +154,9 @@ plot(x = t,
 ::: callout-important
 ### Task 1: Getting to know age-depth models
 
-Define age-depth models for different locations along the onshore-offshore gradient, and plot them.
+Define age-depth models for different locations (e.g., 4 km, 6 km etc) along the onshore-offshore gradient, and plot them.
 
-How do they connect to the chronostratigraphic diagram and the sea level curve shows below?
+How do they connect to the chronostratigraphic diagram and the sea level curve show above?
 :::
 
 ::: callout-important
@@ -166,7 +168,7 @@ Examine how stratigraphic incompleteness and the number of hiatuses changes alon
 ::: callout-important
 ### Task 3: Hiatus duration and water depth
 
-Generate histograms of hiatus durations and plots of water depth at the different distances from shore.
+Generate histograms of hiatus durations and plots of water depth at different distances from shore.
 
 Do you see any systematic changes?
 :::
