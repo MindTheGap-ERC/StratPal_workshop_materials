@@ -2,9 +2,8 @@
 title: "Event Data and Niche Modeling"
 format: html
 editor: visual
+bibliography: refs/refs.bib
 ---
-
-TODO: \* write introduction \* match examples to new data \[to be done on Wed!\] \* write solution & code snippet for range offset
 
 ## Fossil occurrences, niche modeling and last occurrences (45 min)
 
@@ -17,13 +16,21 @@ In this practical, we explore niche models, and how you can build your own mass 
 
 ## Introduction
 
+A classic question in Stratigraphic Paleobiology is how stratigraphic architectures shape where we can find fossils, how abundant they are, and how this changes our understanding of origination and extinction events.
+
+For computational simplicity, here we group first/last occurrences of a group of taxa and fossil occurrences of a single taxon together and refer to them as "event type data", which is similarily transformed by stratigraphic effects [@hohmann_stratpal_mee_2025].
+
+Event type data encompasses all types of data that are a loose, unordered collection of events that are associated with a time/age or a stratigraphic position. As such, sampling locations, times of extinctions, and sequence stratigraphic boundaries are all examples of event type data.
+
+For this practical, we focus on the most relevant event type data for paleontologists, which is fossil abundance and the derived first and last occurrences. We explore how stratigraphic and ecological effects change fossil abundance, how stratigraphic architectures generate artefactual peaks of last occurrences that can be mistaken for mass extinctions, and explore some implications for geochronology, more specifically the precision of biostratigraphy.
+
 ## Coding cheat sheet
 
 ### Simulating fossil occurrences
 
 Fossil locations or ages can be simulated using the `p3` function if the rate of fossil occurrences is constant:
 
-```{r}
+```{r event_data_1}
 library(StratPal)
 library(admtools)
 pos = "2km"
@@ -44,7 +51,7 @@ For time-variable rates see `p3_var_rate`.
 
 You can transform fossil ages directly using `time_to_strat`:
 
-```{r}
+```{r event_data_fossil_age_transformation}
 foss_per_myr = 300                                                           # fossils per Myr
 p3(rate = foss_per_myr, from = min_time(adm), to = max_time(adm)) |>         # constant rate in time domain
   time_to_strat(adm, destructive = TRUE) |>                                  # transform into depth domain
@@ -60,7 +67,7 @@ Note the option `destructive = TRUE` for `time_to_strat`. It makes sure fossils 
 
 You can define simple niche models with the functions `snp_niche` or `bounded_niche`:
 
-```{r}
+```{r event_data_define_niche}
 my_niche = snd_niche(opt = 10,       # preferred water depth 
                      tol = 5,        # tolerance to water depth fluctuations
                      cutoff_val = 0) # cut off negative values - the taxon does not survive on land
@@ -68,7 +75,7 @@ my_niche = snd_niche(opt = 10,       # preferred water depth
 
 To visualize the niche you can plot it using the following code:
 
-```{r}
+```{r event_data_plot_niche}
 max_wd = 60                                     # maximum water depth
 x = seq(-2, max_wd, by = 0.1)
 plot(x, my_niche(x),
@@ -83,14 +90,14 @@ plot(x, my_niche(x),
 To apply a niche model, we need two components: A niche definition that specifies the niche of a taxon along a cline (water depth in this example - this is the function we defined above), and a function that describes how the cline changes with time.
 
 ::: callout-tip
-## Cline
+### Cline
 
 A cline is an environmental gradient, e.g. altitude is a cline important for plant diversity. Ecological niches are often defined in terms of distributions of occurrence probability along a cline.
 :::
 
 To define a function that returns the water depth with time, you can use the following code:
 
-```{r}
+```{r event_data_def_water_depth}
 pos = "2km"                 # position in the platform we want water depth from
 t = scenarioA$t_myr         # time steps where water depth is determined by the model
 wd = scenarioA$wd_m[,pos]   # water depth 2 km from shore
@@ -99,7 +106,7 @@ gc = approxfun(t, wd)       # use linear interpolation between known water depth
 
 You can visualize this function using the following code:
 
-```{r}
+```{r event_data_plot_water_depth}
 plot(x = t,
      y = gc(t), 
      type = "l", 
@@ -110,7 +117,7 @@ plot(x = t,
 
 With both components (niche definition and cline change with time) defined, you can insert the niche model into the modeling pipeline via the function `apply_niche`:
 
-```{r}
+```{r event_data_apply_niche}
 p3(rate = foss_per_myr, from = min_time(adm), to = max_time(adm)) |>         # model occurrences based on constant rate
   apply_niche(niche_def = my_niche, gc = gc) |>                              # apply niche model
   time_to_strat(adm, destructive = TRUE) |>                                  # transform into strat. domain, destroy fossils that coincide with hiatuses 
@@ -124,7 +131,7 @@ p3(rate = foss_per_myr, from = min_time(adm), to = max_time(adm)) |>         # m
 
 Timing of last occurrences can be simulated using `p3` or `p3_var_rate` just as fossil occurrence (or any other type of "event" data). They can be transformed using `time_to_strat`:
 
-```{r}
+```{r event_data_last_occ}
 rolo = 100                                                               # rate of last occurrences [per Myr]
 p3(rate = rolo, from = min_time(adm), to = max_time(adm)) |>             # constant rate of last occ
   time_to_strat(adm, destructive = FALSE) |>                             # non-destructive transformation!
@@ -138,12 +145,23 @@ Note that we use the option `destructive = FALSE` in `time_to_strat`. This is be
 
 ### Biostratigraphic precision (range offset)
 
-TBA
+Biostratigraphic precision is expressed as *range offset*, which is the difference between the true time of extinction and the last occurrence of a taxon. To determine it, you can use the wrapper function `range_offset`:
+
+```{r event_data_range_offset}
+t_ext = 1.5 # true time of extinction
+rate = 10 # fossil abundance (per Myr)
+r_offset = range_offset(t_ext = t_ext,
+             rate = rate,
+             adm = adm)
+r_offset
+```
+
+This determines the range offset both in the stratigraphic domain (height difference between the last fossil found and the extinction horizon) and the time domain (time difference between the true age of extinction and the last preserved fossil). Here the stratigraphic range offset is `r round(r_offset["h"], 2)` meters and the temporal range offset is `r round(r_offset["t"], 2)` Myr. See `?range_offset` for advanced usage, which includes the incorporation of variable rates, taphonomy, and ecology.
 
 ## Tasks
 
 ::: callout-important
-### Task 1: Fossil abundance in the stratigraphic domain
+### Task 3.1: Fossil abundance in the stratigraphic domain
 
 Simulate an abundant taxon, and transform the fossil ages into the stratigraphic domain.
 
@@ -152,7 +170,7 @@ With which stratigraphic effects are these peaks associated?
 :::
 
 ::: callout-important
-### Task 2: Ecological controls on fossil abundance
+### Task 3.2: Ecological controls on fossil abundance
 
 Define a niche for a taxon, and add the niche model to your pipeline.
 
@@ -161,7 +179,7 @@ How could you misinterpret the results?
 :::
 
 ::: callout-important
-### Task 3: Last occurrences and artefactual mass extinctions
+### Task 3.3: Last occurrences and artefactual mass extinctions
 
 Simulate last occurrences based on the assumption of a constant rate of last occurrences and transform them into the stratigraphic domain.
 
@@ -172,9 +190,9 @@ Use your results to formulate a "stratigraphic null hypothesis" for clusters of 
 :::
 
 ::: callout-important
-### Task 4: Biostratigraphic precision and range offset
+### Task 3.4: Biostratigraphic precision and range offset
 
-Explore how range offset changes with the true time of extinction and fossil abundance.
+Explore how range offset changes with the true time of extinction, fossil abundance, and position along shore.
 
 Where and why is biostratigraphic precision best/worst?\
 How do your results change when you add a niche model to your code?
@@ -183,17 +201,15 @@ How do your results change when you add a niche model to your code?
 ## Solutions
 
 ::: {.callout-note collapse="true"}
-### Solution Task 1
+### Solution Task 3.1: Fossil abundance in the stratigraphic domain.
 
 Simulate an abundant taxon, and transform the fossil ages into the stratigraphic domain.
 
-```         
--   At which locations and stratigraphic heights do you observe peaks in fossil abundance?
+At which locations and stratigraphic heights do you observe peaks in fossil abundance?With which stratigraphic effects are these peaks associated?
 
--   With which stratigraphic effects are these peaks associated?
-```
+We start by collecting all age-depth models for convenience.
 
-```{r}
+```{r task_3_1_solution_fossil_abundance}
 
 adm_list = list()                                     # storage for age-depth models
 dist = paste(seq(2, 12, by = 2), "km", sep = "")      # distances from shore
@@ -205,10 +221,10 @@ for (pos in dist){                                    # construct ADMs for all d
 }
 
 
-pos = "2km"              # position in the platform, to modify
+pos = "12km"              # position in the platform, to modify
 stopifnot(pos %in% dist) # validity check
 adm = adm_list[[pos]]    # select ADM
-rate = 200               # fossil occurrences per Myr
+rate = 2000               # fossil occurrences per Myr
 sampl_bin = 2            # sampling bins in m
 # Plot fossil abundance in the section
 p3(from = min_time(adm), to = max_time(adm), rate = rate) |>
@@ -218,16 +234,16 @@ p3(from = min_time(adm), to = max_time(adm), rate = rate) |>
        main = paste0("Fossil abundance ", pos, " from shore"))
 ```
 
-In the slope sections (10 and 12 km), there are peaks in fossil abundance associated with the intervals with stratigraphic condensation, which are coeval to drops in sea level. These peaks are not visible on the platform top. This is because here the sea level drops result in hiatuses, which destroys the fossils (as specified by the option `destructive = TRUE`).
+The constant fossil abundance in the time domain is expressed as irregular patterns in the stratigraphic domain, with increased irregularity when the number of simulated fossils (rate) is low. Peaks in fossil abundance correspond to decreased sediment accumulation as accomodation space is rapidly filled when the platform is flooded. Notably, hiatuses do not cause any peaks in fossil abundance, as we specified that fossils coindicing with gaps will be destroyed (option `destructive = TRUE`).
 :::
 
 ::: {.callout-note collapse="true"}
-### Solution Task 2
+### Solution Task 3.2: Ecological controls on fossil abundance.
 
 Define a niche for a taxon, and add the niche model to your pipeline. - How and why do your results change? - How could you misinterpret the results?
 
-```{r}
-pos = "8km"              # select position on the platform
+```{r task_3_2_solution_ecology}
+pos = "2km"              # select position on the platform
 stopifnot(pos %in% dist) # check validity
 adm = adm_list[[pos]]    # select age-depth model
 rate = 200               # no. of fossils per Myr
@@ -268,7 +284,7 @@ For example, the water depth on the platform decreases with time, as the carbona
 :::
 
 ::: {.callout-note collapse="true"}
-### Solution Task 3
+### Solution Task 3.3: Last occurrences and artefactual mass extinctions
 
 Simulate last occurrences based on the assumption of a constant rate of last occurrences and transform them into the stratigraphic domain
 
@@ -278,7 +294,7 @@ Simulate last occurrences based on the assumption of a constant rate of last occ
 
 -   How would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a "stratigraphic null hypothesis" for clusters of last occurrences.
 
-```{r}
+```{r task_3_3_last_occ}
 pos = "2km"               # position along the onshore-offshore gradient
 stopifnot(pos %in% dist)  # validity check
 adm = adm_list[[pos]]     # select age-depth model
@@ -301,7 +317,46 @@ A stratigraphic null hypothesis might be that times of dropping sea level cause 
 :::
 
 ::: {.callout-note collapse="true"}
-### Solution Task 4
+### Solution Task 3.4: Biostratigraphic precision and range offset.
 
-TBA
+Explore how range offset changes with the true time of extinction, fossil abundance, and position along shore.
+
+Where and why is biostratigraphic precision best/worst?\
+How do your results change when you add a niche model to your code?
+
+To generate more simulations, we write a wrapper function that draws range offset 1000 times for any given parameter choice:
+
+```{r task_3_4_solution_range_offset}
+sample_range_offset = function(t_ext, rate, adm, n_rep = 1000){
+  t = rep(NA, n_rep)
+  h = rep(NA, n_rep)
+  for (i in 1:n_rep){
+    x = range_offset(t_ext = t_ext, rate = rate, adm = adm)
+    t[i] = x["t"]
+    h[i] = x["h"]
+  }
+  return(list(t = t, h = h))
+}
+adm = adm_list[["2km"]]
+t_ext = 1.5
+rate = 5
+
+range_offsets = sample_range_offset(t_ext, rate, adm)
+
+hist(range_offsets$h,
+     xlab = "Range offset [m]",
+     main = "Biostratigraphic precision/Stratigraphic range offset")
+
+hist(range_offsets$t,
+     xlab = "Range offset [Myr]",
+     main = "Biostratigraphic precision/Temporal range offset")
+```
+
+Running this code across the platform with varying rates and true extinction times, the following patterns emerge:
+
+-   Range offset increases as fossil abundance decreases - the fewer fossils there are to find the further the last observed occurrence will be from the true extinction, an effect called the Signor-Lipps effect [@signor1982]
+
+-   Temporal range offset is highest when the true extinction lies at the end of a gap. As a result, range offset is highest on the platform top in the presence of prolonged hiatuses caused by drops in sea level
+
+-   Adding niche models to the code does further increase the range offset (and, as a result, decrease stratigraphic precision) as it further decreases fossil abundance, and adds extirpation effects to range offset.
 :::
