@@ -251,7 +251,7 @@ div.csl-indent {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="strat_architecture_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="strat_architecture_files/figure-html/strat_architecture_sl_example -1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -262,12 +262,12 @@ div.csl-indent {
 </section>
 <section id="age-depth-models" class="level3">
 <h3 class="anchored" data-anchor-id="age-depth-models">Age-Depth Models</h3>
-<p>A core concept we use are age-depth models: The translate information between the stratigraphic domain (SI units m) where we make our observations and the time domain (SI units s or derived units such as Myr) where the biotic change we are interested is happening.</p>
+<p>A core concept we use are age-depth models: The translate information between the stratigraphic domain (SI units <em>m</em>) where we make our observations and the time domain (SI units <em>s</em> or derived units such as <em>Myr</em>) where the biotic change we are interested is happening.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="strat_architecture_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="strat_architecture_files/figure-html/strat_architecture_adm_example-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -321,7 +321,7 @@ div.csl-indent {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="strat_architecture_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -362,7 +362,7 @@ Stratigraphic completeness: 34.9 %
 </section>
 <section id="extracting-water-depth" class="level3">
 <h3 class="anchored" data-anchor-id="extracting-water-depth">Extracting water depth</h3>
-<p>Water depth at the simulation runs is stored in the variable <code>scenarionA</code></p>
+<p>Water depth at the simulation runs is stored in the variable <code>scenarioA$wd_m</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>wd <span class="ot">=</span> scenarioA<span class="sc">$</span>wd_m[,<span class="st">"2km"</span>]</span>
@@ -376,7 +376,7 @@ Stratigraphic completeness: 34.9 %
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="strat_architecture_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -391,7 +391,7 @@ Stratigraphic completeness: 34.9 %
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Task 1: Getting to know age-depth models
+Task 1.1: Getting to know age-depth models
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -405,7 +405,7 @@ Task 1: Getting to know age-depth models
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Task 2: Incompleteness across the onshore-offshore gradient
+Task 1.2: Incompleteness across the onshore-offshore gradient
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -418,7 +418,7 @@ Task 2: Incompleteness across the onshore-offshore gradient
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Task 3: Hiatus duration and water depth
+Task 1.3: Hiatus duration and water depth
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -435,12 +435,14 @@ Task 3: Hiatus duration and water depth
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution Task 1: Getting to know age-depth models
+Solution Task 1.1: Getting to know age-depth models
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
+<p>Define age-depth models for different locations (e.g., 4 km, 6 km etc) along the onshore-offshore gradient, and plot them.</p>
+<p>How do they connect to the chronostratigraphic diagram and the sea level curve show above?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"admtools"</span>)</span>
@@ -478,9 +480,7 @@ Solution Task 1: Getting to know age-depth models
 </div>
 </div>
 </div>
-<p>Age-depth models closer to shore cover a thicker stratigraphic height (up to 150 m) and those further offshore are shorter (a few 10s of meters). This is because sediment accumulation is much higher on the platform top (2-8 km) compared to the proximal (10 km) and distal (12 km) slope.</p>
-<p><br>
-Age-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic (Wheeler) diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous. Times of low sediment accumulation correspond to intervals of low sea level, and are due to lowstand shedding from the platform edge. This generates intervals with sedimentary condensation (low sedimentation rate), expressed by near-horizontal segments in the age-depth models.</p>
+<p>Age-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic (Wheeler) diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous due to continuous depostion from the aphotic carbonate factory.</p>
 </div>
 </div>
 </div>
@@ -490,14 +490,13 @@ Age-depth models on the platform have a few long hiatuses that are represented a
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution Task 2: Incompleteness across the onshore-offshore gradient
+Solution Task 1.2: Incompleteness across the onshore-offshore gradient
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Question:<br>
-2. Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.</p>
+<p>Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>inc <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(dist))             <span class="co"># storage for incompleteness</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>nhiat <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(dist))           <span class="co"># storage for number of hiatuses</span></span>
@@ -520,7 +519,7 @@ Solution Task 2: Incompleteness across the onshore-offshore gradient
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="strat_architecture_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -532,12 +531,12 @@ Solution Task 2: Incompleteness across the onshore-offshore gradient
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="strat_architecture_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Incompleteness is highest in the onshore sections (more than 60 %), and decreases with distance from shore to values of around 30 % in the proximal slope. Note that this differs from Figure 4 in <span class="citation" data-cites="hohmann_identification_2024">Hohmann et al. (<a href="#ref-hohmann_identification_2024" role="doc-biblioref">2024</a>)</span>, as we are examining incompleteness on a coarser spatial scale.</p>
+<p>Incompleteness is highest in the onshore sections (more than 60 %), and drops with distance from shore to values of around 10 % in the proximal slope. Note that this differs from Figure 4 in <span class="citation" data-cites="hohmann_identification_2024">Hohmann et al. (<a href="#ref-hohmann_identification_2024" role="doc-biblioref">2024</a>)</span>, as we are examining incompleteness on a coarser spatial scale.</p>
 <p>The number of hiatuses is low on the platform top (8 hiatuses at 2 - 6 km), with the highest values (16) on the platform edge (8 km). On the proximal slope, there are 12 hiatuses and the number drops to 0 in the distal slope, reflecting that this environment is less affected by sea-level fluctuations.</p>
 <p>The hiatuses in the platform interior are generated by long intervals of low sea level, which exposes the platform top. The high number of hiatuses in the slope results from the fact that steep topography records sea-level fluctuations much more than flat topography. The distal slope is below the range of the sea-level fluctuations, so it does not undergo non-deposition or breaks in carbonate production, it is only affected by changes in low carbonate production of the aphotic factory and varying input from the platform top.</p>
 </div>
@@ -549,7 +548,7 @@ Solution Task 2: Incompleteness across the onshore-offshore gradient
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution Task 3: Hiatus duration and water depth
+Solution Task 1.3: Hiatus duration and water depth
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -568,7 +567,7 @@ Solution Task 3: Hiatus duration and water depth
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="strat_architecture_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -585,7 +584,7 @@ Solution Task 3: Hiatus duration and water depth
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="strat_architecture_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -599,7 +598,7 @@ Solution Task 3: Hiatus duration and water depth
 </section>
 <section id="water-depth" class="level4">
 <h4 class="anchored" data-anchor-id="water-depth">Water depth</h4>
-<p>In the platform top (2 km), water depth is 0 for the largest part of the studied 1 Myr, with an initial flooding and two subsequent rises corresponding to the highest points of the first-order sea-level cycles.</p>
+<p>In the platform top (2 km), water depth is 0 for the largest part of the studied 2 Myr, with an initial flooding and two subsequent rises corresponding to the highest points of the first-order sea-level cycles.</p>
 <p>On the platform edge (8 km), the water depth reaches a maximum of 30 m in the initial flooding phase, but it is still emerged for a large part of the interval. The upper slope remains under water for all the time of the simulation, reflecting how different platform top and platform slopes are in terms of deposition.</p>
 <p>The strong cyclicity of the sea-level curve is still visible at 12 km offshore, where the water depth oscillates between 45 and 90 m.</p>
 </section>

@@ -26,7 +26,7 @@ The simulated carbonate platform consists of three carbonate producing factories
 
 The tree factories compete for space and propagate according to a cellular automaton as described in @burgess_2013. The simulation was run for 2 Myr in increments of 1 kyr. Platform growth is driven by a sinusoidal sea level curve consisting of third and fifth order sea level changes with a period of 1 and 0.112 Myr and an amplitude of 20 and 2 m, respectively.
 
-```{r, echo=FALSE}
+```{r strat_architecture_sl_example , echo=FALSE}
 library(StratPal)
 library(admtools)
 plot(x = scenarioA$t_myr, 
@@ -46,15 +46,16 @@ Note how the platform top is dominated by the euphotic and oligophotic facies (y
 
 ### Age-Depth Models
 
-A core concept we use are age-depth models: The translate information between the stratigraphic domain (SI units m) where we make our observations and the time domain (SI units s or derived units such as Myr) where the biotic change we are interested is happening.
+A core concept we use are age-depth models: The translate information between the stratigraphic domain (SI units *m*) where we make our observations and the time domain (SI units *s* or derived units such as *Myr*) where the biotic change we are interested is happening.
 
-```{r, echo=FALSE}
+```{r strat_architecture_adm_example, echo=FALSE}
 adm = tp_to_adm(t = scenarioA$t_myr, h = scenarioA$h_m[,"2km"],
                 T_unit = "Myr",
                 L_unit = "m")
 plot(adm, lty_destr = 0)
 T_axis_lab()
 L_axis_lab()
+title(main = "Age-depth model 2 km from shore")
 
 ```
 
@@ -132,7 +133,7 @@ You can find a comprehensive list of functions that extract information from age
 
 ### Extracting water depth
 
-Water depth at the simulation runs is stored in the variable `scenarionA`
+Water depth at the simulation runs is stored in the variable `scenarioA$wd_m`
 
 ```{r}
 pos = "2km"
@@ -149,7 +150,7 @@ plot(x = t,
 ## Tasks
 
 ::: callout-important
-### Task 1: Getting to know age-depth models
+### Task 1.1: Getting to know age-depth models
 
 Define age-depth models for different locations (e.g., 4 km, 6 km etc) along the onshore-offshore gradient, and plot them.
 
@@ -157,13 +158,13 @@ How do they connect to the chronostratigraphic diagram and the sea level curve s
 :::
 
 ::: callout-important
-### Task 2: Incompleteness across the onshore-offshore gradient
+### Task 1.2: Incompleteness across the onshore-offshore gradient
 
 Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.
 :::
 
 ::: callout-important
-### Task 3: Hiatus duration and water depth
+### Task 1.3: Hiatus duration and water depth
 
 Generate histograms of hiatus durations and plots of water depth at different distances from shore.
 
@@ -173,7 +174,11 @@ Do you see any systematic changes?
 ## Solutions
 
 ::: {.callout-note collapse="true"}
-### Solution Task 1: Getting to know age-depth models
+### Solution Task 1.1: Getting to know age-depth models
+
+Define age-depth models for different locations (e.g., 4 km, 6 km etc) along the onshore-offshore gradient, and plot them.
+
+How do they connect to the chronostratigraphic diagram and the sea level curve show above?
 
 ```{r define age-depth models}
 # load packages
@@ -208,17 +213,14 @@ L_axis_lab()              # add length axis label
 title(paste0("Age-depth model ", pos, " from shore"))
 ```
 
-Age-depth models closer to shore cover a thicker stratigraphic height (up to 150 m) and those further offshore are shorter (a few 10s of meters). This is because sediment accumulation is much higher on the platform top (2-8 km) compared to the proximal (10 km) and distal (12 km) slope.
-
-\
-Age-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic (Wheeler) diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous. Times of low sediment accumulation correspond to intervals of low sea level, and are due to lowstand shedding from the platform edge. This generates intervals with sedimentary condensation (low sedimentation rate), expressed by near-horizontal segments in the age-depth models.
+Age-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic (Wheeler) diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous due to continuous depostion from the aphotic carbonate factory.
 :::
 
 ::: {.callout-note collapse="true"}
-### Solution Task 2: Incompleteness across the onshore-offshore gradient
+### Solution Task 1.2: Incompleteness across the onshore-offshore gradient
 
-Question:\
-2. Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.
+Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.
+
 
 ```{r}
 inc = rep(NA, length(dist))             # storage for incompleteness
@@ -247,7 +249,7 @@ plot(p, nhiat,
      ylim = c(0, max(nhiat)))
 ```
 
-Incompleteness is highest in the onshore sections (more than 60 %), and decreases with distance from shore to values of around 30 % in the proximal slope. Note that this differs from Figure 4 in @hohmann_identification_2024, as we are examining incompleteness on a coarser spatial scale.
+Incompleteness is highest in the onshore sections (more than 60 %), and drops with distance from shore to values of around 10 % in the proximal slope. Note that this differs from Figure 4 in @hohmann_identification_2024, as we are examining incompleteness on a coarser spatial scale.
 
 The number of hiatuses is low on the platform top (8 hiatuses at 2 - 6 km), with the highest values (16) on the platform edge (8 km). On the proximal slope, there are 12 hiatuses and the number drops to 0 in the distal slope, reflecting that this environment is less affected by sea-level fluctuations.
 
@@ -255,7 +257,7 @@ The hiatuses in the platform interior are generated by long intervals of low sea
 :::
 
 ::: {.callout-note collapse="true"}
-### Solution Task 3: Hiatus duration and water depth
+### Solution Task 1.3: Hiatus duration and water depth
 
 Generate histograms of hiatus durations and plots of water depth at different distances from shore. Do you see any systematic changes?
 
@@ -280,6 +282,7 @@ hiatus_durations |>
   hist(xlab = "Hiatus duration [Myr]",
        main = paste0("Hiatus duration ", pos, " from shore"))
 ```
+
 #### Hiatus duration
 
 The distribution of hiatus durations in the platform interior is bimodal: it consists of two long hiatuses (caused by the prolonged drops in the sea level) and six shorter hiatuses generated by the lower-order sea level changes.
@@ -292,9 +295,9 @@ Note the disconnect between the number of hiatuses and incompleteness: Onshore s
 
 #### Water depth
 
-In the platform top (2 km), water depth is 0 for the largest part of the studied 1 Myr, with an initial flooding and two subsequent rises corresponding to the highest points of the first-order sea-level cycles.
+In the platform top (2 km), water depth is 0 for the largest part of the studied 2 Myr, with an initial flooding and two subsequent rises corresponding to the highest points of the first-order sea-level cycles.
 
-On the platform edge (8 km), the water depth reaches a maximum of 30 m in the initial flooding phase, but it is still emerged for a large part of the interval. The upper slope remains under water for all the time of the simulation, reflecting how different platform top and platform slopes are in terms of deposition. 
+On the platform edge (8 km), the water depth reaches a maximum of 30 m in the initial flooding phase, but it is still emerged for a large part of the interval. The upper slope remains under water for all the time of the simulation, reflecting how different platform top and platform slopes are in terms of deposition.
 
 The strong cyclicity of the sea-level curve is still visible at 12 km offshore, where the water depth oscillates between 45 and 90 m.
 :::
