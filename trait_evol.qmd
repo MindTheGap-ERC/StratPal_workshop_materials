@@ -8,14 +8,13 @@ bibliography: refs/refs.bib
 ToDo:
 
 -   write Intro
--   write solution for task 4
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 set.seed(15487)
 ```
 
-## Trait evolution in stratigraphic context
+## 2. Trait evolution in stratigraphic context
 
 This practical explores how trait evolution is influenced by stratigraphic architectures.
 
@@ -27,14 +26,14 @@ This practical explores how trait evolution is influenced by stratigraphic archi
 
 There are three modes of evolution implemented in the `StratPal` package: `stasis`, `random_walk`, and `ornstein_uhlenbeck`. You can plot them using piping via
 
-```{r}
+```{r models_evol_time_domain}
 library(StratPal)
 library(admtools)
 pos = "2km"
 adm = tp_to_adm(t = scenarioA$t_myr,        
-                             h = scenarioA$h_m[,pos],
-                             T_unit = "Myr",
-                             L_unit = "m")
+                h = scenarioA$h_m[,pos],
+                T_unit = "Myr",
+                L_unit = "m")
 temp_res = 0.001                                              # temporal resolution in Myr
 seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where the trait evolution is simulated
   random_walk(sigma = 1, mu = 0, y0 = 0) |>                   # simulate trait evolution
@@ -51,53 +50,56 @@ To plot other modes, replace `random_walk` by one of the other modes (`stasis` o
 
 To transform trait evolution into the stratigraphic domain, insert `time_to_strat` with the age-depth model of your choice into your pipeline:
 
-```{r}
+```{r models_evol_strat_domain}
 temp_res = 0.001                                              # temporal resolution in Myr
 seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where the trait evolution is simulated
   random_walk(sigma = 1, mu = 3, y0 = 0) |>                   # simulate trait evolution
   time_to_strat(adm, destructive = FALSE) |>                  # transform into stratigraphic domain
-  plot(xlab = paste0("Stratigraphic position [",get_L_unit(adm),"]"), # plot
-       ylab = "Trait value",
+  plot(ylab = paste0("Stratigraphic position [",get_L_unit(adm),"]"), # plot
+       xlab = "Trait value",
        type = "l",
-       orientation = "lr") 
+       orientation = "du") 
 ```
 
-This will transform your simulations from the time domain into the stratigraphic domain.
+This will transform your simulations from the time domain into the stratigraphic domain. We use the plotting option `orientation = "du"` to plot stratigraphic height on the y axis. Use `"lr"` to plot it on the x axis.
 
 ### Model selection using the paleoTS package
 
-To work with model selection, we need to simulate traits of individuals, not just means of populations. This is indicated by using the suffix `_sl` (for "specimen level") in the simulation.
+To work with model selection, we need to simulate traits of individuals, not just means of populations as we did above. This is indicated by using the suffix `_sl` (for "specimen level") in the simulation.
 
-```{r}
-library(paleoTS)
-temp_res = 0.001                                              # temporal resolution in Myr
+```{r paleoTS_sim}
+library(paleoTS) # load paleoTS package for model selection & plotting
+temp_res = 0.1                                             # temporal resolution in Myr
 seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where the trait evolution is simulated
-  random_walk_sl(sigma = 1, mu = 3, y0 = 0) |>                   # simulate trait evolution
+  random_walk_sl(sigma = 1, mu = 3, y0 = 0, intrapop_var = 1, n_per_sample = 5) |>                   # simulate trait evolution
   time_to_strat(adm, destructive = FALSE) |> 
-   reduce_to_paleoTS() |># transform into stratigraphic domain
+  reduce_to_paleoTS() |># transform into stratigraphic domain
   plot(xlab = paste0("Stratigraphic position [",get_L_unit(adm),"]"), # plot
        ylab = "Trait value") 
 ```
 
-see `?reduce_to_paleoTS` for details. We can then directly pass the results to the model selection options available in paleoTS:
+We use `reduce_to_paleoTS` to convert the specimen level simulations from `StratPal` to the sample level summaries used by `paleoTS`, see `?reduce_to_paleoTS` for details. We can then directly pass the results to the model selection options available in paleoTS (`fit3models`, `fit4models` and `fit9models`, see `paleoTS` for details):
 
-```{r}
-temp_res = 0.01                                              # temporal resolution in Myr
+```{r paleoTS_model_selection}
+temp_res = 0.1                                              # temporal resolution in Myr
+intrapop_var = 1 # trait variance per sampling location/ fossil assemblage
+n_per_sample = 5 # number of fossils found per sampling location / fossil assemblage
+
 seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where the trait evolution is simulated
-  random_walk_sl(sigma = 1, mu = 3, y0 = 0) |>                   # simulate trait evolution
+  random_walk_sl(sigma = 1, mu = 3, y0 = 0, intrapop_var = intrapop_var, n_per_sample = n_per_sample) |>                   # simulate trait evolution
   time_to_strat(adm, destructive = FALSE) |> 
-   reduce_to_paleoTS() |>
-  fit4models()
+  reduce_to_paleoTS() |>
+  fit9models()
 ```
 
-See `?fit4models` to understand the output; more information can be found in [@hunt2006].
+See `?fit4models` to understand the output and `fitSimple` to fit more specialized models; more information can be found in [@hunt2006].
 
 ## Tasks
 
-You can also solve the first two tasks interactively using [DarwinCAT](https://utrecht-university.shinyapps.io/DarwinCAT/).
+You can solve the first two tasks interactively using [DarwinCAT](https://utrecht-university.shinyapps.io/DarwinCAT/).
 
 ::: callout-important
-### Task 1: Trait evolution in the time domain
+### Task 2.1: Trait evolution in the time domain
 
 Plot the three modes of evolution in the time domain, varying the parameters.
 
@@ -106,7 +108,7 @@ What is the biological meaning of the model parameters?
 :::
 
 ::: callout-important
-### Task 2: Stratigraphic effects on trait evolution
+### Task 2.2: Stratigraphic effects on trait evolution
 
 Transform the modes of evolution you simulated in the previous step into the stratigraphic domain and plot them.
 
@@ -115,7 +117,7 @@ Do you see any systematic changes?
 :::
 
 ::: callout-important
-### Task 3: Model selection in the stratigraphic domain
+### Task 2.3: Model selection in the stratigraphic domain
 
 Run model selection on your simulations using the `paleoTS` package, and compare results from the time and the stratigraphic domain.
 
@@ -127,14 +129,15 @@ Do you see any systematic biases?
 You can also explore this topic interactively using [DarwinCAT](https://utrecht-university.shinyapps.io/DarwinCAT/).
 
 ::: {.callout-note collapse="true"}
-### Solution Task 1: Trait evolution in the time domain
+### Solution Task 2.1: Trait evolution in the time domain
 
-1.  Plot the different modes of evolution in the time domain.
+Plot the different modes of evolution in the time domain.
 
-    -   What is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times)?\
-    -   What is the biological meaning of the model parameters?
+What is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times)?\
+What is the biological meaning of the model parameters?
 
-```{r}
+```{r task_2_1_solution_stasis}
+# Stasis
 min_t = 0       # beginning observation [Myr]
 max_t = 2       # end observation [Myr]
 t_step = 0.01   # temporal resolution [Myr]
@@ -150,7 +153,8 @@ seq(from = min_t, to = max_t, by = t_step) |>
 
 For stasis, the `mean` parameter determines the mean trait value, and the `sd` (standard deviation) parameter determines the spread of trait values. Trait values at individual times are uncorrelated, so if the temporal resolution is increased, trait evolution appears more irregular.
 
-```{r}
+```{r task_2_1_solution_random_walk}
+# Random walk
 min_t = 0      # beginning observation [Myr]
 max_t = 2      # end observation [Myr]
 t_step = 0.01  # temporal resolution [Myr]
@@ -168,7 +172,8 @@ seq(from = min_t, to = max_t, by = t_step) |>
 For the random walk model, the `y0` parameter determines the initial trait value. The parameter `mu` determines the directionality, with positive (negative) values leading to increasing (decreasing) trait values with time. The `sigma` parameter determines the amount of randomness in the system, with larger values reflecting more randomness. Internal variability is high for larger values of `sigma`, meaning individual lineages simulated will differ a lot from each other.\
 Important endmembers are: `sigma` set to 0, trait evolution is purely deterministic and specified by `mu` and `y0`. If `mu` and `y0` are set to 0, trait evolution follows an unbiased random walk model. If `sigma` is set to 1, the model corresponds to a Brownian motion. For low values of `sigma` and `mu`, the random walk can be mistaken for stasis.
 
-```{r}
+```{r task_2_1_solution_OU}
+# Ornstein-Uhlenbeck
 min_t = 0      # beginning observation [Myr]
 max_t = 2      # end observation [Myr]
 t_step = 0.01  # temporal resolution [Myr]
@@ -196,15 +201,16 @@ Important endmembers of the OU model are:
 :::
 
 ::: {.callout-note collapse="true"}
-### Solution Task 2: Stratigraphic effects on trait evolution
+### Solution Task 2.2: Stratigraphic effects on trait evolution
 
-2.  Transform the different modes of evolution into the stratigraphic domain and plot them.
-    -   Which modes are most/least affected by stratigraphic biases?\
-    -   Do you see any systematic changes?
+Transform the different modes of evolution into the stratigraphic domain and plot them.
+
+Which modes are most/least affected by stratigraphic biases?\
+Do you see any systematic changes?
 
 Example code for the random walk model is provided. This can be expanded by replacing the random walk by stasis or the Ornstein-Uhlenbeck process.
 
-```{r}
+```{r task_2_2_solution_strat_effects}
 
 adm_list = list()                                     # storage for age-depth models
 dist = paste(seq(2, 12, by = 2), "km", sep = "")      # distances from shore
@@ -242,20 +248,45 @@ The effects are strongest if
 
 2.  There are long intervals of sedimentary condensation.
 
-As a result, stratigraphic biases are driven by maximum hiatus duration on the platform top, and driven by sedimentary condensation on the slope (see task on age-depth models). This effect is more pronounced the more directional evolution is.
+As a result, stratigraphic biases are driven by maximum hiatus duration on the platform top. This effect is more pronounced the more directional evolution is.
 :::
 
 ::: {.callout-note collapse="true"}
-### Solution Task 3: Model selection in the stratigraphic domain
+### Solution Task 2.3: Model selection in the stratigraphic domain
 
-TBA
+Run model selection on your simulation using the `paleoTS` package, and compare results from the time and the stratigraphic domain.
 
-```{r}
+Do you see any systematic biases?
+
+We run model selection both in the stratigraphic and time domain, fitting 9 models to the fossil time series. The example code performs this analysis for simulations under the random walk model, which can be changed out to the stasis or Ornstein-Uhlenbeck model.
+
+```{r task_2_3_solution_model_selection_time_domain}
+# time domain model selection
 temp_res = 0.1                                              # temporal resolution in Myr
-seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where the trait evolution is simulated
-  random_walk_sl(sigma = 1, mu = 3, y0 = 0) |>                   # simulate trait evolution
-  time_to_strat(adm, destructive = FALSE) |> 
-   reduce_to_paleoTS() |>
-  fit9models()
+intrapop_var = 1 # trait variance per sampling location/ fossil assemblage
+n_per_sample = 5 # number of fossils found per sampling location / fossil assemblage
+traits_time_domain = seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where the trait evolution is simulated
+  random_walk_sl(sigma = 1, mu = 3, y0 = 0, intrapop_var = intrapop_var, n_per_sample = n_per_sample) |>                   # simulate trait evolution
+  reduce_to_paleoTS() 
+plot(traits_time_domain, xlab = "Time [Myr]")
+traits_time_domain |> fit9models(pool = FALSE)
 ```
+
+```{r task_2_3_solution_model_selection_strat_domain}
+# stratigraphic domain model selection
+temp_res = 0.1                                              # temporal resolution in Myr
+traits_strat_domain = seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where the trait evolution is simulated
+  random_walk_sl(sigma = 1, mu = 3, y0 = 0, intrapop_var = intrapop_var, n_per_sample = n_per_sample) |>                   # simulate trait evolution
+  time_to_strat(adm, destructive = FALSE) |> 
+  reduce_to_paleoTS() 
+plot(traits_strat_domain, xlab = "Stratigraphic Position [m]")
+traits_strat_domain |> fit9models(pool = FALSE)
+```
+
+General observation are:
+
+-   Results are sensitive to randomness inherent in the randomness of the simulation, e.g., occasionally a random walk simulation will be identified as stasis even in the abscence of biases. This effect is additionally sensitive to parameters such as sample size and intrapopulation variance (`intrapop_var` `n_per_sample`), reducing the power of the procedure and potentially leading to "analytical stasis", where low statistical power favors the recovery of stasis [@hannisdal2006]
+-   Recovery of the correct (meaning, simulated) mode of evolution is better in the time domain, whereas model selection in the stratigraphic domain favors the recognition of punctuated modes of evolution [@hohmann_identification_2024]. This effect is strongest in the on the platform top, and disappears on the proximal slope as stratigraphic biases disappear.
+-   As in the visual comparison, stratigraphic effects are strongest the more directional the mode of evolution is, and disappear for stasis.
+-   Stratophenetic time series will thus favor both the recogniton of stasis and punctuated modes of evolution.
 :::
