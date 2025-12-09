@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -87,15 +87,14 @@ div.csl-indent {
 <meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-0b37c64f34216b628666a8dac638b53b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -135,8 +134,6 @@ div.csl-indent {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    </a>
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Modeling Stratigraphic Paleobiology in R</span>
     </a>
@@ -191,7 +188,7 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#trait-evolution-in-stratigraphic-context" id="toc-trait-evolution-in-stratigraphic-context" class="nav-link active" data-scroll-target="#trait-evolution-in-stratigraphic-context">Trait evolution in stratigraphic context</a></li>
+  <li><a href="#trait-evolution-in-stratigraphic-context" id="toc-trait-evolution-in-stratigraphic-context" class="nav-link active" data-scroll-target="#trait-evolution-in-stratigraphic-context">2. Trait evolution in stratigraphic context</a></li>
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#coding-cheat-sheet" id="toc-coding-cheat-sheet" class="nav-link" data-scroll-target="#coding-cheat-sheet">Coding cheat sheet</a>
   <ul class="collapse">
@@ -229,10 +226,9 @@ div.csl-indent {
 <p>ToDo:</p>
 <ul>
 <li>write Intro</li>
-<li>write solution for task 4</li>
 </ul>
 <section id="trait-evolution-in-stratigraphic-context" class="level2">
-<h2 class="anchored" data-anchor-id="trait-evolution-in-stratigraphic-context">Trait evolution in stratigraphic context</h2>
+<h2 class="anchored" data-anchor-id="trait-evolution-in-stratigraphic-context">2. Trait evolution in stratigraphic context</h2>
 <p>This practical explores how trait evolution is influenced by stratigraphic architectures.</p>
 </section>
 <section id="introduction" class="level2">
@@ -244,23 +240,23 @@ div.csl-indent {
 <h3 class="anchored" data-anchor-id="modes-of-evolution-in-the-time-domain">Modes of evolution in the time domain</h3>
 <p>There are three modes of evolution implemented in the <code>StratPal</code> package: <code>stasis</code>, <code>random_walk</code>, and <code>ornstein_uhlenbeck</code>. You can plot them using piping via</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(StratPal)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(StratPal)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(admtools)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">L_unit =</span> <span class="st">"m"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">L_unit =</span> <span class="st">"m"</span>)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>temp_res <span class="ot">=</span> <span class="fl">0.001</span>                                              <span class="co"># temporal resolution in Myr</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="fu">min_time</span>(adm), <span class="fu">max_time</span>(adm), <span class="at">by =</span> temp_res) <span class="sc">|&gt;</span>           <span class="co"># time steps where the trait evolution is simulated</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk</span>(<span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">mu =</span> <span class="dv">0</span>, <span class="at">y0 =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span>                   <span class="co"># simulate trait evolution</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">xlab =</span> <span class="fu">paste0</span>(<span class="st">"Time ["</span>,<span class="fu">get_T_unit</span>(adm),<span class="st">"]"</span>),           <span class="co"># plot</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"Trait value"</span>,</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">type =</span> <span class="st">"l"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">type =</span> <span class="st">"l"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="trait_evol_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="trait_evol_files/figure-html/models_evol_time_domain-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -271,81 +267,111 @@ div.csl-indent {
 <h3 class="anchored" data-anchor-id="transforming-trait-evolution-into-the-stratigraphic-domain">Transforming trait evolution into the stratigraphic domain</h3>
 <p>To transform trait evolution into the stratigraphic domain, insert <code>time_to_strat</code> with the age-depth model of your choice into your pipeline:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>temp_res <span class="ot">=</span> <span class="fl">0.001</span>                                              <span class="co"># temporal resolution in Myr</span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>temp_res <span class="ot">=</span> <span class="fl">0.001</span>                                              <span class="co"># temporal resolution in Myr</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="fu">min_time</span>(adm), <span class="fu">max_time</span>(adm), <span class="at">by =</span> temp_res) <span class="sc">|&gt;</span>           <span class="co"># time steps where the trait evolution is simulated</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk</span>(<span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">mu =</span> <span class="dv">3</span>, <span class="at">y0 =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span>                   <span class="co"># simulate trait evolution</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span>                  <span class="co"># transform into stratigraphic domain</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">xlab =</span> <span class="fu">paste0</span>(<span class="st">"Stratigraphic position ["</span>,<span class="fu">get_L_unit</span>(adm),<span class="st">"]"</span>), <span class="co"># plot</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"Trait value"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">ylab =</span> <span class="fu">paste0</span>(<span class="st">"Stratigraphic position ["</span>,<span class="fu">get_L_unit</span>(adm),<span class="st">"]"</span>), <span class="co"># plot</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Trait value"</span>,</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">type =</span> <span class="st">"l"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">orientation =</span> <span class="st">"lr"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">orientation =</span> <span class="st">"du"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="trait_evol_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="trait_evol_files/figure-html/models_evol_strat_domain-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>This will transform your simulations from the time domain into the stratigraphic domain.</p>
+<p>This will transform your simulations from the time domain into the stratigraphic domain. We use the plotting option <code>orientation = "du"</code> to plot stratigraphic height on the y axis. Use <code>"lr"</code> to plot it on the x axis.</p>
 </section>
 <section id="model-selection-using-the-paleots-package" class="level3">
 <h3 class="anchored" data-anchor-id="model-selection-using-the-paleots-package">Model selection using the paleoTS package</h3>
-<p>To work with model selection, we need to simulate traits of individuals, not just means of populations. This is indicated by using the suffix <code>_sl</code> (for “specimen level”) in the simulation.</p>
+<p>To work with model selection, we need to simulate traits of individuals, not just means of populations as we did above. This is indicated by using the suffix <code>_sl</code> (for “specimen level”) in the simulation.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paleoTS)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>temp_res <span class="ot">=</span> <span class="fl">0.001</span>                                              <span class="co"># temporal resolution in Myr</span></span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paleoTS) <span class="co"># load paleoTS package for model selection &amp; plotting</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>temp_res <span class="ot">=</span> <span class="fl">0.1</span>                                             <span class="co"># temporal resolution in Myr</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="fu">min_time</span>(adm), <span class="fu">max_time</span>(adm), <span class="at">by =</span> temp_res) <span class="sc">|&gt;</span>           <span class="co"># time steps where the trait evolution is simulated</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk_sl</span>(<span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">mu =</span> <span class="dv">3</span>, <span class="at">y0 =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span>                   <span class="co"># simulate trait evolution</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk_sl</span>(<span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">mu =</span> <span class="dv">3</span>, <span class="at">y0 =</span> <span class="dv">0</span>, <span class="at">intrapop_var =</span> <span class="dv">1</span>, <span class="at">n_per_sample =</span> <span class="dv">5</span>) <span class="sc">|&gt;</span>                   <span class="co"># simulate trait evolution</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">reduce_to_paleoTS</span>() <span class="sc">|&gt;</span><span class="co"># transform into stratigraphic domain</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reduce_to_paleoTS</span>() <span class="sc">|&gt;</span><span class="co"># transform into stratigraphic domain</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">xlab =</span> <span class="fu">paste0</span>(<span class="st">"Stratigraphic position ["</span>,<span class="fu">get_L_unit</span>(adm),<span class="st">"]"</span>), <span class="co"># plot</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"Trait value"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"Trait value"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="trait_evol_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="trait_evol_files/figure-html/paleoTS_sim-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>see <code>?reduce_to_paleoTS</code> for details. We can then directly pass the results to the model selection options available in paleoTS:</p>
+<p>We use <code>reduce_to_paleoTS</code> to convert the specimen level simulations from <code>StratPal</code> to the sample level summaries used by <code>paleoTS</code>, see <code>?reduce_to_paleoTS</code> for details. We can then directly pass the results to the model selection options available in paleoTS (<code>fit3models</code>, <code>fit4models</code> and <code>fit9models</code>, see <code>paleoTS</code> for details):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>temp_res <span class="ot">=</span> <span class="fl">0.01</span>                                              <span class="co"># temporal resolution in Myr</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="fu">min_time</span>(adm), <span class="fu">max_time</span>(adm), <span class="at">by =</span> temp_res) <span class="sc">|&gt;</span>           <span class="co"># time steps where the trait evolution is simulated</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk_sl</span>(<span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">mu =</span> <span class="dv">3</span>, <span class="at">y0 =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span>                   <span class="co"># simulate trait evolution</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">reduce_to_paleoTS</span>() <span class="sc">|&gt;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit4models</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>temp_res <span class="ot">=</span> <span class="fl">0.1</span>                                              <span class="co"># temporal resolution in Myr</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>intrapop_var <span class="ot">=</span> <span class="dv">1</span> <span class="co"># trait variance per sampling location/ fossil assemblage</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>n_per_sample <span class="ot">=</span> <span class="dv">5</span> <span class="co"># number of fossils found per sampling location / fossil assemblage</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="fu">min_time</span>(adm), <span class="fu">max_time</span>(adm), <span class="at">by =</span> temp_res) <span class="sc">|&gt;</span>           <span class="co"># time steps where the trait evolution is simulated</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk_sl</span>(<span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">mu =</span> <span class="dv">3</span>, <span class="at">y0 =</span> <span class="dv">0</span>, <span class="at">intrapop_var =</span> intrapop_var, <span class="at">n_per_sample =</span> n_per_sample) <span class="sc">|&gt;</span>                   <span class="co"># simulate trait evolution</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reduce_to_paleoTS</span>() <span class="sc">|&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit9models</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in
-fit4models(reduce_to_paleoTS(time_to_strat(random_walk_sl(seq(min_time(adm), :
+fit9models(reduce_to_paleoTS(time_to_strat(random_walk_sl(seq(min_time(adm), :
 Sample variances not equal (P = 0 ); consider using argument pool=FALSE</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Comparing 4 models [n = 201, method = Joint]
+<pre><code>Fitting simple models...
+Fitting punctuational model...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in fitGpunc(y, ng = 2, method = method, silent = silent, ...): Sample
+variances not equal (P = 0 ); consider using argument pool=FALSE</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Total # hypotheses:  8 
+1  2  3  4  5  6  7  8  
+Fitting Stasis-URW model...
+Total # hypotheses:  8 
+1  2  3  4  5  6  7  8  
+Fitting Stasis-GRW model...
+Total # hypotheses:  8 
+1  2  3  4  5  6  7  8  
+Fitting URW-Stasis model...
+Total # hypotheses:  8 
+1  2  3  4  5  6  7  8  
+Fitting GRW-Stasis model...
+Total # hypotheses:  8 
+1  2  3  4  5  6  7  8  
 
-                   logL K      AICc       dAICc Akaike.wt
-GRW           -220.1850 3  446.4919    0.000000     0.957
-URW           -224.3133 2  452.6872    6.195254     0.043
-Stasis        -432.5207 2  869.1021  422.610171     0.000
-StrictStasis -4191.1228 1 8384.2658 7937.773865     0.000</code></pre>
+Comparing 9 models [n = 21, method = Joint]
+
+                  logL K      AICc      dAICc Akaike.wt
+StrictStasis -78.60809 1 159.42670 109.426312     0.000
+Stasis       -36.23362 2  77.13390  27.133515     0.000
+URW          -27.07711 2  58.82089   8.820506     0.010
+GRW          -21.29431 3  50.00039   0.000000     0.852
+Punc-1       -25.46308 4  61.42616  11.425774     0.003
+Stasis-URW   -26.76681 4  64.03362  14.033238     0.001
+Stasis-GRW   -22.76502 5  59.53004   9.529656     0.007
+URW-Stasis   -21.24906 5  56.49812   6.497731     0.033
+GRW-Stasis   -18.20342 6  54.40684   4.406459     0.094</code></pre>
 </div>
 </div>
-<p>See <code>?fit4models</code> to understand the output; more information can be found in <span class="citation" data-cites="hunt2006">(<a href="#ref-hunt2006" role="doc-biblioref">Hunt and G. 2006</a>)</span>.</p>
+<p>See <code>?fit4models</code> to understand the output and <code>fitSimple</code> to fit more specialized models; more information can be found in <span class="citation" data-cites="hunt2006">(<a href="#ref-hunt2006" role="doc-biblioref">Hunt and G. 2006</a>)</span>.</p>
 </section>
 </section>
 <section id="tasks" class="level2">
 <h2 class="anchored" data-anchor-id="tasks">Tasks</h2>
-<p>You can also solve the first two tasks interactively using <a href="https://utrecht-university.shinyapps.io/DarwinCAT/">DarwinCAT</a>.</p>
+<p>You can solve the first two tasks interactively using <a href="https://utrecht-university.shinyapps.io/DarwinCAT/">DarwinCAT</a>.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Task 1: Trait evolution in the time domain
+Task 2.1: Trait evolution in the time domain
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -360,7 +386,7 @@ What is the biological meaning of the model parameters?</p>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Task 2: Stratigraphic effects on trait evolution
+Task 2.2: Stratigraphic effects on trait evolution
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -375,7 +401,7 @@ Do you see any systematic changes?</p>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Task 3: Model selection in the stratigraphic domain
+Task 2.3: Model selection in the stratigraphic domain
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -388,63 +414,60 @@ Do you see any systematic changes?</p>
 <h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
 <p>You can also explore this topic interactively using <a href="https://utrecht-university.shinyapps.io/DarwinCAT/">DarwinCAT</a>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Solution Task 1: Trait evolution in the time domain
+Solution Task 2.1: Trait evolution in the time domain
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<ol type="1">
-<li><p>Plot the different modes of evolution in the time domain.</p>
-<ul>
-<li>What is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times)?<br>
-</li>
-<li>What is the biological meaning of the model parameters?</li>
-</ul></li>
-</ol>
+<p>Plot the different modes of evolution in the time domain.</p>
+<p>What is their internal variation due to randomness (i.e., how much do results differ if you plot them multiple times)?<br>
+What is the biological meaning of the model parameters?</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>min_t <span class="ot">=</span> <span class="dv">0</span>       <span class="co"># beginning observation [Myr]</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>max_t <span class="ot">=</span> <span class="dv">2</span>       <span class="co"># end observation [Myr]</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>t_step <span class="ot">=</span> <span class="fl">0.01</span>   <span class="co"># temporal resolution [Myr]</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">=</span> <span class="dv">1</span>        <span class="co"># model parameter, to modify</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">=</span> <span class="dv">1</span>          <span class="co"># model parameter, to modify</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> min_t, <span class="at">to =</span> max_t, <span class="at">by =</span> t_step) <span class="sc">|&gt;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stasis</span>(<span class="at">mean =</span> mean, <span class="at">sd =</span> sd) <span class="sc">|&gt;</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">type =</span> <span class="st">"l"</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"Trait value"</span>,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Trait evolution: Stasis"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stasis</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>min_t <span class="ot">=</span> <span class="dv">0</span>       <span class="co"># beginning observation [Myr]</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>max_t <span class="ot">=</span> <span class="dv">2</span>       <span class="co"># end observation [Myr]</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>t_step <span class="ot">=</span> <span class="fl">0.01</span>   <span class="co"># temporal resolution [Myr]</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">=</span> <span class="dv">1</span>        <span class="co"># model parameter, to modify</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">=</span> <span class="dv">1</span>          <span class="co"># model parameter, to modify</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> min_t, <span class="at">to =</span> max_t, <span class="at">by =</span> t_step) <span class="sc">|&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stasis</span>(<span class="at">mean =</span> mean, <span class="at">sd =</span> sd) <span class="sc">|&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"Trait value"</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Trait evolution: Stasis"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="trait_evol_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="trait_evol_files/figure-html/task_2_1_solution_stasis-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>For stasis, the <code>mean</code> parameter determines the mean trait value, and the <code>sd</code> (standard deviation) parameter determines the spread of trait values. Trait values at individual times are uncorrelated, so if the temporal resolution is increased, trait evolution appears more irregular.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>min_t <span class="ot">=</span> <span class="dv">0</span>      <span class="co"># beginning observation [Myr]</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>max_t <span class="ot">=</span> <span class="dv">2</span>      <span class="co"># end observation [Myr]</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>t_step <span class="ot">=</span> <span class="fl">0.01</span>  <span class="co"># temporal resolution [Myr]</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">=</span> <span class="dv">1</span>      <span class="co"># model parameter, to modify</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="dv">1</span>         <span class="co"># model parameter, to modify</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>y0 <span class="ot">=</span> <span class="dv">1</span>         <span class="co"># model parameter, to modify</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> min_t, <span class="at">to =</span> max_t, <span class="at">by =</span> t_step) <span class="sc">|&gt;</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk</span>(<span class="at">sigma =</span> sigma, <span class="at">mu =</span> mu, <span class="at">y0 =</span> y0) <span class="sc">|&gt;</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">type =</span> <span class="st">"l"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"Trait value"</span>,</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Trait evolution: Random walk"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Random walk</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>min_t <span class="ot">=</span> <span class="dv">0</span>      <span class="co"># beginning observation [Myr]</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>max_t <span class="ot">=</span> <span class="dv">2</span>      <span class="co"># end observation [Myr]</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>t_step <span class="ot">=</span> <span class="fl">0.01</span>  <span class="co"># temporal resolution [Myr]</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">=</span> <span class="dv">1</span>      <span class="co"># model parameter, to modify</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="dv">1</span>         <span class="co"># model parameter, to modify</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>y0 <span class="ot">=</span> <span class="dv">1</span>         <span class="co"># model parameter, to modify</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> min_t, <span class="at">to =</span> max_t, <span class="at">by =</span> t_step) <span class="sc">|&gt;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk</span>(<span class="at">sigma =</span> sigma, <span class="at">mu =</span> mu, <span class="at">y0 =</span> y0) <span class="sc">|&gt;</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"Trait value"</span>,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Trait evolution: Random walk"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="trait_evol_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="trait_evol_files/figure-html/task_2_1_solution_random_walk-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -452,23 +475,24 @@ Do you see any systematic changes?</p>
 <p>For the random walk model, the <code>y0</code> parameter determines the initial trait value. The parameter <code>mu</code> determines the directionality, with positive (negative) values leading to increasing (decreasing) trait values with time. The <code>sigma</code> parameter determines the amount of randomness in the system, with larger values reflecting more randomness. Internal variability is high for larger values of <code>sigma</code>, meaning individual lineages simulated will differ a lot from each other.<br>
 Important endmembers are: <code>sigma</code> set to 0, trait evolution is purely deterministic and specified by <code>mu</code> and <code>y0</code>. If <code>mu</code> and <code>y0</code> are set to 0, trait evolution follows an unbiased random walk model. If <code>sigma</code> is set to 1, the model corresponds to a Brownian motion. For low values of <code>sigma</code> and <code>mu</code>, the random walk can be mistaken for stasis.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>min_t <span class="ot">=</span> <span class="dv">0</span>      <span class="co"># beginning observation [Myr]</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>max_t <span class="ot">=</span> <span class="dv">2</span>      <span class="co"># end observation [Myr]</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>t_step <span class="ot">=</span> <span class="fl">0.01</span>  <span class="co"># temporal resolution [Myr]</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">=</span> <span class="dv">1</span>      <span class="co"># model parameter, to modify</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">=</span> <span class="fl">0.1</span>    <span class="co"># model parameter, to modify</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="dv">0</span>         <span class="co"># model parameter, to modify</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>y0 <span class="ot">=</span> <span class="dv">1</span>         <span class="co"># model parameter, to modify</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> min_t, <span class="at">to =</span> max_t, <span class="at">by =</span> t_step) <span class="sc">|&gt;</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ornstein_uhlenbeck</span>(<span class="at">mu =</span> mu, <span class="at">theta =</span> theta, <span class="at">sigma =</span> sigma, <span class="at">y0 =</span> y0) <span class="sc">|&gt;</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">type =</span> <span class="st">"l"</span>,</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"Trait value"</span>,</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Trait evolution: Ornstein-Uhlenbeck process"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ornstein-Uhlenbeck</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>min_t <span class="ot">=</span> <span class="dv">0</span>      <span class="co"># beginning observation [Myr]</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>max_t <span class="ot">=</span> <span class="dv">2</span>      <span class="co"># end observation [Myr]</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>t_step <span class="ot">=</span> <span class="fl">0.01</span>  <span class="co"># temporal resolution [Myr]</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">=</span> <span class="dv">1</span>      <span class="co"># model parameter, to modify</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">=</span> <span class="fl">0.1</span>    <span class="co"># model parameter, to modify</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="dv">0</span>         <span class="co"># model parameter, to modify</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>y0 <span class="ot">=</span> <span class="dv">1</span>         <span class="co"># model parameter, to modify</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> min_t, <span class="at">to =</span> max_t, <span class="at">by =</span> t_step) <span class="sc">|&gt;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ornstein_uhlenbeck</span>(<span class="at">mu =</span> mu, <span class="at">theta =</span> theta, <span class="at">sigma =</span> sigma, <span class="at">y0 =</span> y0) <span class="sc">|&gt;</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"Trait value"</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Trait evolution: Ornstein-Uhlenbeck process"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="trait_evol_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="trait_evol_files/figure-html/task_2_1_solution_OU-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -485,55 +509,50 @@ Important endmembers of the OU model are:</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Solution Task 2: Stratigraphic effects on trait evolution
+Solution Task 2.2: Stratigraphic effects on trait evolution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<ol start="2" type="1">
-<li>Transform the different modes of evolution into the stratigraphic domain and plot them.
-<ul>
-<li>Which modes are most/least affected by stratigraphic biases?<br>
-</li>
-<li>Do you see any systematic changes?</li>
-</ul></li>
-</ol>
+<p>Transform the different modes of evolution into the stratigraphic domain and plot them.</p>
+<p>Which modes are most/least affected by stratigraphic biases?<br>
+Do you see any systematic changes?</p>
 <p>Example code for the random walk model is provided. This can be expanded by replacing the random walk by stasis or the Ornstein-Uhlenbeck process.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>adm_list <span class="ot">=</span> <span class="fu">list</span>()                                     <span class="co"># storage for age-depth models</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">=</span> <span class="fu">paste</span>(<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">12</span>, <span class="at">by =</span> <span class="dv">2</span>), <span class="st">"km"</span>, <span class="at">sep =</span> <span class="st">""</span>)      <span class="co"># distances from shore</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pos <span class="cf">in</span> dist){                                    <span class="co"># construct ADMs for all distances</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  adm_list[[pos]] <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">L_unit =</span> <span class="st">"m"</span>)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span>              <span class="co"># position on platform</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="dv">2</span>                   <span class="co"># model parameters</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">=</span> <span class="dv">1</span>                <span class="co"># model parameters</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>y0 <span class="ot">=</span> <span class="dv">0</span>                   <span class="co"># model paramters</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> adm_list[[pos]]    <span class="co"># select age-depth model</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>t_step <span class="ot">=</span> <span class="fl">0.001</span>           <span class="co"># temporal resolution [Myr]</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="do">## plot trait evolution in the time domain</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from  =</span> <span class="fu">min_time</span>(adm), <span class="at">to =</span> <span class="fu">max_time</span>(adm), <span class="at">by =</span> t_step) <span class="sc">|&gt;</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk</span>(<span class="at">sigma =</span> sigma, <span class="at">mu =</span> mu, <span class="at">y0 =</span> y0) <span class="sc">|&gt;</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">ylab =</span> <span class="st">"Trait value"</span>,</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">type =</span> <span class="st">"l"</span>,</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">orientation =</span> <span class="st">"lr"</span>,</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Height [m]"</span>,</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Trait evolution "</span>, pos, <span class="st">" from shore"</span>) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>adm_list <span class="ot">=</span> <span class="fu">list</span>()                                     <span class="co"># storage for age-depth models</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">=</span> <span class="fu">paste</span>(<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">12</span>, <span class="at">by =</span> <span class="dv">2</span>), <span class="st">"km"</span>, <span class="at">sep =</span> <span class="st">""</span>)      <span class="co"># distances from shore</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pos <span class="cf">in</span> dist){                                    <span class="co"># construct ADMs for all distances</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  adm_list[[pos]] <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">L_unit =</span> <span class="st">"m"</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span>              <span class="co"># position on platform</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="dv">2</span>                   <span class="co"># model parameters</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">=</span> <span class="dv">1</span>                <span class="co"># model parameters</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>y0 <span class="ot">=</span> <span class="dv">0</span>                   <span class="co"># model paramters</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> adm_list[[pos]]    <span class="co"># select age-depth model</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>t_step <span class="ot">=</span> <span class="fl">0.001</span>           <span class="co"># temporal resolution [Myr]</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="do">## plot trait evolution in the time domain</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from  =</span> <span class="fu">min_time</span>(adm), <span class="at">to =</span> <span class="fu">max_time</span>(adm), <span class="at">by =</span> t_step) <span class="sc">|&gt;</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk</span>(<span class="at">sigma =</span> sigma, <span class="at">mu =</span> mu, <span class="at">y0 =</span> y0) <span class="sc">|&gt;</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">ylab =</span> <span class="st">"Trait value"</span>,</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">orientation =</span> <span class="st">"lr"</span>,</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Height [m]"</span>,</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Trait evolution "</span>, pos, <span class="st">" from shore"</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="trait_evol_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="trait_evol_files/figure-html/task_2_2_solution_strat_effects-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -545,30 +564,42 @@ Important endmembers of the OU model are:</p>
 <li><p>There are long hiatuses or</p></li>
 <li><p>There are long intervals of sedimentary condensation.</p></li>
 </ol>
-<p>As a result, stratigraphic biases are driven by maximum hiatus duration on the platform top, and driven by sedimentary condensation on the slope (see task on age-depth models). This effect is more pronounced the more directional evolution is.</p>
+<p>As a result, stratigraphic biases are driven by maximum hiatus duration on the platform top. This effect is more pronounced the more directional evolution is.</p>
 </div>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Solution Task 3: Model selection in the stratigraphic domain
+Solution Task 2.3: Model selection in the stratigraphic domain
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>TBA</p>
+<p>Run model selection on your simulation using the <code>paleoTS</code> package, and compare results from the time and the stratigraphic domain.</p>
+<p>Do you see any systematic biases?</p>
+<p>We run model selection both in the stratigraphic and time domain, fitting 9 models to the fossil time series. The example code performs this analysis for simulations under the random walk model, which can be changed out to the stasis or Ornstein-Uhlenbeck model.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>temp_res <span class="ot">=</span> <span class="fl">0.1</span>                                              <span class="co"># temporal resolution in Myr</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="fu">min_time</span>(adm), <span class="fu">max_time</span>(adm), <span class="at">by =</span> temp_res) <span class="sc">|&gt;</span>           <span class="co"># time steps where the trait evolution is simulated</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk_sl</span>(<span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">mu =</span> <span class="dv">3</span>, <span class="at">y0 =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span>                   <span class="co"># simulate trait evolution</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">reduce_to_paleoTS</span>() <span class="sc">|&gt;</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit9models</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># time domain model selection</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>temp_res <span class="ot">=</span> <span class="fl">0.1</span>                                              <span class="co"># temporal resolution in Myr</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>intrapop_var <span class="ot">=</span> <span class="dv">1</span> <span class="co"># trait variance per sampling location/ fossil assemblage</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>n_per_sample <span class="ot">=</span> <span class="dv">5</span> <span class="co"># number of fossils found per sampling location / fossil assemblage</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>traits_time_domain <span class="ot">=</span> <span class="fu">seq</span>(<span class="fu">min_time</span>(adm), <span class="fu">max_time</span>(adm), <span class="at">by =</span> temp_res) <span class="sc">|&gt;</span>           <span class="co"># time steps where the trait evolution is simulated</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk_sl</span>(<span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">mu =</span> <span class="dv">3</span>, <span class="at">y0 =</span> <span class="dv">0</span>, <span class="at">intrapop_var =</span> intrapop_var, <span class="at">n_per_sample =</span> n_per_sample) <span class="sc">|&gt;</span>                   <span class="co"># simulate trait evolution</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reduce_to_paleoTS</span>() </span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(traits_time_domain, <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="trait_evol_files/figure-html/task_2_3_solution_model_selection_time_domain-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>traits_time_domain <span class="sc">|&gt;</span> <span class="fu">fit9models</span>(<span class="at">pool =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Fitting simple models...
 Fitting punctuational model...
@@ -590,17 +621,72 @@ Total # hypotheses:  8
 Comparing 9 models [n = 21, method = Joint]
 
                    logL K      AICc      dAICc Akaike.wt
-StrictStasis -298.80769 1 599.82592 556.345453     0.000
-Stasis        -41.80235 2  88.27137  44.790909     0.000
-URW           -38.55600 2  81.77866  38.298199     0.000
-GRW           -37.47915 3  82.37007  38.889609     0.000
-Punc-1        -19.79051 4  50.08102   6.600560     0.033
-Stasis-URW    -34.30261 4  79.10522  35.624758     0.000
-Stasis-GRW    -31.41502 5  76.83004  33.349576     0.000
-URW-Stasis    -17.29769 5  48.59537   5.114911     0.070
-GRW-Stasis    -12.74023 6  43.48046   0.000000     0.897</code></pre>
+StrictStasis -331.25640 1 664.72333 625.412749     0.000
+Stasis        -43.90014 2  92.46694  53.156361     0.000
+URW           -21.15338 2  46.97343   7.662845     0.018
+GRW           -19.04811 3  45.50798   6.197395     0.037
+Punc-1        -17.50837 4  45.51674   6.206157     0.037
+Stasis-URW    -23.14597 4  56.79194  17.481360     0.000
+Stasis-GRW    -22.18200 5  58.36399  19.053408     0.000
+URW-Stasis    -14.91349 5  43.82698   4.516401     0.086
+GRW-Stasis    -10.65529 6  39.31058   0.000000     0.822</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stratigraphic domain model selection</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>temp_res <span class="ot">=</span> <span class="fl">0.1</span>                                              <span class="co"># temporal resolution in Myr</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>traits_strat_domain <span class="ot">=</span> <span class="fu">seq</span>(<span class="fu">min_time</span>(adm), <span class="fu">max_time</span>(adm), <span class="at">by =</span> temp_res) <span class="sc">|&gt;</span>           <span class="co"># time steps where the trait evolution is simulated</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk_sl</span>(<span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">mu =</span> <span class="dv">3</span>, <span class="at">y0 =</span> <span class="dv">0</span>, <span class="at">intrapop_var =</span> intrapop_var, <span class="at">n_per_sample =</span> n_per_sample) <span class="sc">|&gt;</span>                   <span class="co"># simulate trait evolution</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reduce_to_paleoTS</span>() </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(traits_strat_domain, <span class="at">xlab =</span> <span class="st">"Stratigraphic Position [m]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="trait_evol_files/figure-html/task_2_3_solution_model_selection_strat_domain-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>traits_strat_domain <span class="sc">|&gt;</span> <span class="fu">fit9models</span>(<span class="at">pool =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fitting simple models...
+Fitting punctuational model...
+Total # hypotheses:  8 
+1  2  3  4  5  6  7  8  
+Fitting Stasis-URW model...
+Total # hypotheses:  8 
+1  2  3  4  5  6  7  8  
+Fitting Stasis-GRW model...
+Total # hypotheses:  8 
+1  2  3  4  5  6  7  8  
+Fitting URW-Stasis model...
+Total # hypotheses:  8 
+1  2  3  4  5  6  7  8  
+Fitting GRW-Stasis model...
+Total # hypotheses:  8 
+1  2  3  4  5  6  7  8  
+
+Comparing 9 models [n = 21, method = Joint]
+
+                   logL K      AICc       dAICc Akaike.wt
+StrictStasis -480.25803 1 962.72658 889.2867613     0.000
+Stasis        -50.79723 2 106.26113  32.8213110     0.000
+URW           -42.08084 2  88.82835  15.3885358     0.000
+GRW           -40.74554 3  88.90284  15.4630277     0.000
+Punc-1        -35.86133 4  82.22265   8.7828353     0.007
+Stasis-URW    -42.06921 4  94.63842  21.1986045     0.000
+Stasis-GRW    -41.24911 5  96.49822  23.0584083     0.000
+URW-Stasis    -29.71991 5  73.43982   0.0000000     0.595
+GRW-Stasis    -28.12606 6  74.25212   0.8123017     0.397</code></pre>
+</div>
+</div>
+<p>General observation are:</p>
+<ul>
+<li>Results are sensitive to randomness inherent in the randomness of the simulation, e.g., occasionally a random walk simulation will be identified as stasis even in the abscence of biases. This effect is additionally sensitive to parameters such as sample size and intrapopulation variance (<code>intrapop_var</code> <code>n_per_sample</code>), reducing the power of the procedure and potentially leading to “analytical stasis”, where low statistical power favors the recovery of stasis <span class="citation" data-cites="hannisdal2006">(<a href="#ref-hannisdal2006" role="doc-biblioref">Hannisdal 2006</a>)</span></li>
+<li>Recovery of the correct (meaning, simulated) mode of evolution is better in the time domain, whereas model selection in the stratigraphic domain favors the recognition of punctuated modes of evolution <span class="citation" data-cites="hohmann_identification_2024">(<a href="#ref-hohmann_identification_2024" role="doc-biblioref">Hohmann et al. 2024</a>)</span>. This effect is strongest in the on the platform top, and disappears on the proximal slope as stratigraphic biases disappear.</li>
+<li>As in the visual comparison, stratigraphic effects are strongest the more directional the mode of evolution is, and disappear for stasis.</li>
+<li>Stratophenetic time series will thus favor both the recogniton of stasis and punctuated modes of evolution.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -610,6 +696,12 @@ GRW-Stasis    -12.74023 6  43.48046   0.000000     0.897</code></pre>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-hannisdal2006" class="csl-entry" role="listitem">
+Hannisdal, Bjarte. 2006. <span>“Phenotypic Evolution in the Fossil Record: Numerical Experiments.”</span> <em>The Journal of Geology</em> 114 (2): 133–53. <a href="https://doi.org/10.1086/499569">https://doi.org/10.1086/499569</a>.
+</div>
+<div id="ref-hohmann_identification_2024" class="csl-entry" role="listitem">
+Hohmann, Niklas, Joël R. Koelewijn, Peter Burgess, and Emilia Jarochowska. 2024. <span>“Identification of the Mode of Evolution in Incomplete Carbonate Successions.”</span> <em>BMC Ecology and Evolution</em> 24 (1): 113. <a href="https://doi.org/10.1186/s12862-024-02287-2">https://doi.org/10.1186/s12862-024-02287-2</a>.
+</div>
 <div id="ref-hunt2006" class="csl-entry" role="listitem">
 Hunt, and G. 2006. <span>“Fitting and Comparing Models of Phyletic Evolution: Random Walks and Beyond.”</span> <em>Paleobiology</em> 32 (4): –23. <a href="https://doi.org/10.1666/05070.1">https://doi.org/10.1666/05070.1</a>.
 </div>
@@ -665,14 +757,13 @@ Hunt, and G. 2006. <span>“Fitting and Comparing Models of Phyletic Evolution: 
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
         }
-      }
-      return codeEl.innerText;
+        return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

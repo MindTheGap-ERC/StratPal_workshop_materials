@@ -5,7 +5,7 @@ editor: visual
 bibliography: refs/refs.bib
 ---
 
-## Fossil occurrences, niche modeling and last occurrences (45 min)
+## 3. Fossil occurrences, niche modeling and last occurrences (45 min)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
