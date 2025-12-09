@@ -233,7 +233,6 @@ div.csl-indent {
 </header>
 
 
-<p>TODO: * update solutions to match new data [to be done Wed!]</p>
 <section id="stratigraphic-architectures-and-age-depth-models" class="level2">
 <h2 class="anchored" data-anchor-id="stratigraphic-architectures-and-age-depth-models">Stratigraphic Architectures and Age-Depth Models</h2>
 <p>This part of the workshop gives a first overview on the stratigraphic architecture used, and will familiarize you with the concepts of age-depth models and (stratigraphic) incompleteness. The duration is approx. 45 minutes.</p>
@@ -449,37 +448,42 @@ Stratigraphic completeness: 34.9 %
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"admtools"</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"StratPal"</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># define age-depth models</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>adm_list <span class="ot">=</span> <span class="fu">list</span>()                                     <span class="co"># storage for age-depth models</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">=</span> <span class="fu">paste</span>(<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">12</span>, <span class="at">by =</span> <span class="dv">2</span>), <span class="st">"km"</span>, <span class="at">sep =</span> <span class="st">""</span>)      <span class="co"># distances from shore</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pos <span class="cf">in</span> dist){                                    <span class="co"># construct ADMs for all distances</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  adm_list[[pos]] <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        </span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>                             <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>                             <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>                             <span class="at">L_unit =</span> <span class="st">"m"</span>)</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>adm_list <span class="ot">=</span> <span class="fu">list</span>()                       <span class="co"># storage for age-depth models</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># distances from shore</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">=</span> <span class="fu">paste</span>(<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">12</span>, <span class="at">by =</span> <span class="dv">2</span>), <span class="st">"km"</span>, <span class="at">sep =</span> <span class="st">""</span>)      </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># construct ADMs for all distances</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pos <span class="cf">in</span> dist){                                    </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  adm_list[[pos]] <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>                             <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                             <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>                             <span class="at">L_unit =</span> <span class="st">"m"</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>Now you have a list with several age depth models. The code below plots one of them. You can modify it to plot each one separately or modify the code to plot all of them.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot specific age-depth models</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span>               <span class="co"># insert distance from shore here</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(pos <span class="sc">%in%</span> dist ) <span class="co"># validity check</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm_list[[pos]],</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">lwd_acc =</span> <span class="dv">2</span>,         <span class="co"># plot thicker lines for intervals with sediment accumulation (lwd = line width)</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">lty_destr =</span> <span class="dv">0</span>)       <span class="co"># don't plot destructive intervals/hiatuses (lty = line type)</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">T_axis_lab</span>()              <span class="co"># add time axis label</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">L_axis_lab</span>()              <span class="co"># add length axis label</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="fu">paste0</span>(<span class="st">"Age-depth model "</span>, pos, <span class="st">" from shore"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span>               <span class="co"># insert distance from shore here</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(pos <span class="sc">%in%</span> dist ) <span class="co"># validity check</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm_list[[pos]],</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot thicker lines for intervals with sediment accumulation (lwd = line width)</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">lwd_acc =</span> <span class="dv">2</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># don't plot destructive intervals/hiatuses (lty = line type)</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">lty_destr =</span> <span class="dv">0</span>)       </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">T_axis_lab</span>()              <span class="co"># add time axis label</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">L_axis_lab</span>()              <span class="co"># add length axis label</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="fu">paste0</span>(<span class="st">"Age-depth model "</span>, pos, <span class="st">" from shore"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="strat_architecture_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="strat_architecture_files/figure-html/plot specific age-depth models-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Age-depth model closer to shore are higher (up to 150 m), while those further offshore are shorter (a few 10s of meters). This is because sediment accumulation is much higher on the platform top (2-8 km) compared to the proximal (10 km) and distal (12 km) slope.<br>
-Age-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic (Wheeler) diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous. Times of low sediment accumulation correspond to intervals of low sea level, and are due to lowstand shedding from the platform edge. This generates intervals with sedimentary condensation (low sedimentation rate), expressed by a near-horizontal age-depth model.</p>
+<p>Age-depth models closer to shore cover a thicker stratigraphic height (up to 150 m) and those further offshore are shorter (a few 10s of meters). This is because sediment accumulation is much higher on the platform top (2-8 km) compared to the proximal (10 km) and distal (12 km) slope.</p>
+<p><br>
+Age-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic (Wheeler) diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous. Times of low sediment accumulation correspond to intervals of low sea level, and are due to lowstand shedding from the platform edge. This generates intervals with sedimentary condensation (low sedimentation rate), expressed by near-horizontal segments in the age-depth models.</p>
 </div>
 </div>
 </div>
@@ -519,7 +523,7 @@ Age-depth models on the platform have a few long hiatuses that are represented a
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="strat_architecture_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -531,14 +535,14 @@ Age-depth models on the platform have a few long hiatuses that are represented a
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="strat_architecture_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Incompleteness is highest in the onshore sections (more than 60 %), and decreases with distance from shore to values of around 30 % in the proximal slope. Note that this differs from Figure 4 in <span class="citation" data-cites="hohmann_identification_2024">Hohmann et al. (<a href="#ref-hohmann_identification_2024" role="doc-biblioref">2024</a>)</span> as we are examining incompleteness on a coarser spatial scale.</p>
-<p>The number of hiatuses is low on the landwards platform top (approx. 10 hiatuses at 2 - 6 km), with increased values in the fore-reef (8 km). The most hiatuses are 10 km from shore with almost 150 hiatuses, which drops to around 50 in the distal slope.<br>
-The hiatuses on the platform are generated by long intervals of low sea level, which exposes the platform top. The high number of hiatuses in the proximal slope is generated by a high frequency of depositional events made of transported material from the platform edge. The effect of transported material decreases with distance from the platform edge, thus the decreased number of hiatuses on the distal slope.</p>
+<p>Incompleteness is highest in the onshore sections (more than 60 %), and decreases with distance from shore to values of around 30 % in the proximal slope. Note that this differs from Figure 4 in <span class="citation" data-cites="hohmann_identification_2024">Hohmann et al. (<a href="#ref-hohmann_identification_2024" role="doc-biblioref">2024</a>)</span>, as we are examining incompleteness on a coarser spatial scale.</p>
+<p>The number of hiatuses is low on the platform top (8 hiatuses at 2 - 6 km), with the highest values (16) on the platform edge (8 km). On the proximal slope, there are 12 hiatuses and the number drops to 0 in the distal slope, reflecting that this environment is less affected by sea-level fluctuations.</p>
+<p>The hiatuses in the platform interior are generated by long intervals of low sea level, which exposes the platform top. The high number of hiatuses in the slope results from the fact that steep topography records sea-level fluctuations much more than flat topography. The distal slope is below the range of the sea-level fluctuations, so it does not undergo non-deposition or breaks in carbonate production, it is only affected by changes in low carbonate production of the aphotic factory and varying input from the platform top.</p>
 </div>
 </div>
 </div>
@@ -554,44 +558,54 @@ The hiatuses on the platform are generated by long intervals of low sea level, w
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Questions:</p>
-<ol start="3" type="1">
-<li><p>Generate histograms of hiatus durations at the different distances from shore.</p>
-<ul>
-<li>Do you see any systematic changes?</li>
-</ul></li>
-</ol>
+<p>Generate histograms of hiatus durations and plots of water depth at different distances from shore. Do you see any systematic changes?</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span> <span class="co"># position of adm</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(pos <span class="sc">%in%</span>  dist) <span class="co"># validity check</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>adm_list[[pos]] <span class="sc">|&gt;</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_hiat_duration</span>() <span class="sc">|&gt;</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="st">"Hiatus duration [Myr]"</span>,</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Hiatus duration "</span>, pos, <span class="st">" from shore"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(scenarioA<span class="sc">$</span>t_myr, scenarioA<span class="sc">$</span>wd_m[,pos],</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Water depth [m]"</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Water depth "</span>, pos, <span class="st">" from shore"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="strat_architecture_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(scenarioA<span class="sc">$</span>t_myr, scenarioA<span class="sc">$</span>wd_m[,pos],</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Water depth [m]"</span>,</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>,</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Water depth "</span>, pos, <span class="st">" from shore"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>hiatus_durations <span class="ot">&lt;-</span> adm_list[[pos]] <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_hiat_duration</span>()</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(hiatus_durations) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"No hiatuses at position "</span>, pos)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>hiatus_durations <span class="sc">|&gt;</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="st">"Hiatus duration [Myr]"</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Hiatus duration "</span>, pos, <span class="st">" from shore"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="strat_architecture_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Hiatus durations on the platform top are very similar: They consist of two long hiatuses (caused by the prolonged drops in the sea level curve), and a number of shorter hiatuses generated by the lower order sinusoidal sea level changes. At 8 km from shore, the number of short hiatuses increases to more than 30, indicating that sediment accumulation is more interrupted, potentially due to higher wave energy and more sediment transport.<br>
-On the slope, hiatuses are more abundant, but their duration is much shorter. This is most pronounced for the proximal slope.<br>
-Note the disconnect between the number of hiatuses and incompleteness: Onshore sections are the most incomplete, but have only a few hiatuses. In contrast, the proximal slope has the most hiatuses, but a low incompleteness. This is because hiatus duration in the onshore sections is much longer.</p>
+<section id="hiatus-duration" class="level4">
+<h4 class="anchored" data-anchor-id="hiatus-duration">Hiatus duration</h4>
+<p>The distribution of hiatus durations in the platform interior is bimodal: it consists of two long hiatuses (caused by the prolonged drops in the sea level) and six shorter hiatuses generated by the lower-order sea level changes.</p>
+<p>At 8 km from shore, the number of short hiatuses increases to 14, reflecting the steep topography of the platform edge.</p>
+<p>On the slope, hiatuses are more abundant, but their duration is much shorter. This is most pronounced for the proximal slope. In the distal slope (12 km) you might get an error: this is because there are no hiatuses.</p>
+<p>Note the disconnect between the number of hiatuses and incompleteness: Onshore sections are the most incomplete, but have only a few hiatuses. In contrast, the proximal slope has the most hiatuses, but a low incompleteness. This is because hiatus duration in the onshore sections is much longer.</p>
+</section>
+<section id="water-depth" class="level4">
+<h4 class="anchored" data-anchor-id="water-depth">Water depth</h4>
+<p>In the platform top (2 km), water depth is 0 for the largest part of the studied 1 Myr, with an initial flooding and two subsequent rises corresponding to the highest points of the first-order sea-level cycles.</p>
+<p>On the platform edge (8 km), the water depth reaches a maximum of 30 m in the initial flooding phase, but it is still emerged for a large part of the interval. The upper slope remains under water for all the time of the simulation, reflecting how different platform top and platform slopes are in terms of deposition.</p>
+<p>The strong cyclicity of the sea-level curve is still visible at 12 km offshore, where the water depth oscillates between 45 and 90 m.</p>
+</section>
 </div>
 </div>
 </div>

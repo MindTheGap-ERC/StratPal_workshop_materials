@@ -5,8 +5,6 @@ editor: visual
 bibliography: refs/refs.bib
 ---
 
-TODO: \* update solutions to match new data \[to be done Wed!\]
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 set.seed(57405)
@@ -83,7 +81,6 @@ Load the `StratPal` and `admtools` packages via
 ```{r}
 library("StratPal")
 library("admtools")
-
 ```
 
 to have all required functionality and example data available. We use the example data stored in the `scenarioA` variable that comes with the `StratPal` package. You can find more details on the data using `?scenarioA`.
@@ -178,14 +175,16 @@ Do you see any systematic changes?
 ::: {.callout-note collapse="true"}
 ### Solution Task 1: Getting to know age-depth models
 
-```{r}
+```{r define age-depth models}
 # load packages
 library("admtools")
 library("StratPal")
-# define age-depth models
-adm_list = list()                                     # storage for age-depth models
-dist = paste(seq(2, 12, by = 2), "km", sep = "")      # distances from shore
-for (pos in dist){                                    # construct ADMs for all distances
+
+adm_list = list()                       # storage for age-depth models
+# distances from shore
+dist = paste(seq(2, 12, by = 2), "km", sep = "")      
+# construct ADMs for all distances
+for (pos in dist){                                    
   adm_list[[pos]] = tp_to_adm(t = scenarioA$t_myr,        
                              h = scenarioA$h_m[,pos],
                              T_unit = "Myr",
@@ -193,21 +192,26 @@ for (pos in dist){                                    # construct ADMs for all d
 }
 ```
 
-```{r}
-# plot specific age-depth models
+Now you have a list with several age depth models. The code below plots one of them. You can modify it to plot each one separately or modify the code to plot all of them.
+
+```{r plot specific age-depth models}
 pos = "2km"               # insert distance from shore here
 stopifnot(pos %in% dist ) # validity check
 
 plot(adm_list[[pos]],
-     lwd_acc = 2,         # plot thicker lines for intervals with sediment accumulation (lwd = line width)
-     lty_destr = 0)       # don't plot destructive intervals/hiatuses (lty = line type)
+# plot thicker lines for intervals with sediment accumulation (lwd = line width)
+     lwd_acc = 2,
+# don't plot destructive intervals/hiatuses (lty = line type)
+     lty_destr = 0)       
 T_axis_lab()              # add time axis label
 L_axis_lab()              # add length axis label
 title(paste0("Age-depth model ", pos, " from shore"))
 ```
 
-Age-depth model closer to shore are higher (up to 150 m), while those further offshore are shorter (a few 10s of meters). This is because sediment accumulation is much higher on the platform top (2-8 km) compared to the proximal (10 km) and distal (12 km) slope.\
-Age-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic (Wheeler) diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous. Times of low sediment accumulation correspond to intervals of low sea level, and are due to lowstand shedding from the platform edge. This generates intervals with sedimentary condensation (low sedimentation rate), expressed by a near-horizontal age-depth model.
+Age-depth models closer to shore cover a thicker stratigraphic height (up to 150 m) and those further offshore are shorter (a few 10s of meters). This is because sediment accumulation is much higher on the platform top (2-8 km) compared to the proximal (10 km) and distal (12 km) slope.
+
+\
+Age-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic (Wheeler) diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous. Times of low sediment accumulation correspond to intervals of low sea level, and are due to lowstand shedding from the platform edge. This generates intervals with sedimentary condensation (low sedimentation rate), expressed by near-horizontal segments in the age-depth models.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -243,38 +247,54 @@ plot(p, nhiat,
      ylim = c(0, max(nhiat)))
 ```
 
-Incompleteness is highest in the onshore sections (more than 60 %), and decreases with distance from shore to values of around 30 % in the proximal slope. Note that this differs from Figure 4 in @hohmann_identification_2024 as we are examining incompleteness on a coarser spatial scale.
+Incompleteness is highest in the onshore sections (more than 60 %), and decreases with distance from shore to values of around 30 % in the proximal slope. Note that this differs from Figure 4 in @hohmann_identification_2024, as we are examining incompleteness on a coarser spatial scale.
 
-The number of hiatuses is low on the landwards platform top (approx. 10 hiatuses at 2 - 6 km), with increased values in the fore-reef (8 km). The most hiatuses are 10 km from shore with almost 150 hiatuses, which drops to around 50 in the distal slope.\
-The hiatuses on the platform are generated by long intervals of low sea level, which exposes the platform top. The high number of hiatuses in the proximal slope is generated by a high frequency of depositional events made of transported material from the platform edge. The effect of transported material decreases with distance from the platform edge, thus the decreased number of hiatuses on the distal slope.
+The number of hiatuses is low on the platform top (8 hiatuses at 2 - 6 km), with the highest values (16) on the platform edge (8 km). On the proximal slope, there are 12 hiatuses and the number drops to 0 in the distal slope, reflecting that this environment is less affected by sea-level fluctuations.
+
+The hiatuses in the platform interior are generated by long intervals of low sea level, which exposes the platform top. The high number of hiatuses in the slope results from the fact that steep topography records sea-level fluctuations much more than flat topography. The distal slope is below the range of the sea-level fluctuations, so it does not undergo non-deposition or breaks in carbonate production, it is only affected by changes in low carbonate production of the aphotic factory and varying input from the platform top.
 :::
 
 ::: {.callout-note collapse="true"}
 ### Solution Task 3: Hiatus duration and water depth
 
-Questions:
-
-3.  Generate histograms of hiatus durations at the different distances from shore.
-
-    -   Do you see any systematic changes?
+Generate histograms of hiatus durations and plots of water depth at different distances from shore. Do you see any systematic changes?
 
 ```{r}
 pos = "2km" # position of adm
 stopifnot(pos %in%  dist) # validity check
-
-adm_list[[pos]] |>
-  get_hiat_duration() |>
-  hist(xlab = "Hiatus duration [Myr]",
-       main = paste0("Hiatus duration ", pos, " from shore"))
 
 plot(scenarioA$t_myr, scenarioA$wd_m[,pos],
      xlab = "Time [Myr]",
      ylab = "Water depth [m]",
      type = "l",
      main = paste0("Water depth ", pos, " from shore"))
-```
 
-Hiatus durations on the platform top are very similar: They consist of two long hiatuses (caused by the prolonged drops in the sea level curve), and a number of shorter hiatuses generated by the lower order sinusoidal sea level changes. At 8 km from shore, the number of short hiatuses increases to more than 30, indicating that sediment accumulation is more interrupted, potentially due to higher wave energy and more sediment transport.\
-On the slope, hiatuses are more abundant, but their duration is much shorter. This is most pronounced for the proximal slope.\
+hiatus_durations <- adm_list[[pos]] |>
+  get_hiat_duration()
+
+if (length(hiatus_durations) == 0) {
+  stop("No hiatuses at position ", pos)
+}
+
+hiatus_durations |>
+  hist(xlab = "Hiatus duration [Myr]",
+       main = paste0("Hiatus duration ", pos, " from shore"))
+```
+#### Hiatus duration
+
+The distribution of hiatus durations in the platform interior is bimodal: it consists of two long hiatuses (caused by the prolonged drops in the sea level) and six shorter hiatuses generated by the lower-order sea level changes.
+
+At 8 km from shore, the number of short hiatuses increases to 14, reflecting the steep topography of the platform edge.
+
+On the slope, hiatuses are more abundant, but their duration is much shorter. This is most pronounced for the proximal slope. In the distal slope (12 km) you might get an error: this is because there are no hiatuses.
+
 Note the disconnect between the number of hiatuses and incompleteness: Onshore sections are the most incomplete, but have only a few hiatuses. In contrast, the proximal slope has the most hiatuses, but a low incompleteness. This is because hiatus duration in the onshore sections is much longer.
+
+#### Water depth
+
+In the platform top (2 km), water depth is 0 for the largest part of the studied 1 Myr, with an initial flooding and two subsequent rises corresponding to the highest points of the first-order sea-level cycles.
+
+On the platform edge (8 km), the water depth reaches a maximum of 30 m in the initial flooding phase, but it is still emerged for a large part of the interval. The upper slope remains under water for all the time of the simulation, reflecting how different platform top and platform slopes are in terms of deposition. 
+
+The strong cyclicity of the sea-level curve is still visible at 12 km offshore, where the water depth oscillates between 45 and 90 m.
 :::
