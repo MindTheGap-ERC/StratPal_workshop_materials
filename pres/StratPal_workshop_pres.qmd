@@ -194,39 +194,77 @@ Includes template code and cheat sheets Keep the stratigraphic context in mind (
 
 ## Break (15 min)
 
-## Niche modeling and last occurrences
+## Event Data and Niche Modeling
 
+::::: columns
+::: {.column width="60%"}
+![Holland et al. 2024](../figs/occurrence_example.png)
+:::
+
+::: {.column width="40%"}
 -   Taxa track their preferred niche
 
 -   Environmental conditions at a place change with time
+:::
+:::::
 
-## Questions
+------------------------------------------------------------------------
 
--   How does ecology change fossil abundance?
+### Questions
+
+::::: columns
+::: {.column width="50%"}
+![Patzkowsky & Holland (2012)](../figs/PatzkowskyHolland_5-5.png)
+:::
+
+::: {.column width="50%"}
+-   How does the intersection between ecology and stratigraphy affect fossil abundance?
 
 -   How does stratigraphy influence extinction rate estimates?
+:::
+:::::
 
-## Tasks ecology and last occurrences (45 min) {.smaller}
+------------------------------------------------------------------------
 
-### Ecology
+### Tasks on ecology and last occurrences {.smaller}
 
-1.  Simulate an abundant taxon, and transform the fossil ages into the stratigraphic domain.
-    -   At which locations and stratigraphic heights do you observe peaks in fossil abundance?\
-    -   With which stratigraphic effects are these peaks associated?
-2.  Define a niche for a taxon, and add the niche model to your pipeline.
+#### Ecology
+
+1.  Simulate an abundant taxon and transform the fossil ages into the stratigraphic domain.
+    -   At which locations and stratigraphic heights do you observe peaks in fossil abundance?
+    -   Which stratigraphic effects are these peaks associated with?
+
+------------------------------------------------------------------------
+
+### Tasks on ecology and last occurrences {.smaller}
+
+#### Ecology
+
+![Patzkowsky & Holland (2012)](../figs/PatzkowskyHolland_4-10.png)
+
+2.  Define a niche for a taxon and add the niche model to your pipeline.
     -   How and why do your results change?
     -   How could you misinterpret the results?
 
-## Tasks ecology and last occurrences (45 min) {.smaller}
+------------------------------------------------------------------------
 
-### Last occurrences
+### Tasks on ecology and last occurrences {.smaller}
+
+#### Last occurrences
 
 3.  Simulate last occurrences based on the assumption of a constant rate of last occurrences and transform them into the stratigraphic domain.
-    -   Where do you observe clusters of last occurrences?\
-    -   With what stratigraphic effects are these locations associated?\
+
+    -   Where do you observe clusters of last occurrences?
+
+    -   What stratigraphic effects are these locations associated with?
+
     -   How would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a "stratigraphic null hypothesis" for clusters of last occurrences.
 
-## Results
+------------------------------------------------------------------------
+
+### Results
+
+------------------------------------------------------------------------
 
 ## Advanced usage
 
