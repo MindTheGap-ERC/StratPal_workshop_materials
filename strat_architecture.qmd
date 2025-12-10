@@ -24,43 +24,21 @@ Stratigraphic architecture refers to the three-dimensional geometry of sedimenta
 
 Stratigraphic architecture emerges from the interplay of accommodation (space for sediment accumulation controlled by subsidence and sea-level change), sediment production/supply, and depositional processes such as transport or compaction. Stratigraphic architecture determines where and when fossil-bearing sediments are deposited and preserved.
 
-Stratigraphic architectures are three-dimensional and commonly visualized using 2D slices:
-
--   sediment sections with sequence-stratigraphic interpretation overlain
-
--   chronostratigraphic (Wheeler) diagrams
-
-::: callout-note
-## Chronostratigraphic diagram
-
-also called a Wheeler diagram: a plot where the geological time is presented on the vertical axis and the geographic position on the horizontal axis, showing the relative ages and spatial extent of strata [@harrye_wheeler1958]. Wheeler diagrams transform thickness into time, revealing **lacunae**, i.e. gaps representing missing time due to non-deposition (hiatuses) or erosion, that are invisible in conventional sections.
-:::
-
-For a comprehensive discussion of what Wheeler diagrams represent, see [@sylvester2024].
-
-### Age-depth models translate physical stratigraphy into time
-
-::: callout-note
-## Age-depth model
-
-An age-depth model is a mapping that estimates the relationship between stratigraphic position (depth) and geological time for a stratigraphic sequence [@lacourse2020; @hohmann_admtools_gchron_2025], allowing paleontologists to assign ages to fossils and sedimentary events based on their position in the rock record [@sadler1981].
-:::
-
-Important properties of age-depth models are:
-
--   Because sediments do not accumulate at constant rates, age-depth relationships are typically nonlinear,
-
--   Each absolute (radiometric) or relative (biostratigraphic, chemostratigraphic etc) age tie-point is associated with uncertainty, so an age-depth model is associated with uncertainty and the error of age should ideally be propagated into downstream analyses - *this is not a standard in paleobiology yet*.
-
 ### Example Stratigraphic Architecture
 
-In this workshop, we use an example stratigraphic architecture simulated using CarboKitten.jl [@hidding_2025] that emulates scenario A of @hohmann_identification_2024. Here, we provide a quick overview of the setup. If you are curious you can inspect the source code underlying the simulation [here](https://github.com/MindTheGap-ERC/StratPal_data_prep) (and modify it if you like).
+In this workshop, we use an example stratigraphic architecture simulated using CarboKitten.jl [@hidding_2025] that emulates scenario A of @hohmann_identification_2024. Here, we provide a quick overview of the setup. If you are curious you can inspect the source code underlying the simulation [here](https://github.com/MindTheGap-ERC/StratPal_data_prep) (and modify it if you like). The platform is an outcome of the interaction between a sea-level curve provided by us, sediment production profiles as a function of water depth, subsidence, and sediment transport. Below we take a closer look at the first two of the parameters.
+
+#### Sediment production profiles
 
 The simulated carbonate platform consists of three carbonate producing factories, one euphotic, one oligophotic, and one aphotic. The production profile of the factories are shown below.
 
-![Production profiles of the three carbonate factories.](figs/platform_production_curve.png)
+![Production profiles of the three carbonate factories.](figs/platform_production_curve.png){alt="Production profiles of the three carbonate factories."}
 
-The tree factories compete for space and propagate according to a cellular automaton as described in @burgess_2013. The simulation was run for 2 Myr in increments of 1 kyr. Platform growth is driven by a sinusoidal sea level curve consisting of third and fifth order sea level changes with a period of 1 and 0.112 Myr and an amplitude of 20 and 2 m, respectively.
+The tree factories compete for space and propagate according to a cellular automaton as described in @burgess_2013. The simulation was run for 2 Myr in increments of 1 kyr.
+
+#### Sea-level curve
+
+Platform growth is driven by a sinusoidal sea level curve consisting of third and fifth order sea level changes with a period of 1 and 0.112 Myr and an amplitude of 20 and 2 m, respectively.
 
 ```{r strat_architecture_sl_example , echo=FALSE}
 library(StratPal)
@@ -74,15 +52,43 @@ plot(x = scenarioA$t_myr,
 
 ```
 
-This results in the following synthetic carbonate platform:
+Stratigraphic architectures are three-dimensional and commonly visualized using 2D slices:
+
+-   sediment sections with sequence-stratigraphic interpretation overlain
+
+-   chronostratigraphic (Wheeler) diagrams
+
+Below you see a sediment section (slice, transect) through the carbonate platform we use today:
 
 ![](figs/platform_profile.png)
 
 Note how the platform top is dominated by the euphotic and oligophotic facies (yellow and blue), while the more distal parts are dominated by the aphotic (green) facies.
 
-### Age-Depth Models
+::: callout-note
+## Chronostratigraphic diagram
 
-A core concept we use are age-depth models: The translate information between the stratigraphic domain (SI units *m*) where we make our observations and the time domain (SI units *s* or derived units such as *Myr*) where the biotic change we are interested is happening.
+also called a Wheeler diagram: a plot where the geological time is presented on the vertical axis and the geographic position on the horizontal axis, showing the relative ages and spatial extent of strata [@harrye_wheeler1958]. Wheeler diagrams transform thickness into time, revealing **lacunae**, i.e. gaps representing missing time due to non-deposition (hiatuses) or erosion, that are invisible in conventional sections.
+:::
+
+For a comprehensive discussion of what Wheeler diagrams represent, see [@sylvester2024].
+
+![](figs/platform_wheeler_diagram.png)
+
+### Age-depth models translate physical stratigraphy into time
+
+::: callout-note
+## Age-depth model
+
+An age-depth model (ADM) is a mapping that estimates the relationship between stratigraphic position (depth) and geological time for a stratigraphic sequence [@lacourse2020; @hohmann_admtools_gchron_2025], allowing paleontologists to assign ages to fossils and sedimentary events based on their position in the rock record [@sadler1981].
+:::
+
+ADMs translate information between the stratigraphic domain (SI units *m*) where we make our observations and the time domain (SI units *s* or derived units such as *Myr*) where the biotic change we are interested is happening.
+
+Important properties of age-depth models are:
+
+-   Because sediments do not accumulate at constant rates, age-depth relationships are typically nonlinear,
+
+-   Each absolute (radiometric) or relative (biostratigraphic, chemostratigraphic etc) age tie-point is associated with uncertainty, so an age-depth model is associated with uncertainty and the error of age should ideally be propagated into downstream analyses - *this is not a standard in paleobiology yet*.
 
 ```{r strat_architecture_adm_example, echo=FALSE}
 adm = tp_to_adm(t = scenarioA$t_myr, h = scenarioA$h_m[,"2km"],
@@ -249,7 +255,7 @@ L_axis_lab()              # add length axis label
 title(paste0("Age-depth model ", pos, " from shore"))
 ```
 
-Age-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic (Wheeler) diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous due to continuous depostion from the aphotic carbonate factory.
+Age-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous due to continuous depostion from the aphotic carbonate factory.
 :::
 
 ::: {.callout-note collapse="true"}
