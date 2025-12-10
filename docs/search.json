@@ -606,34 +606,13 @@
     "href": "pres/StratPal_workshop_pres.html#event-data-and-niche-modeling",
     "title": "Building Models for Stratigraphic Paleobiology in R",
     "section": "Event Data and Niche Modeling",
-    "text": "Event Data and Niche Modeling\n\n\n\n\n\nHolland et al. 2024\n\n\n\n\nTaxa track their preferred niche\nEnvironmental conditions at a place change with time\n\n\n\n\n\nQuestions\n\n\n\n\n\nPatzkowsky & Holland (2012)\n\n\n\n\nHow does the intersection between ecology and stratigraphy affect fossil abundance?\nHow does stratigraphy influence extinction rate estimates?\n\n\n\n\n\n\nTasks on ecology and last occurrences\n\nEcology\n\nSimulate an abundant taxon and transform the fossil ages into the stratigraphic domain.\n\nAt which locations and stratigraphic heights do you observe peaks in fossil abundance?\nWhich stratigraphic effects are these peaks associated with?\n\n\n\n\n\n\nTasks on ecology and last occurrences\n\nEcology\n\n\n\nPatzkowsky & Holland (2012)\n\n\n\nDefine a niche for a taxon and add the niche model to your pipeline.\n\nHow and why do your results change?\nHow could you misinterpret the results?\n\n\n\n\n\n\nTasks on ecology and last occurrences\n\nLast occurrences\n\nSimulate last occurrences based on the assumption of a constant rate of last occurrences and transform them into the stratigraphic domain.\n\nWhere do you observe clusters of last occurrences?\nWhat stratigraphic effects are these locations associated with?\nHow would you misinterpret the results in the absence of stratigraphic information? Use your results to formulate a “stratigraphic null hypothesis” for clusters of last occurrences.\n\n\n\n\n\n\nResults"
+    "text": "Event Data and Niche Modeling\n\n\n\n\n\nHolland et al. 2024\n\n\n\n\nTaxa track their preferred niche\nEnvironmental conditions at a place change with time"
   },
   {
-    "objectID": "about.html#citation",
-    "href": "about.html#citation",
-    "title": "About",
-    "section": "",
-    "text": "To cite these materials, please use\n\nHohmann, N., Liu, X., & Jarochowska, E. (2025). Materials for workshop on building modeling pipelines in stratigraphic paleobiology (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.13769443"
-  },
-  {
-    "objectID": "about.html#contact-information",
-    "href": "about.html#contact-information",
-    "title": "About",
-    "section": "Contact information",
-    "text": "Contact information\n\nNiklas Hohmann\nemail: n.h.hohmann [at] uu.nl\n\n\nEmilia Jarochowska\nemail: e.b.jarochowska [at] uu.nl"
-  },
-  {
-    "objectID": "about.html#funding-information",
-    "href": "about.html#funding-information",
-    "title": "About",
-    "section": "Funding information",
-    "text": "Funding information\n\nFunded by the European Union (ERC, MindTheGap, StG project no 101041077). Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Research Council. Neither the European Union nor the granting authority can be held responsible for them. European Union and European Research Council logos"
-  },
-  {
-    "objectID": "about.html#license",
-    "href": "about.html#license",
-    "title": "About",
-    "section": "License",
-    "text": "License\nText - Creative Commons Attribution 4.0 International\nCode - Apache-2.0"
+    "objectID": "pres/StratPal_workshop_pres.html#stratigraphic-architectures",
+    "href": "pres/StratPal_workshop_pres.html#stratigraphic-architectures",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Stratigraphic architectures",
+    "text": "Stratigraphic architectures\nStratigraphic forward modeling\n\n\n\nSimulate the rock record for a given time and environment type\nTraditionally used for siliciclastic systems\nHere we use a carbonate model, CarboKitten.jl, an Open Source model developed in this project\n\n\n\n\n\nhttps://mindthegap-erc.github.io/CarboKitten.jl/"
   }
 ]
