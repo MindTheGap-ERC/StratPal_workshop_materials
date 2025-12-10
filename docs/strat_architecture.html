@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -87,14 +87,15 @@ div.csl-indent {
 <meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-0b37c64f34216b628666a8dac638b53b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -134,6 +135,8 @@ div.csl-indent {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    </a>
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Modeling Stratigraphic Paleobiology in R</span>
     </a>
@@ -191,6 +194,7 @@ div.csl-indent {
   <li><a href="#stratigraphic-architectures-and-age-depth-models" id="toc-stratigraphic-architectures-and-age-depth-models" class="nav-link active" data-scroll-target="#stratigraphic-architectures-and-age-depth-models">Stratigraphic Architectures and Age-Depth Models</a></li>
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
+  <li><a href="#age-depth-models-translate-physical-stratigraphy-into-time" id="toc-age-depth-models-translate-physical-stratigraphy-into-time" class="nav-link" data-scroll-target="#age-depth-models-translate-physical-stratigraphy-into-time">Age-depth models translate physical stratigraphy into time</a></li>
   <li><a href="#example-stratigraphic-architecture" id="toc-example-stratigraphic-architecture" class="nav-link" data-scroll-target="#example-stratigraphic-architecture">Example Stratigraphic Architecture</a></li>
   <li><a href="#age-depth-models" id="toc-age-depth-models" class="nav-link" data-scroll-target="#age-depth-models">Age-Depth Models</a></li>
   </ul></li>
@@ -236,9 +240,63 @@ div.csl-indent {
 </section>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Stratigraphic architecture
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Stratigraphic architecture refers to the three-dimensional geometry of sedimentary strata within a basin, encompassing the distribution of unconformities, facies, systems tracts, and variations in sedimentation rates <span class="citation" data-cites="patzkowsky2012stratigraphic holland1999">(<a href="#ref-patzkowsky2012stratigraphic" role="doc-biblioref">Patzkowsky and Holland 2012</a>; <a href="#ref-holland1999" role="doc-biblioref">Holland and Patzkowsky 1999</a>)</span>.</p>
+</div>
+</div>
+<p>Stratigraphic architecture emerges from the interplay of accommodation (space for sediment accumulation controlled by subsidence and sea-level change), sediment production/supply, and depositional processes such as transport or compaction. Stratigraphic architecture determines where and when fossil-bearing sediments are deposited and preserved.</p>
+<p>Stratigraphic architectures are three-dimensional and commonly visualized using 2D slices:</p>
+<ul>
+<li><p>sediment sections with sequence-stratigraphic interpretation overlain</p></li>
+<li><p>chronostratigraphic (Wheeler) diagrams</p></li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Chronostratigraphic diagram
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>also called a Wheeler diagram: a plot where the geological time is presented on the vertical axis and the geographic position on the horizontal axis, showing the relative ages and spatial extent of strata <span class="citation" data-cites="harrye_wheeler1958">(<a href="#ref-harrye_wheeler1958" role="doc-biblioref">Harry E. Wheeler (2) 1958</a>)</span>. Wheeler diagrams transform thickness into time, revealing <strong>lacunae</strong>, i.e.&nbsp;gaps representing missing time due to non-deposition (hiatuses) or erosion, that are invisible in conventional sections.</p>
+</div>
+</div>
+<p>For a comprehensive discussion of what Wheeler diagrams represent, see <span class="citation" data-cites="sylvester2024">(<a href="#ref-sylvester2024" role="doc-biblioref">Sylvester, Straub, and Covault 2024</a>)</span>.</p>
+<section id="age-depth-models-translate-physical-stratigraphy-into-time" class="level3">
+<h3 class="anchored" data-anchor-id="age-depth-models-translate-physical-stratigraphy-into-time">Age-depth models translate physical stratigraphy into time</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Age-depth model
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An age-depth model is a mapping that estimates the relationship between stratigraphic position (depth) and geological time for a stratigraphic sequence <span class="citation" data-cites="lacourse2020 hohmann_admtools_gchron_2025">(<a href="#ref-lacourse2020" role="doc-biblioref">Lacourse and Gajewski 2020</a>; <a href="#ref-hohmann_admtools_gchron_2025" role="doc-biblioref">N. Hohmann et al. 2025</a>)</span>, allowing paleontologists to assign ages to fossils and sedimentary events based on their position in the rock record <span class="citation" data-cites="sadler1981">(<a href="#ref-sadler1981" role="doc-biblioref">Sadler 1981</a>)</span>.</p>
+</div>
+</div>
+<p>Important properties of age-depth models are:</p>
+<ul>
+<li><p>Because sediments do not accumulate at constant rates, age-depth relationships are typically nonlinear,</p></li>
+<li><p>Each absolute (radiometric) or relative (biostratigraphic, chemostratigraphic etc) age tie-point is associated with uncertainty, so an age-depth model is associated with uncertainty and the error of age should ideally be propagated into downstream analyses - <em>this is not a standard in paleobiology yet</em>.</p></li>
+</ul>
+</section>
 <section id="example-stratigraphic-architecture" class="level3">
 <h3 class="anchored" data-anchor-id="example-stratigraphic-architecture">Example Stratigraphic Architecture</h3>
-<p>In this workshop, we use an example stratigraphic architecture simulated using CarboKitten.jl <span class="citation" data-cites="hidding_2025">(<a href="#ref-hidding_2025" role="doc-biblioref">Hidding et al. 2025</a>)</span> that emulates scenario A of <span class="citation" data-cites="hohmann_identification_2024">Hohmann et al. (<a href="#ref-hohmann_identification_2024" role="doc-biblioref">2024</a>)</span>. Here, we provide a quick overview of the setup. If you are curious you can inspect the source code underlying the simulation <a href="https://github.com/MindTheGap-ERC/StratPal_data_prep">here</a> (and modify it if you like).</p>
+<p>In this workshop, we use an example stratigraphic architecture simulated using CarboKitten.jl <span class="citation" data-cites="hidding_2025">(<a href="#ref-hidding_2025" role="doc-biblioref">Hidding et al. 2025</a>)</span> that emulates scenario A of <span class="citation" data-cites="hohmann_identification_2024">Niklas Hohmann et al. (<a href="#ref-hohmann_identification_2024" role="doc-biblioref">2024</a>)</span>. Here, we provide a quick overview of the setup. If you are curious you can inspect the source code underlying the simulation <a href="https://github.com/MindTheGap-ERC/StratPal_data_prep">here</a> (and modify it if you like).</p>
 <p>The simulated carbonate platform consists of three carbonate producing factories, one euphotic, one oligophotic, and one aphotic. The production profile of the factories are shown below.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -291,8 +349,8 @@ div.csl-indent {
 <h3 class="anchored" data-anchor-id="loading-the-package-and-data">Loading the package and data</h3>
 <p>Load the <code>StratPal</code> and <code>admtools</code> packages via</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"StratPal"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"admtools"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"StratPal"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"admtools"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>to have all required functionality and example data available. We use the example data stored in the <code>scenarioA</code> variable that comes with the <code>StratPal</code> package. You can find more details on the data using <code>?scenarioA</code>.</p>
 </section>
@@ -300,11 +358,11 @@ div.csl-indent {
 <h3 class="anchored" data-anchor-id="creating-age-depth-models">Creating age-depth models</h3>
 <p>Age-depth models are constructed using <code>tp_to_adm</code> (tie point to age-depth model) from the <code>admtools</code> package. Here we construct the age-depth model 2 km from shore by passing the function the vectors of times and heights at that stratigraphic position:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span>                                 <span class="co"># distance from shore</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span>                                 <span class="co"># distance from shore</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        <span class="co"># construct age-depth model</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">L_unit =</span> <span class="st">"m"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">L_unit =</span> <span class="st">"m"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note that we immediately add time and length units to avoid downstream confusion. The example data contains model outputs at 2, 4, 6, 8, 10, and 12 km from shore.</p>
 </section>
@@ -312,12 +370,12 @@ div.csl-indent {
 <h3 class="anchored" data-anchor-id="plotting-age-depth-models">Plotting Age-depth models</h3>
 <p>Age-depth models can be plotted using the standard <code>plot</code> command:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm,           <span class="co"># Plot age-depth model</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm,           <span class="co"># Plot age-depth model</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">lwd_acc =</span> <span class="dv">2</span>,   <span class="co"># plot thicker lines for intervals with sediment accumulation (lwd = line width)</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">lty_destr =</span> <span class="dv">0</span>) <span class="co"># don't plot destructive intervals/gaps (lty = line type)</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">T_axis_lab</span>()        <span class="co"># add time axis label</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">L_axis_lab</span>()        <span class="co"># add length axis label</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Age-depth model 2 km from shore"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Age-depth model 2 km from shore"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -332,23 +390,23 @@ div.csl-indent {
 <h3 class="anchored" data-anchor-id="extracting-information-from-age-depth-models">Extracting information from age-depth models</h3>
 <p>Age-depth models contain a lot of stratigraphic information, e.g.&nbsp;on stratigraphic completeness, hiatuses, or sedimentation rates. Some basic functionality to extract this information is:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_total_duration</span>(adm)  <span class="co"># time interval covered by age-depth model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_total_duration</span>(adm)  <span class="co"># time interval covered by age-depth model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_total_thickness</span>(adm) <span class="co"># sediment accumulated </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_total_thickness</span>(adm) <span class="co"># sediment accumulated </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 81.23346</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_completeness</span>(adm)    <span class="co"># stratigraphic completeness</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_completeness</span>(adm)    <span class="co"># stratigraphic completeness</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.349</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_hiat_duration</span>(adm)   <span class="co"># extract hiatus durations</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_hiat_duration</span>(adm)   <span class="co"># extract hiatus durations</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.002 0.517 0.001 0.002 0.001 0.742 0.001 0.036</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(adm)             <span class="co"># some summary statistics</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(adm)             <span class="co"># some summary statistics</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>age-depth model 
 Total duration: 2 Myr
@@ -364,7 +422,7 @@ Stratigraphic completeness: 34.9 %
 <h3 class="anchored" data-anchor-id="extracting-water-depth">Extracting water depth</h3>
 <p>Water depth at the simulation runs is stored in the variable <code>scenarioA$wd_m</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>wd <span class="ot">=</span> scenarioA<span class="sc">$</span>wd_m[,<span class="st">"2km"</span>]</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> scenarioA<span class="sc">$</span>t_myr</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> t,</span>
@@ -372,7 +430,7 @@ Stratigraphic completeness: 34.9 %
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>,</span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Water depth [m]"</span>,</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Water depth 2 km from shore"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Water depth 2 km from shore"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -391,7 +449,7 @@ Stratigraphic completeness: 34.9 %
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Task 1.1: Getting to know age-depth models
+<span class="screen-reader-only">Important</span>Task 1.1: Getting to know age-depth models
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -405,7 +463,7 @@ Task 1.1: Getting to know age-depth models
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Task 1.2: Incompleteness across the onshore-offshore gradient
+<span class="screen-reader-only">Important</span>Task 1.2: Incompleteness across the onshore-offshore gradient
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -418,7 +476,7 @@ Task 1.2: Incompleteness across the onshore-offshore gradient
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Task 1.3: Hiatus duration and water depth
+<span class="screen-reader-only">Important</span>Task 1.3: Hiatus duration and water depth
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -430,21 +488,21 @@ Task 1.3: Hiatus duration and water depth
 <section id="solutions" class="level2">
 <h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution Task 1.1: Getting to know age-depth models
+<span class="screen-reader-only">Note</span>Solution Task 1.1: Getting to know age-depth models
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Define age-depth models for different locations (e.g., 4 km, 6 km etc) along the onshore-offshore gradient, and plot them.</p>
 <p>How do they connect to the chronostratigraphic diagram and the sea level curve show above?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"admtools"</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"StratPal"</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -457,11 +515,11 @@ Solution Task 1.1: Getting to know age-depth models
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>                             <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                             <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>                             <span class="at">L_unit =</span> <span class="st">"m"</span>)</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now you have a list with several age depth models. The code below plots one of them. You can modify it to plot each one separately or modify the code to plot all of them.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span>               <span class="co"># insert distance from shore here</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span>               <span class="co"># insert distance from shore here</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(pos <span class="sc">%in%</span> dist ) <span class="co"># validity check</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm_list[[pos]],</span>
@@ -471,7 +529,7 @@ Solution Task 1.1: Getting to know age-depth models
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">lty_destr =</span> <span class="dv">0</span>)       </span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">T_axis_lab</span>()              <span class="co"># add time axis label</span></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">L_axis_lab</span>()              <span class="co"># add length axis label</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="fu">paste0</span>(<span class="st">"Age-depth model "</span>, pos, <span class="st">" from shore"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="fu">paste0</span>(<span class="st">"Age-depth model "</span>, pos, <span class="st">" from shore"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -485,20 +543,20 @@ Solution Task 1.1: Getting to know age-depth models
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution Task 1.2: Incompleteness across the onshore-offshore gradient
+<span class="screen-reader-only">Note</span>Solution Task 1.2: Incompleteness across the onshore-offshore gradient
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>inc <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(dist))             <span class="co"># storage for incompleteness</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>inc <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(dist))             <span class="co"># storage for incompleteness</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>nhiat <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(dist))           <span class="co"># storage for number of hiatuses</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(dist)){</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  pos <span class="ot">=</span> dist[i] <span class="co"># position in platform</span></span>
@@ -515,7 +573,7 @@ Solution Task 1.2: Incompleteness across the onshore-offshore gradient
 <span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Distance from shore [km]"</span>, </span>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Incompleteness [%]"</span>, </span>
 <span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>,</span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -523,11 +581,11 @@ Solution Task 1.2: Incompleteness across the onshore-offshore gradient
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p, nhiat, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p, nhiat, </span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Distance from shore [km]"</span>, </span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"# Hiatuses"</span>, </span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(nhiat)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(nhiat)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -536,34 +594,34 @@ Solution Task 1.2: Incompleteness across the onshore-offshore gradient
 </div>
 </div>
 </div>
-<p>Incompleteness is highest in the onshore sections (more than 60 %), and drops with distance from shore to values of around 10 % in the proximal slope. Note that this differs from Figure 4 in <span class="citation" data-cites="hohmann_identification_2024">Hohmann et al. (<a href="#ref-hohmann_identification_2024" role="doc-biblioref">2024</a>)</span>, as we are examining incompleteness on a coarser spatial scale.</p>
+<p>Incompleteness is highest in the onshore sections (more than 60 %), and drops with distance from shore to values of around 10 % in the proximal slope. Note that this differs from Figure 4 in <span class="citation" data-cites="hohmann_identification_2024">Niklas Hohmann et al. (<a href="#ref-hohmann_identification_2024" role="doc-biblioref">2024</a>)</span>, as we are examining incompleteness on a coarser spatial scale.</p>
 <p>The number of hiatuses is low on the platform top (8 hiatuses at 2 - 6 km), with the highest values (16) on the platform edge (8 km). On the proximal slope, there are 12 hiatuses and the number drops to 0 in the distal slope, reflecting that this environment is less affected by sea-level fluctuations.</p>
 <p>The hiatuses in the platform interior are generated by long intervals of low sea level, which exposes the platform top. The high number of hiatuses in the slope results from the fact that steep topography records sea-level fluctuations much more than flat topography. The distal slope is below the range of the sea-level fluctuations, so it does not undergo non-deposition or breaks in carbonate production, it is only affected by changes in low carbonate production of the aphotic factory and varying input from the platform top.</p>
 </div>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution Task 1.3: Hiatus duration and water depth
+<span class="screen-reader-only">Note</span>Solution Task 1.3: Hiatus duration and water depth
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Generate histograms of hiatus durations and plots of water depth at different distances from shore. Do you see any systematic changes?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span> <span class="co"># position of adm</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span> <span class="co"># position of adm</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(pos <span class="sc">%in%</span>  dist) <span class="co"># validity check</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(scenarioA<span class="sc">$</span>t_myr, scenarioA<span class="sc">$</span>wd_m[,pos],</span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Water depth [m]"</span>,</span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>,</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Water depth "</span>, pos, <span class="st">" from shore"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Water depth "</span>, pos, <span class="st">" from shore"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -571,7 +629,7 @@ Solution Task 1.3: Hiatus duration and water depth
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>hiatus_durations <span class="ot">&lt;-</span> adm_list[[pos]] <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>hiatus_durations <span class="ot">&lt;-</span> adm_list[[pos]] <span class="sc">|&gt;</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_hiat_duration</span>()</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(hiatus_durations) <span class="sc">==</span> <span class="dv">0</span>) {</span>
@@ -580,7 +638,7 @@ Solution Task 1.3: Hiatus duration and water depth
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>hiatus_durations <span class="sc">|&gt;</span></span>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="st">"Hiatus duration [Myr]"</span>,</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Hiatus duration "</span>, pos, <span class="st">" from shore"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Hiatus duration "</span>, pos, <span class="st">" from shore"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -614,11 +672,32 @@ Solution Task 1.3: Hiatus duration and water depth
 <div id="ref-burgess_2013" class="csl-entry" role="listitem">
 Burgess, Peter. 2013. <span>“CarboCAT: A Cellular Automata Model of Heterogeneous Carbonate Strata.”</span> <em>Computers &amp; Geosciences</em> 53: 129–40. https://doi.org/<a href="https://doi.org/10.1016/j.cageo.2011.08.026">https://doi.org/10.1016/j.cageo.2011.08.026</a>.
 </div>
+<div id="ref-harrye_wheeler1958" class="csl-entry" role="listitem">
+Harry E. Wheeler (2). 1958. <span>“Time-Stratigraphy.”</span> <em>AAPG Bulletin</em> 42. <a href="https://doi.org/10.1306/0bda5af2-16bd-11d7-8645000102c1865d">https://doi.org/10.1306/0bda5af2-16bd-11d7-8645000102c1865d</a>.
+</div>
 <div id="ref-hidding_2025" class="csl-entry" role="listitem">
 Hidding, J., E. Jarochowska, N. Hohmann, X. Liu, P. Burgess, and H. Spreeuw. 2025. <span>“CarboKitten.jl – an Open Source Toolkit for Carbonate Stratigraphic Modeling.”</span> <em>EGUsphere</em> 2025: 1–28. <a href="https://doi.org/10.5194/egusphere-2025-4561">https://doi.org/10.5194/egusphere-2025-4561</a>.
 </div>
+<div id="ref-hohmann_admtools_gchron_2025" class="csl-entry" role="listitem">
+Hohmann, N., D. De Vleeschouwer, S. Batenburg, and E. Jarochowska. 2025. <span>“Nonparametric Estimation of Age–Depth Models from Sedimentological and Stratigraphic Information.”</span> <em>Geochronology</em> 7 (3): 427–48. <a href="https://doi.org/10.5194/gchron-7-427-2025">https://doi.org/10.5194/gchron-7-427-2025</a>.
+</div>
 <div id="ref-hohmann_identification_2024" class="csl-entry" role="listitem">
 Hohmann, Niklas, Joël R. Koelewijn, Peter Burgess, and Emilia Jarochowska. 2024. <span>“Identification of the Mode of Evolution in Incomplete Carbonate Successions.”</span> <em>BMC Ecology and Evolution</em> 24 (1): 113. <a href="https://doi.org/10.1186/s12862-024-02287-2">https://doi.org/10.1186/s12862-024-02287-2</a>.
+</div>
+<div id="ref-holland1999" class="csl-entry" role="listitem">
+Holland, Steven M., and Mark E. Patzkowsky. 1999. <span>“Models for Simulating the Fossil Record.”</span> <em>Geology</em> 27 (6): 491. <a href="https://doi.org/10.1130/0091-7613(1999)027<0491:mfstfr>2.3.co;2">https://doi.org/10.1130/0091-7613(1999)027&lt;0491:mfstfr&gt;2.3.co;2</a>.
+</div>
+<div id="ref-lacourse2020" class="csl-entry" role="listitem">
+Lacourse, Terri, and Konrad Gajewski. 2020. <span>“Current Practices in Building and Reporting Age-Depth Models.”</span> <em>Quaternary Research</em> 96 (May): 28–38. <a href="https://doi.org/10.1017/qua.2020.47">https://doi.org/10.1017/qua.2020.47</a>.
+</div>
+<div id="ref-patzkowsky2012stratigraphic" class="csl-entry" role="listitem">
+Patzkowsky, Mark E, and Steven M. Holland. 2012. <em>Stratigraphic Paleobiology: Understanding the Distribution of Fossil Taxa in Time and Space</em>. University of Chicago Press.
+</div>
+<div id="ref-sadler1981" class="csl-entry" role="listitem">
+Sadler, Peter M. 1981. <span>“Sediment Accumulation Rates and the Completeness of Stratigraphic Sections.”</span> <em>The Journal of Geology</em> 89 (5): 569–84. <a href="https://doi.org/10.1086/628623">https://doi.org/10.1086/628623</a>.
+</div>
+<div id="ref-sylvester2024" class="csl-entry" role="listitem">
+Sylvester, Zoltán, Kyle M. Straub, and Jacob A. Covault. 2024. <span>“Stratigraphy in Space and Time: A Reproducible Approach to Analysis and Visualization.”</span> <em>Earth-Science Reviews</em> 250 (March): 104706. <a href="https://doi.org/10.1016/j.earscirev.2024.104706">https://doi.org/10.1016/j.earscirev.2024.104706</a>.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -672,13 +751,14 @@ Hohmann, Niklas, Joël R. Koelewijn, Peter Burgess, and Emilia Jarochowska. 2024
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
