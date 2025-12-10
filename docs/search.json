@@ -607,5 +607,12 @@
     "title": "Building Models for Stratigraphic Paleobiology in R",
     "section": "Event Data and Niche Modeling",
     "text": "Event Data and Niche Modeling\n\n\n\n\n\nHolland et al. 2024\n\n\n\n\nTaxa track their preferred niche\nEnvironmental conditions at a place change with time"
+  },
+  {
+    "objectID": "pres/StratPal_workshop_pres.html#stratigraphic-architectures",
+    "href": "pres/StratPal_workshop_pres.html#stratigraphic-architectures",
+    "title": "Building Models for Stratigraphic Paleobiology in R",
+    "section": "Stratigraphic architectures",
+    "text": "Stratigraphic architectures\nStratigraphic forward modeling\n\n\n\nSimulate the rock record for a given time and environment type\nTraditionally used for siliciclastic systems\nHere we use a carbonate model, CarboKitten.jl, an Open Source model developed in this project\n\n\n\n\n\nhttps://mindthegap-erc.github.io/CarboKitten.jl/"
   }
 ]
