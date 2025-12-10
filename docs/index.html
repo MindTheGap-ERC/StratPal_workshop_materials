@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Modeling Stratigraphic Paleobiology in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Modeling Stratigraphic Paleobiology in R</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./getting_started.html"> 
+<span class="menu-text">Getting Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./strat_architecture.html"> 
+<span class="menu-text">Stratigraphic Architectures</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./trait_evol.html"> 
+<span class="menu-text">Trait Evolution</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./event_data.html"> 
+<span class="menu-text">Event Data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./advanced_topics.html"> 
+<span class="menu-text">Advanced Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#what-do-you-need-to-do-stratigraphic-paleobiology" id="toc-what-do-you-need-to-do-stratigraphic-paleobiology" class="nav-link" data-scroll-target="#what-do-you-need-to-do-stratigraphic-paleobiology">What do you need to do stratigraphic paleobiology?</a></li>
+  <li><a href="#depositional-systems" id="toc-depositional-systems" class="nav-link" data-scroll-target="#depositional-systems">Depositional systems</a></li>
+  </ul></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#structure" id="toc-structure" class="nav-link" data-scroll-target="#structure">Structure</a></li>
+  <li><a href="#contributing" id="toc-contributing" class="nav-link" data-scroll-target="#contributing">Contributing</a></li>
+  <li><a href="#funding" id="toc-funding" class="nav-link" data-scroll-target="#funding">Funding</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Modeling Stratigraphic Paleobiology in R</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Stratigraphic paleobiology is a methodological framework that applies physical stratigraphy - which includes event deposition, sequence-stratigraphic architecture, and sedimentary basin analysis - to the interpretation of the fossil record <span class="citation" data-cites="patzkowsky2012stratigraphic holland2024">(<a href="#ref-patzkowsky2012stratigraphic" role="doc-biblioref">Patzkowsky and Holland 2012</a>; <a href="#ref-holland2024" role="doc-biblioref">Holland, Patzkowsky, and Loughney 2024</a>)</span>. The discipline is founded on the principle that the fossil record is a joint expression of ecological, taphonomic, evolutionary, and stratigraphic processes, meaning that fossil occurrences are controlled not only by where organisms lived and when they evolved, but also by when and where sediment capable of preserving them accumulated <span class="citation" data-cites="holland2015 holland2024">(<a href="#ref-holland2015" role="doc-biblioref">Holland and Patzkowsky 2015</a>; <a href="#ref-holland2024" role="doc-biblioref">Holland, Patzkowsky, and Loughney 2024</a>)</span>. Because species are distributed along environmental gradients such as water depth, and because sequence-stratigraphic architecture systematically controls sediment deposition, first and last occurrences of fossil taxa cluster predictably at sequence boundaries, flooding surfaces, and surfaces of forced regression, even when no change in extinction or origination rate has occurred <span class="citation" data-cites="holland2020 holland1995">(<a href="#ref-holland2020" role="doc-biblioref">Holland 2020</a>, <a href="#ref-holland1995" role="doc-biblioref">1995</a>)</span>.</p>
+<p>Stratigraphic paleobiology has changed our understanding of mass extinctions: simulation studies and field tests (e.g.&nbsp;Italy’s Po Plain) demonstrated that what appeared to be sudden, stepwise extinction events may actually reflect long intervals of elevated extinction rate compressed by stratigraphic architecture into apparent clusters of last occurrences <span class="citation" data-cites="holland2020 holland2015">(<a href="#ref-holland2020" role="doc-biblioref">Holland 2020</a>; <a href="#ref-holland2015" role="doc-biblioref">Holland and Patzkowsky 2015</a>)</span>.</p>
+<section id="what-do-you-need-to-do-stratigraphic-paleobiology" class="level3">
+<h3 class="anchored" data-anchor-id="what-do-you-need-to-do-stratigraphic-paleobiology">What do you need to do stratigraphic paleobiology?</h3>
+<p>The first studies focused on first and last occurrence data (e.g. <span class="citation" data-cites="holland2015">Holland and Patzkowsky (<a href="#ref-holland2015" role="doc-biblioref">2015</a>)</span>; <span class="citation" data-cites="nawrot2018">Nawrot et al. (<a href="#ref-nawrot2018" role="doc-biblioref">2018</a>)</span>; <span class="citation" data-cites="hohmann2021">Hohmann (<a href="#ref-hohmann2021" role="doc-biblioref">2021</a>)</span>), but subsequent research extended it to occurrences in bin <span class="citation" data-cites="jarochowska2018">(<a href="#ref-jarochowska2018" role="doc-biblioref">Jarochowska et al. 2018</a>)</span>, diversity <span class="citation" data-cites="loughney2021">(<a href="#ref-loughney2021" role="doc-biblioref">Loughney et al. 2021</a>)</span>, abundance <span class="citation" data-cites="danise2017">(<a href="#ref-danise2017" role="doc-biblioref">Danise and Holland 2017</a>)</span>, trait value measurements <span class="citation" data-cites="hannisdal2006 hohmann_identification_2024">(<a href="#ref-hannisdal2006" role="doc-biblioref">Hannisdal 2006</a>; <a href="#ref-hohmann_identification_2024" role="doc-biblioref">Hohmann et al. 2024</a>)</span> and assemblage composition <span class="citation" data-cites="belanger2023">(<a href="#ref-belanger2023" role="doc-biblioref">Belanger and Bapst 2023</a>)</span> - all types of data representing fossils or other variables stored in the physical geological record are potentially subject to stratigraphic paleobiology. Secondly, a representation of the stratigraphy is needed. This can be: lithofacies, systems tracts, estimates of depositional rate, or another class. Here we advocate for using an age-depth model and show how they can be used even when no data on absolute age is available.</p>
+</section>
+<section id="depositional-systems" class="level3">
+<h3 class="anchored" data-anchor-id="depositional-systems">Depositional systems</h3>
+<p>All depositional systems have their defining physical, chemical and biological processes; the same biological event will be preserved differently on a clastic shelf than on a carbonate shelf or in a river delta <span class="citation" data-cites="holland2023">(<a href="#ref-holland2023" role="doc-biblioref">Holland 2023</a>)</span>. Much previous work focused on siliciclastic marine settings <span class="citation" data-cites="hannisdal2006 holland1999 holland2015">(<a href="#ref-hannisdal2006" role="doc-biblioref">Hannisdal 2006</a>; <a href="#ref-holland1999" role="doc-biblioref">Holland and Patzkowsky 1999</a>, <a href="#ref-holland2015" role="doc-biblioref">2015</a>)</span> and some on terrestrial <span class="citation" data-cites="holland2021 holland2022">(<a href="#ref-holland2021" role="doc-biblioref">Holland 2021</a>, <a href="#ref-holland2022" role="doc-biblioref">2022</a>)</span> and mixed, cool-water carbonates <span class="citation" data-cites="scarponi2017 nawrot2018">(<a href="#ref-scarponi2017" role="doc-biblioref">Scarponi et al. 2017</a>; <a href="#ref-nawrot2018" role="doc-biblioref">Nawrot et al. 2018</a>)</span>. Also a transition between systems will have a strong effect on fossil preservation <span class="citation" data-cites="danise2017">(<a href="#ref-danise2017" role="doc-biblioref">Danise and Holland 2017</a>)</span>. Here we will use tropical carbonate platforms <span class="citation" data-cites="hohmann_identification_2024">(<a href="#ref-hohmann_identification_2024" role="doc-biblioref">Hohmann et al. 2024</a>)</span>, because the effects in them have been largely predicted, but not well tested yet. If you are interested in modeling a different depositional setting, please discuss with us and we may be able to point you to a suitable model.</p>
+</section>
+</section>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
+<p>By the end of this workshop, you will be able to</p>
+<p>1. build age-depth models to quantify stratigraphic incompleteness and hiatus distributions across depositional environments,</p>
+<p>2. simulate and analyze different modes of trait evolution (stasis, random walk, and Ornstein-Uhlenbeck processes) and identify how stratigraphy affects their expression in the fossil record,</p>
+<p>3. model ecological niche preferences and understand how environmental gradients control fossil abundance patterns, and</p>
+<p>4. simulate last occurrence data to recognize how stratigraphic phenomena like hiatuses and condensation surfaces can create artifactual “mass extinction” signals.</p>
+<p>You will develop proficiency in using R’s pipe operator <code>|&gt;</code> to build reproducible, modular analysis workflows that combine the <code>StratPal</code> and <code>admtools</code> packages.</p>
+</section>
+<section id="structure" class="level2">
+<h2 class="anchored" data-anchor-id="structure">Structure</h2>
+<p>The webpage and workshop is structured as follows:</p>
+<ul>
+<li><p><a href="./getting_started.html"><strong>Getting Started</strong></a> covers software dependencies, package installation and loading, and a brief introduction to the <em>pipe operator</em> in base R (10 min).</p></li>
+<li><p><a href="./strat_architecture.html"><strong>Stratigraphic Architectures</strong></a> provides an overview of the example stratigraphic architecture used in the workshop, and introduces age-depth models (45 min).</p></li>
+<li><p><a href="./trait_evol.html"><strong>Trait Evolution</strong></a> explores how stratigraphic effects changes patterns of phenotypic evolution (45 min).</p></li>
+<li><p><a href="./event_data.html"><strong>Event Data</strong></a> discusses how data such as fossil abundance or last occurrences are modified by ecological, taphonomic, and stratigraphic effects (45 min).</p></li>
+<li><p><a href="./advanced_topics.html"><strong>Advanced Topics</strong></a> covers miscellaneous topics, e.g., combining niche models with trait evolution, and modification of phylogenetic trees.</p></li>
+</ul>
+</section>
+<section id="contributing" class="level2">
+<h2 class="anchored" data-anchor-id="contributing">Contributing</h2>
+<p>Did you find a typo, a mistake, or do you thing some topics are not sufficiently covered? Please post your issue in the GitHub repo.</p>
+</section>
+<section id="funding" class="level2">
+<h2 class="anchored" data-anchor-id="funding">Funding</h2>
+<p>Funded by the European Union (ERC, MindTheGap, StG project no 101041077). Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Research Council. Neither the European Union nor the granting authority can be held responsible for them. <img src="https://erc.europa.eu/sites/default/files/2023-06/LOGO_ERC-FLAG_FP.png" class="img-fluid" alt="European Union and European Research Council logos"></p>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-belanger2023" class="csl-entry" role="listitem">
+Belanger, Christina, and David Bapst. 2023. <span>“Simulating Our Ability to Accurately Detect Abrupt Changes in Assemblage-Based Paleoenvironmental Proxies.”</span> <em>Palaeontologia Electronica</em>. <a href="https://doi.org/10.26879/1282">https://doi.org/10.26879/1282</a>.
+</div>
+<div id="ref-danise2017" class="csl-entry" role="listitem">
+Danise, Silvia, and Steven M. Holland. 2017. <span>“Faunal Response to Sea<span>-</span>Level and Climate Change in a Short<span>-</span>Lived Seaway: Jurassic of the Western Interior, USA.”</span> Edited by Roger Benson. <em>Palaeontology</em> 60 (2): 213–32. <a href="https://doi.org/10.1111/pala.12278">https://doi.org/10.1111/pala.12278</a>.
+</div>
+<div id="ref-hannisdal2006" class="csl-entry" role="listitem">
+Hannisdal, Bjarte. 2006. <span>“Phenotypic Evolution in the Fossil Record: Numerical Experiments.”</span> <em>The Journal of Geology</em> 114 (2): 133–53. <a href="https://doi.org/10.1086/499569">https://doi.org/10.1086/499569</a>.
+</div>
+<div id="ref-hohmann2021" class="csl-entry" role="listitem">
+Hohmann, Niklas. 2021. <span>“Incorporating Information on Varying Sedimentation Rates into Paleontological Analyses.”</span> <em>PALAIOS</em> 36 (2): 53–67. <a href="https://doi.org/10.2110/palo.2020.038">https://doi.org/10.2110/palo.2020.038</a>.
+</div>
+<div id="ref-hohmann_identification_2024" class="csl-entry" role="listitem">
+Hohmann, Niklas, Joël R. Koelewijn, Peter Burgess, and Emilia Jarochowska. 2024. <span>“Identification of the Mode of Evolution in Incomplete Carbonate Successions.”</span> <em>BMC Ecology and Evolution</em> 24 (1): 113. <a href="https://doi.org/10.1186/s12862-024-02287-2">https://doi.org/10.1186/s12862-024-02287-2</a>.
+</div>
+<div id="ref-holland1995" class="csl-entry" role="listitem">
+Holland, Steven M. 1995. <span>“The Stratigraphic Distribution of Fossils.”</span> <em>Paleobiology</em> 21 (1): 92–109. <a href="https://doi.org/10.1017/s0094837300013099">https://doi.org/10.1017/s0094837300013099</a>.
+</div>
+<div id="ref-holland2020" class="csl-entry" role="listitem">
+———. 2020. <span>“The Stratigraphy of Mass Extinctions and Recoveries.”</span> <em>Annual Review of Earth and Planetary Sciences</em> 48 (1): 75–97. <a href="https://doi.org/10.1146/annurev-earth-071719-054827">https://doi.org/10.1146/annurev-earth-071719-054827</a>.
+</div>
+<div id="ref-holland2021" class="csl-entry" role="listitem">
+———. 2021. <span>“The Stratigraphic Paleobiology of Nonmarine Systems,”</span> January. <a href="https://doi.org/10.1017/9781108881869">https://doi.org/10.1017/9781108881869</a>.
+</div>
+<div id="ref-holland2022" class="csl-entry" role="listitem">
+———. 2022. <span>“The Structure of the Nonmarine Fossil Record: Predictions from a Coupled Stratigraphic<span></span>paleoecological Model of a Coastal Basin.”</span> <em>Paleobiology</em> 48 (3): 372–96. <a href="https://doi.org/10.1017/pab.2022.5">https://doi.org/10.1017/pab.2022.5</a>.
+</div>
+<div id="ref-holland2023" class="csl-entry" role="listitem">
+———. 2023. <span>“The contrasting controls on the occurrence of fossils in marine and nonmarine systems.”</span> <em>Bollettino della Società Paleontologica Italiana</em> 62 (1): 125. <a href="https://doi.org/10.4435/BSPI.2023.02">https://doi.org/10.4435/BSPI.2023.02</a>.
+</div>
+<div id="ref-holland1999" class="csl-entry" role="listitem">
+Holland, Steven M., and Mark E. Patzkowsky. 1999. <span>“Models for Simulating the Fossil Record.”</span> <em>Geology</em> 27 (6): 491. <a href="https://doi.org/10.1130/0091-7613(1999)027<0491:mfstfr>2.3.co;2">https://doi.org/10.1130/0091-7613(1999)027&lt;0491:mfstfr&gt;2.3.co;2</a>.
+</div>
+<div id="ref-holland2015" class="csl-entry" role="listitem">
+———. 2015. <span>“The Stratigraphy of Mass Extinction.”</span> Edited by Roger Benson. <em>Palaeontology</em> 58 (5): 903–24. <a href="https://doi.org/10.1111/pala.12188">https://doi.org/10.1111/pala.12188</a>.
+</div>
+<div id="ref-holland2024" class="csl-entry" role="listitem">
+Holland, Steven M., Mark E. Patzkowsky, and Katharine M. Loughney. 2024. <span>“Stratigraphic Paleobiology.”</span> <em>Paleobiology</em> 51 (1): 44–61. <a href="https://doi.org/10.1017/pab.2024.2">https://doi.org/10.1017/pab.2024.2</a>.
+</div>
+<div id="ref-jarochowska2018" class="csl-entry" role="listitem">
+Jarochowska, Emilia, David C. Ray, Philipp Röstel, Graham Worton, and Axel Munnecke. 2018. <span>“Harnessing Stratigraphic Bias at the Section Scale: Conodont Diversity in the Homerian (Silurian) of the Midland Platform, England.”</span> <em>Palaeontology</em> 61 (1): 57–76. <a href="https://doi.org/10.1111/pala.12326">https://doi.org/10.1111/pala.12326</a>.
+</div>
+<div id="ref-loughney2021" class="csl-entry" role="listitem">
+Loughney, Katharine M., Catherine Badgley, Alireza Bahadori, William E. Holt, and E. Troy Rasbury. 2021. <span>“Tectonic Influence on Cenozoic Mammal Richness and Sedimentation History of the Basin and Range, Western North America.”</span> <em>Science Advances</em> 7 (45). <a href="https://doi.org/10.1126/sciadv.abh4470">https://doi.org/10.1126/sciadv.abh4470</a>.
+</div>
+<div id="ref-nawrot2018" class="csl-entry" role="listitem">
+Nawrot, Rafał, Daniele Scarponi, Michele Azzarone, Troy A. Dexter, Kristopher M. Kusnerik, Jacalyn M. Wittmer, Alessandro Amorosi, and Michał Kowalewski. 2018. <span>“Stratigraphic Signatures of Mass Extinctions: Ecological and Sedimentary Determinants.”</span> <em>Proceedings of the Royal Society B: Biological Sciences</em> 285 (1886): 20181191. <a href="https://doi.org/10.1098/rspb.2018.1191">https://doi.org/10.1098/rspb.2018.1191</a>.
+</div>
+<div id="ref-patzkowsky2012stratigraphic" class="csl-entry" role="listitem">
+Patzkowsky, Mark E, and Steven M. Holland. 2012. <em>Stratigraphic Paleobiology: Understanding the Distribution of Fossil Taxa in Time and Space</em>. University of Chicago Press.
+</div>
+<div id="ref-scarponi2017" class="csl-entry" role="listitem">
+Scarponi, Daniele, Michele Azzarone, Kristopher Kusnerik, Alessandro Amorosi, Kevin M. Bohacs, Tina M. Drexler, and Michał Kowalewski. 2017. <span>“Systematic Vertical and Lateral Changes in Quality and Time Resolution of the Macrofossil Record: Insights from Holocene Transgressive Deposits, Po Coastal Plain, Italy.”</span> <em>Marine and Petroleum Geology</em> 87 (November): 128–36. <a href="https://doi.org/10.1016/j.marpetgeo.2017.03.031">https://doi.org/10.1016/j.marpetgeo.2017.03.031</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Stratigraphic Paleobiology in R</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

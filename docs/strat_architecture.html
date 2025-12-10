@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Stratigraphic Architectures and age-depth models – Modeling Stratigraphic Paleobiology in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Modeling Stratigraphic Paleobiology in R</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./getting_started.html"> 
+<span class="menu-text">Getting Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./strat_architecture.html" aria-current="page"> 
+<span class="menu-text">Stratigraphic Architectures</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./trait_evol.html"> 
+<span class="menu-text">Trait Evolution</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./event_data.html"> 
+<span class="menu-text">Event Data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./advanced_topics.html"> 
+<span class="menu-text">Advanced Topics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#stratigraphic-architectures-and-age-depth-models" id="toc-stratigraphic-architectures-and-age-depth-models" class="nav-link active" data-scroll-target="#stratigraphic-architectures-and-age-depth-models">Stratigraphic Architectures and Age-Depth Models</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#example-stratigraphic-architecture" id="toc-example-stratigraphic-architecture" class="nav-link" data-scroll-target="#example-stratigraphic-architecture">Example Stratigraphic Architecture</a></li>
+  <li><a href="#age-depth-models-translate-physical-stratigraphy-into-time" id="toc-age-depth-models-translate-physical-stratigraphy-into-time" class="nav-link" data-scroll-target="#age-depth-models-translate-physical-stratigraphy-into-time">Age-depth models translate physical stratigraphy into time</a></li>
+  </ul></li>
+  <li><a href="#coding-cheat-sheet" id="toc-coding-cheat-sheet" class="nav-link" data-scroll-target="#coding-cheat-sheet">Coding cheat sheet</a>
+  <ul class="collapse">
+  <li><a href="#getting-help" id="toc-getting-help" class="nav-link" data-scroll-target="#getting-help">Getting help</a></li>
+  <li><a href="#loading-the-package-and-data" id="toc-loading-the-package-and-data" class="nav-link" data-scroll-target="#loading-the-package-and-data">Loading the package and data</a></li>
+  <li><a href="#creating-age-depth-models" id="toc-creating-age-depth-models" class="nav-link" data-scroll-target="#creating-age-depth-models">Creating age-depth models</a></li>
+  <li><a href="#plotting-age-depth-models" id="toc-plotting-age-depth-models" class="nav-link" data-scroll-target="#plotting-age-depth-models">Plotting Age-depth models</a></li>
+  <li><a href="#extracting-information-from-age-depth-models" id="toc-extracting-information-from-age-depth-models" class="nav-link" data-scroll-target="#extracting-information-from-age-depth-models">Extracting information from age-depth models</a></li>
+  <li><a href="#extracting-water-depth" id="toc-extracting-water-depth" class="nav-link" data-scroll-target="#extracting-water-depth">Extracting water depth</a></li>
+  </ul></li>
+  <li><a href="#tasks" id="toc-tasks" class="nav-link" data-scroll-target="#tasks">Tasks</a></li>
+  <li><a href="#solutions" id="toc-solutions" class="nav-link" data-scroll-target="#solutions">Solutions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Stratigraphic Architectures and age-depth models</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="stratigraphic-architectures-and-age-depth-models" class="level2">
+<h2 class="anchored" data-anchor-id="stratigraphic-architectures-and-age-depth-models">Stratigraphic Architectures and Age-Depth Models</h2>
+<p>This part of the workshop gives a first overview on the stratigraphic architecture used, and will familiarize you with the concepts of age-depth models and (stratigraphic) incompleteness. The duration is approx. 45 minutes.</p>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stratigraphic architecture
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Stratigraphic architecture refers to the three-dimensional geometry of sedimentary strata within a basin, encompassing the distribution of unconformities, facies, systems tracts, and variations in sedimentation rates <span class="citation" data-cites="patzkowsky2012stratigraphic holland1999">(<a href="#ref-patzkowsky2012stratigraphic" role="doc-biblioref">Patzkowsky and Holland 2012</a>; <a href="#ref-holland1999" role="doc-biblioref">Holland and Patzkowsky 1999</a>)</span>.</p>
+</div>
+</div>
+<p>Stratigraphic architecture emerges from the interplay of accommodation (space for sediment accumulation controlled by subsidence and sea-level change), sediment production/supply, and depositional processes such as transport or compaction. Stratigraphic architecture determines where and when fossil-bearing sediments are deposited and preserved.</p>
+<section id="example-stratigraphic-architecture" class="level3">
+<h3 class="anchored" data-anchor-id="example-stratigraphic-architecture">Example Stratigraphic Architecture</h3>
+<p>In this workshop, we use an example stratigraphic architecture simulated using CarboKitten.jl <span class="citation" data-cites="hidding_2025">(<a href="#ref-hidding_2025" role="doc-biblioref">Hidding et al. 2025</a>)</span> that emulates scenario A of <span class="citation" data-cites="hohmann_identification_2024">Niklas Hohmann et al. (<a href="#ref-hohmann_identification_2024" role="doc-biblioref">2024</a>)</span>. Here, we provide a quick overview of the setup. If you are curious you can inspect the source code underlying the simulation <a href="https://github.com/MindTheGap-ERC/StratPal_data_prep">here</a> (and modify it if you like). The platform is an outcome of the interaction between a sea-level curve provided by us, sediment production profiles as a function of water depth, subsidence, and sediment transport. Below we take a closer look at the first two of the parameters.</p>
+<section id="sediment-production-profiles" class="level4">
+<h4 class="anchored" data-anchor-id="sediment-production-profiles">Sediment production profiles</h4>
+<p>The simulated carbonate platform consists of three carbonate producing factories, one euphotic, one oligophotic, and one aphotic. The production profile of the factories are shown below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/platform_production_curve.png" class="img-fluid figure-img"></p>
+<figcaption>Production profiles of the three carbonate factories.</figcaption>
+</figure>
+</div>
+<p>The tree factories compete for space and propagate according to a cellular automaton as described in <span class="citation" data-cites="burgess_2013">Burgess (<a href="#ref-burgess_2013" role="doc-biblioref">2013</a>)</span>. The simulation was run for 2 Myr in increments of 1 kyr.</p>
+</section>
+<section id="sea-level-curve" class="level4">
+<h4 class="anchored" data-anchor-id="sea-level-curve">Sea-level curve</h4>
+<p>Platform growth is driven by a sinusoidal sea level curve consisting of third and fifth order sea level changes with a period of 1 and 0.112 Myr and an amplitude of 20 and 2 m, respectively.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="strat_architecture_files/figure-html/strat_architecture_sl_example -1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Stratigraphic architectures are three-dimensional and commonly visualized using 2D slices:</p>
+<ul>
+<li><p>sediment sections with sequence-stratigraphic interpretation overlain</p></li>
+<li><p>chronostratigraphic (Wheeler) diagrams</p></li>
+</ul>
+<p>Below you see a sediment section (slice, transect) through the carbonate platform we use today:</p>
+<p><img src="figs/platform_profile.png" class="img-fluid"></p>
+<p>Note how the platform top is dominated by the euphotic and oligophotic facies (yellow and blue), while the more distal parts are dominated by the aphotic (green) facies.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Chronostratigraphic diagram
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>also called a Wheeler diagram: a plot where the geological time is presented on the vertical axis and the geographic position on the horizontal axis, showing the relative ages and spatial extent of strata <span class="citation" data-cites="harrye_wheeler1958">(<a href="#ref-harrye_wheeler1958" role="doc-biblioref">Wheeler 1958</a>)</span>. Wheeler diagrams transform thickness into time, revealing <strong>lacunae</strong>, i.e.&nbsp;gaps representing missing time due to non-deposition (hiatuses) or erosion, that are invisible in conventional sections.</p>
+</div>
+</div>
+<p>For a comprehensive discussion of what Wheeler diagrams represent, see <span class="citation" data-cites="sylvester2024">(<a href="#ref-sylvester2024" role="doc-biblioref">Sylvester, Straub, and Covault 2024</a>)</span>.</p>
+<p><img src="figs/platform_wheeler_diagram.png" class="img-fluid"></p>
+</section>
+</section>
+<section id="age-depth-models-translate-physical-stratigraphy-into-time" class="level3">
+<h3 class="anchored" data-anchor-id="age-depth-models-translate-physical-stratigraphy-into-time">Age-depth models translate physical stratigraphy into time</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Age-depth model
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An age-depth model (ADM) is a mapping that estimates the relationship between stratigraphic position (depth) and geological time for a stratigraphic sequence <span class="citation" data-cites="lacourse2020 hohmann_admtools_gchron_2025">(<a href="#ref-lacourse2020" role="doc-biblioref">Lacourse and Gajewski 2020</a>; <a href="#ref-hohmann_admtools_gchron_2025" role="doc-biblioref">N. Hohmann et al. 2025</a>)</span>, allowing paleontologists to assign ages to fossils and sedimentary events based on their position in the rock record <span class="citation" data-cites="sadler1981">(<a href="#ref-sadler1981" role="doc-biblioref">Sadler 1981</a>)</span>.</p>
+</div>
+</div>
+<p>ADMs translate information between the stratigraphic domain (SI units <em>m</em>) where we make our observations and the time domain (SI units <em>s</em> or derived units such as <em>Myr</em>) where the biotic change we are interested is happening.</p>
+<p>Important properties of age-depth models are:</p>
+<ul>
+<li><p>Because sediments do not accumulate at constant rates, age-depth relationships are typically nonlinear,</p></li>
+<li><p>Each absolute (radiometric) or relative (biostratigraphic, chemostratigraphic etc) age tie-point is associated with uncertainty, so an age-depth model is associated with uncertainty and the error of age should ideally be propagated into downstream analyses - <em>this is not a standard in paleobiology yet</em>.</p></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="strat_architecture_files/figure-html/strat_architecture_adm_example-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Age-depth models are crucial tools for stratigraphy, as they contain a lot of information:</p>
+<ul>
+<li><p>The gaps in the age-depth model correspond to hiatuses, caused by nondeposition or erosion.</p></li>
+<li><p>The slope of the age-depth model corresponds to the sedimentation rate - the higher the slope, the faster sediment accumulates.</p></li>
+<li><p>Naturally, they can be used to determine the absolute age of events and samples from the stratigraphic domain. Conversely, they can be used to simulate data in the time domain and then predict their stratigraphic expression.</p></li>
+</ul>
+</section>
+</section>
+<section id="coding-cheat-sheet" class="level2">
+<h2 class="anchored" data-anchor-id="coding-cheat-sheet">Coding cheat sheet</h2>
+<p>Here you find a list of useful functions and code snippets that you can use to solve the tasks.</p>
+<section id="getting-help" class="level3">
+<h3 class="anchored" data-anchor-id="getting-help">Getting help</h3>
+<p>To find the documentation of a function, prepend its name with a question mark and execute it in the console (e.g., <code>?random_walk)</code>. The help pages are also available on the package webpage (<a href="https://mindthegap-erc.github.io/StratPal/">mindthegap-erc.github.io/StratPal/</a>) under “<a href="https://mindthegap-erc.github.io/StratPal/reference/index.html">Reference</a>”. Long form documentation (vignettes) can be found on <a href="https://mindthegap-erc.github.io/StratPal/">the webpage</a> under “Articles” or via <code>browseVignettes("StratPal")</code>.</p>
+</section>
+<section id="loading-the-package-and-data" class="level3">
+<h3 class="anchored" data-anchor-id="loading-the-package-and-data">Loading the package and data</h3>
+<p>Load the <code>StratPal</code> and <code>admtools</code> packages via</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"StratPal"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"admtools"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>to have all required functionality and example data available. We use the example data stored in the <code>scenarioA</code> variable that comes with the <code>StratPal</code> package. You can find more details on the data using <code>?scenarioA</code>.</p>
+</section>
+<section id="creating-age-depth-models" class="level3">
+<h3 class="anchored" data-anchor-id="creating-age-depth-models">Creating age-depth models</h3>
+<p>Age-depth models are constructed using <code>tp_to_adm</code> (tie point to age-depth model) from the <code>admtools</code> package. Here we construct the age-depth model 2 km from shore by passing the function the vectors of times and heights at that stratigraphic position:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span>                                 <span class="co"># distance from shore</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        <span class="co"># construct age-depth model</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">L_unit =</span> <span class="st">"m"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that we immediately add time and length units to avoid downstream confusion. The example data contains model outputs at 2, 4, 6, 8, 10, and 12 km from shore.</p>
+</section>
+<section id="plotting-age-depth-models" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-age-depth-models">Plotting Age-depth models</h3>
+<p>Age-depth models can be plotted using the standard <code>plot</code> command:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm,           <span class="co"># Plot age-depth model</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">lwd_acc =</span> <span class="dv">2</span>,   <span class="co"># plot thicker lines for intervals with sediment accumulation (lwd = line width)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">lty_destr =</span> <span class="dv">0</span>) <span class="co"># don't plot destructive intervals/gaps (lty = line type)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">T_axis_lab</span>()        <span class="co"># add time axis label</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">L_axis_lab</span>()        <span class="co"># add length axis label</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Age-depth model 2 km from shore"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>See <code>?plot.adm</code> for more plotting options.</p>
+</section>
+<section id="extracting-information-from-age-depth-models" class="level3">
+<h3 class="anchored" data-anchor-id="extracting-information-from-age-depth-models">Extracting information from age-depth models</h3>
+<p>Age-depth models contain a lot of stratigraphic information, e.g.&nbsp;on stratigraphic completeness, hiatuses, or sedimentation rates. Some basic functionality to extract this information is:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_total_duration</span>(adm)  <span class="co"># time interval covered by age-depth model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_total_thickness</span>(adm) <span class="co"># sediment accumulated </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 81.23346</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_completeness</span>(adm)    <span class="co"># stratigraphic completeness</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.349</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_hiat_duration</span>(adm)   <span class="co"># extract hiatus durations</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.002 0.517 0.001 0.002 0.001 0.742 0.001 0.036</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(adm)             <span class="co"># some summary statistics</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>age-depth model 
+Total duration: 2 Myr
+Total thickness: 81.23346 m
+Stratigraphic completeness: 34.9 % 
+8 hiatus(es)</code></pre>
+</div>
+</div>
+<p><strong>Stratigraphic completeness</strong> is the proportion of deposition time represented in the geological section. Here it is calculated per stratigraphic column (1 D section), but it can also be expressed per a horizontal section (slice, 2 D) or basin (3 D).</p>
+<p>You can find a comprehensive list of functions that extract information from age-depth models <a href="https://mindthegap-erc.github.io/admtools/articles/admtools_doc.html#s3-class-adm">here</a>.</p>
+</section>
+<section id="extracting-water-depth" class="level3">
+<h3 class="anchored" data-anchor-id="extracting-water-depth">Extracting water depth</h3>
+<p>Water depth at the simulation runs is stored in the variable <code>scenarioA$wd_m</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>wd <span class="ot">=</span> scenarioA<span class="sc">$</span>wd_m[,<span class="st">"2km"</span>]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> scenarioA<span class="sc">$</span>t_myr</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> t,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> wd,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Water depth [m]"</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Water depth 2 km from shore"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="tasks" class="level2">
+<h2 class="anchored" data-anchor-id="tasks">Tasks</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Task 1.1: Getting to know age-depth models
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Define age-depth models for different locations (e.g., 4 km, 6 km etc) along the onshore-offshore gradient, and plot them.</p>
+<p>How do they connect to the chronostratigraphic diagram and the sea level curve show above?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Task 1.2: Incompleteness across the onshore-offshore gradient
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Task 1.3: Hiatus duration and water depth
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Generate histograms of hiatus durations and plots of water depth at different distances from shore.</p>
+<p>Do you see any systematic changes?</p>
+</div>
+</div>
+</section>
+<section id="solutions" class="level2">
+<h2 class="anchored" data-anchor-id="solutions">Solutions</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution Task 1.1: Getting to know age-depth models
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Define age-depth models for different locations (e.g., 4 km, 6 km etc) along the onshore-offshore gradient, and plot them.</p>
+<p>How do they connect to the chronostratigraphic diagram and the sea level curve show above?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"admtools"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"StratPal"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>adm_list <span class="ot">=</span> <span class="fu">list</span>()                       <span class="co"># storage for age-depth models</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># distances from shore</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">=</span> <span class="fu">paste</span>(<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">12</span>, <span class="at">by =</span> <span class="dv">2</span>), <span class="st">"km"</span>, <span class="at">sep =</span> <span class="st">""</span>)      </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># construct ADMs for all distances</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pos <span class="cf">in</span> dist){                                    </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  adm_list[[pos]] <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>                             <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                             <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>                             <span class="at">L_unit =</span> <span class="st">"m"</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now you have a list with several age depth models. The code below plots one of them. You can modify it to plot each one separately or modify the code to plot all of them.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span>               <span class="co"># insert distance from shore here</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(pos <span class="sc">%in%</span> dist ) <span class="co"># validity check</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm_list[[pos]],</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot thicker lines for intervals with sediment accumulation (lwd = line width)</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">lwd_acc =</span> <span class="dv">2</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># don't plot destructive intervals/hiatuses (lty = line type)</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">lty_destr =</span> <span class="dv">0</span>)       </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">T_axis_lab</span>()              <span class="co"># add time axis label</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">L_axis_lab</span>()              <span class="co"># add length axis label</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="fu">paste0</span>(<span class="st">"Age-depth model "</span>, pos, <span class="st">" from shore"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="strat_architecture_files/figure-html/plot specific age-depth models-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Age-depth models on the platform have a few long hiatuses that are represented as white space in the chronostratigraphic diagram. These hiatuses correspond to times of falling sea level, during which the platform top is exposed subaerially. On the slope, there are fewer hiatuses as sediment accumulation is more continuous due to continuous depostion from the aphotic carbonate factory.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution Task 1.2: Incompleteness across the onshore-offshore gradient
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Examine how stratigraphic incompleteness and the number of hiatuses changes along the onshore-offshore gradient.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>inc <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(dist))             <span class="co"># storage for incompleteness</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>nhiat <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(dist))           <span class="co"># storage for number of hiatuses</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(dist)){</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  pos <span class="ot">=</span> dist[i] <span class="co"># position in platform</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># determine incompleteness</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  inc[i] <span class="ot">=</span> adm_list[[pos]] <span class="sc">|&gt;</span> </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_incompleteness</span>()</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># determine no. of hiatuses</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  nhiat[i] <span class="ot">=</span> adm_list[[pos]] <span class="sc">|&gt;</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_hiat_no</span>()</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">2</span>, <span class="at">to =</span> <span class="dv">12</span>, <span class="at">by =</span> <span class="dv">2</span>)       <span class="co"># dist from shore for plotting</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p, <span class="dv">100</span> <span class="sc">*</span> inc,                       <span class="co"># transform into %</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Distance from shore [km]"</span>, </span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Incompleteness [%]"</span>, </span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p, nhiat, </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Distance from shore [km]"</span>, </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"# Hiatuses"</span>, </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(nhiat)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Incompleteness is highest in the onshore sections (more than 60 %), and drops with distance from shore to values of around 10 % in the proximal slope. Note that this differs from Figure 4 in <span class="citation" data-cites="hohmann_identification_2024">Niklas Hohmann et al. (<a href="#ref-hohmann_identification_2024" role="doc-biblioref">2024</a>)</span>, as we are examining incompleteness on a coarser spatial scale.</p>
+<p>The number of hiatuses is low on the platform top (8 hiatuses at 2 - 6 km), with the highest values (16) on the platform edge (8 km). On the proximal slope, there are 12 hiatuses and the number drops to 0 in the distal slope, reflecting that this environment is less affected by sea-level fluctuations.</p>
+<p>The hiatuses in the platform interior are generated by long intervals of low sea level, which exposes the platform top. The high number of hiatuses in the slope results from the fact that steep topography records sea-level fluctuations much more than flat topography. The distal slope is below the range of the sea-level fluctuations, so it does not undergo non-deposition or breaks in carbonate production, it is only affected by changes in low carbonate production of the aphotic factory and varying input from the platform top.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution Task 1.3: Hiatus duration and water depth
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Generate histograms of hiatus durations and plots of water depth at different distances from shore. Do you see any systematic changes?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span> <span class="co"># position of adm</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(pos <span class="sc">%in%</span>  dist) <span class="co"># validity check</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(scenarioA<span class="sc">$</span>t_myr, scenarioA<span class="sc">$</span>wd_m[,pos],</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Water depth [m]"</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Water depth "</span>, pos, <span class="st">" from shore"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>hiatus_durations <span class="ot">&lt;-</span> adm_list[[pos]] <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_hiat_duration</span>()</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(hiatus_durations) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"No hiatuses at position "</span>, pos)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>hiatus_durations <span class="sc">|&gt;</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="st">"Hiatus duration [Myr]"</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Hiatus duration "</span>, pos, <span class="st">" from shore"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="strat_architecture_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="hiatus-duration" class="level4">
+<h4 class="anchored" data-anchor-id="hiatus-duration">Hiatus duration</h4>
+<p>The distribution of hiatus durations in the platform interior is bimodal: it consists of two long hiatuses (caused by the prolonged drops in the sea level) and six shorter hiatuses generated by the lower-order sea level changes.</p>
+<p>At 8 km from shore, the number of short hiatuses increases to 14, reflecting the steep topography of the platform edge.</p>
+<p>On the slope, hiatuses are more abundant, but their duration is much shorter. This is most pronounced for the proximal slope. In the distal slope (12 km) you might get an error: this is because there are no hiatuses.</p>
+<p>Note the disconnect between the number of hiatuses and incompleteness: Onshore sections are the most incomplete, but have only a few hiatuses. In contrast, the proximal slope has the most hiatuses, but a low incompleteness. This is because hiatus duration in the onshore sections is much longer.</p>
+</section>
+<section id="water-depth" class="level4">
+<h4 class="anchored" data-anchor-id="water-depth">Water depth</h4>
+<p>In the platform top (2 km), water depth is 0 for the largest part of the studied 2 Myr, with an initial flooding and two subsequent rises corresponding to the highest points of the first-order sea-level cycles.</p>
+<p>On the platform edge (8 km), the water depth reaches a maximum of 30 m in the initial flooding phase, but it is still emerged for a large part of the interval. The upper slope remains under water for all the time of the simulation, reflecting how different platform top and platform slopes are in terms of deposition.</p>
+<p>The strong cyclicity of the sea-level curve is still visible at 12 km offshore, where the water depth oscillates between 45 and 90 m.</p>
+</section>
+</div>
+</div>
+</div>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-burgess_2013" class="csl-entry" role="listitem">
+Burgess, Peter. 2013. <span>“CarboCAT: A Cellular Automata Model of Heterogeneous Carbonate Strata.”</span> <em>Computers &amp; Geosciences</em> 53: 129–40. https://doi.org/<a href="https://doi.org/10.1016/j.cageo.2011.08.026">https://doi.org/10.1016/j.cageo.2011.08.026</a>.
+</div>
+<div id="ref-hidding_2025" class="csl-entry" role="listitem">
+Hidding, J., E. Jarochowska, N. Hohmann, X. Liu, P. Burgess, and H. Spreeuw. 2025. <span>“CarboKitten.jl – an Open Source Toolkit for Carbonate Stratigraphic Modeling.”</span> <em>EGUsphere</em> 2025: 1–28. <a href="https://doi.org/10.5194/egusphere-2025-4561">https://doi.org/10.5194/egusphere-2025-4561</a>.
+</div>
+<div id="ref-hohmann_admtools_gchron_2025" class="csl-entry" role="listitem">
+Hohmann, N., D. De Vleeschouwer, S. Batenburg, and E. Jarochowska. 2025. <span>“Nonparametric Estimation of Age–Depth Models from Sedimentological and Stratigraphic Information.”</span> <em>Geochronology</em> 7 (3): 427–48. <a href="https://doi.org/10.5194/gchron-7-427-2025">https://doi.org/10.5194/gchron-7-427-2025</a>.
+</div>
+<div id="ref-hohmann_identification_2024" class="csl-entry" role="listitem">
+Hohmann, Niklas, Joël R. Koelewijn, Peter Burgess, and Emilia Jarochowska. 2024. <span>“Identification of the Mode of Evolution in Incomplete Carbonate Successions.”</span> <em>BMC Ecology and Evolution</em> 24 (1): 113. <a href="https://doi.org/10.1186/s12862-024-02287-2">https://doi.org/10.1186/s12862-024-02287-2</a>.
+</div>
+<div id="ref-holland1999" class="csl-entry" role="listitem">
+Holland, Steven M., and Mark E. Patzkowsky. 1999. <span>“Models for Simulating the Fossil Record.”</span> <em>Geology</em> 27 (6): 491. <a href="https://doi.org/10.1130/0091-7613(1999)027<0491:mfstfr>2.3.co;2">https://doi.org/10.1130/0091-7613(1999)027&lt;0491:mfstfr&gt;2.3.co;2</a>.
+</div>
+<div id="ref-lacourse2020" class="csl-entry" role="listitem">
+Lacourse, Terri, and Konrad Gajewski. 2020. <span>“Current Practices in Building and Reporting Age-Depth Models.”</span> <em>Quaternary Research</em> 96 (May): 28–38. <a href="https://doi.org/10.1017/qua.2020.47">https://doi.org/10.1017/qua.2020.47</a>.
+</div>
+<div id="ref-patzkowsky2012stratigraphic" class="csl-entry" role="listitem">
+Patzkowsky, Mark E, and Steven M. Holland. 2012. <em>Stratigraphic Paleobiology: Understanding the Distribution of Fossil Taxa in Time and Space</em>. University of Chicago Press.
+</div>
+<div id="ref-sadler1981" class="csl-entry" role="listitem">
+Sadler, Peter M. 1981. <span>“Sediment Accumulation Rates and the Completeness of Stratigraphic Sections.”</span> <em>The Journal of Geology</em> 89 (5): 569–84. <a href="https://doi.org/10.1086/628623">https://doi.org/10.1086/628623</a>.
+</div>
+<div id="ref-sylvester2024" class="csl-entry" role="listitem">
+Sylvester, Zoltán, Kyle M. Straub, and Jacob A. Covault. 2024. <span>“Stratigraphy in Space and Time: A Reproducible Approach to Analysis and Visualization.”</span> <em>Earth-Science Reviews</em> 250 (March): 104706. <a href="https://doi.org/10.1016/j.earscirev.2024.104706">https://doi.org/10.1016/j.earscirev.2024.104706</a>.
+</div>
+<div id="ref-harrye_wheeler1958" class="csl-entry" role="listitem">
+Wheeler, Harry E. 1958. <span>“Time-Stratigraphy.”</span> <em>AAPG Bulletin</em> 42. <a href="https://doi.org/10.1306/0bda5af2-16bd-11d7-8645000102c1865d">https://doi.org/10.1306/0bda5af2-16bd-11d7-8645000102c1865d</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Stratigraphic Paleobiology in R</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

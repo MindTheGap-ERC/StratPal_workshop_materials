@@ -1,0 +1,56 @@
+---
+title: "Modeling Stratigraphic Paleobiology in R"
+format: html
+editor: visual
+bibliography: refs/refs.bib
+---
+
+## Introduction
+
+Stratigraphic paleobiology is a methodological framework that applies physical stratigraphy - which includes event deposition, sequence-stratigraphic architecture, and sedimentary basin analysis - to the interpretation of the fossil record [@patzkowsky2012stratigraphic; @holland2024]. The discipline is founded on the principle that the fossil record is a joint expression of ecological, taphonomic, evolutionary, and stratigraphic processes, meaning that fossil occurrences are controlled not only by where organisms lived and when they evolved, but also by when and where sediment capable of preserving them accumulated [@holland2015; @holland2024]. Because species are distributed along environmental gradients such as water depth, and because sequence-stratigraphic architecture systematically controls sediment deposition, first and last occurrences of fossil taxa cluster predictably at sequence boundaries, flooding surfaces, and surfaces of forced regression, even when no change in extinction or origination rate has occurred [@holland2020; @holland1995].
+
+Stratigraphic paleobiology has changed our understanding of mass extinctions: simulation studies and field tests (e.g. Italy's Po Plain) demonstrated that what appeared to be sudden, stepwise extinction events may actually reflect long intervals of elevated extinction rate compressed by stratigraphic architecture into apparent clusters of last occurrences [@holland2020; @holland2015].
+
+### What do you need to do stratigraphic paleobiology?
+
+The first studies focused on first and last occurrence data (e.g. @holland2015; @nawrot2018; @hohmann2021), but subsequent research extended it to occurrences in bin [@jarochowska2018], diversity [@loughney2021], abundance [@danise2017], trait value measurements [@hannisdal2006; @hohmann_identification_2024] and assemblage composition [@belanger2023] - all types of data representing fossils or other variables stored in the physical geological record are potentially subject to stratigraphic paleobiology. Secondly, a representation of the stratigraphy is needed. This can be: lithofacies, systems tracts, estimates of depositional rate, or another class. Here we advocate for using an age-depth model and show how they can be used even when no data on absolute age is available.
+
+### Depositional systems
+
+All depositional systems have their defining physical, chemical and biological processes; the same biological event will be preserved differently on a clastic shelf than on a carbonate shelf or in a river delta [@holland2023]. Much previous work focused on siliciclastic marine settings [@hannisdal2006; @holland1999; @holland2015] and some on terrestrial [@holland2021; @holland2022] and mixed, cool-water carbonates [@scarponi2017; @nawrot2018]. Also a transition between systems will have a strong effect on fossil preservation [@danise2017]. Here we will use tropical carbonate platforms [@hohmann_identification_2024], because the effects in them have been largely predicted, but not well tested yet. If you are interested in modeling a different depositional setting, please discuss with us and we may be able to point you to a suitable model.
+
+## Learning Objectives
+
+By the end of this workshop, you will be able to
+
+1\. build age-depth models to quantify stratigraphic incompleteness and hiatus distributions across depositional environments,
+
+2\. simulate and analyze different modes of trait evolution (stasis, random walk, and Ornstein-Uhlenbeck processes) and identify how stratigraphy affects their expression in the fossil record,
+
+3\. model ecological niche preferences and understand how environmental gradients control fossil abundance patterns, and
+
+4\. simulate last occurrence data to recognize how stratigraphic phenomena like hiatuses and condensation surfaces can create artifactual "mass extinction" signals.
+
+You will develop proficiency in using R's pipe operator `|>` to build reproducible, modular analysis workflows that combine the `StratPal` and `admtools` packages.
+
+## Structure
+
+The webpage and workshop is structured as follows:
+
+-   [**Getting Started**](getting_started.qmd) covers software dependencies, package installation and loading, and a brief introduction to the *pipe operator* in base R (10 min).
+
+-   [**Stratigraphic Architectures**](strat_architecture.qmd) provides an overview of the example stratigraphic architecture used in the workshop, and introduces age-depth models (45 min).
+
+-   [**Trait Evolution**](trait_evol.qmd) explores how stratigraphic effects changes patterns of phenotypic evolution (45 min).
+
+-   [**Event Data**](event_data.qmd) discusses how data such as fossil abundance or last occurrences are modified by ecological, taphonomic, and stratigraphic effects (45 min).
+
+-   [**Advanced Topics**](advanced_topics.qmd) covers miscellaneous topics, e.g., combining niche models with trait evolution, and modification of phylogenetic trees.
+
+## Contributing
+
+Did you find a typo, a mistake, or do you thing some topics are not sufficiently covered? Please post your issue in the GitHub repo.
+
+## Funding
+
+Funded by the European Union (ERC, MindTheGap, StG project no 101041077). Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Research Council. Neither the European Union nor the granting authority can be held responsible for them. ![European Union and European Research Council logos](https://erc.europa.eu/sites/default/files/2023-06/LOGO_ERC-FLAG_FP.png)
