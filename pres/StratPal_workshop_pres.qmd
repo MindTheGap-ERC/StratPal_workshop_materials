@@ -23,11 +23,15 @@ The fossil record is a joint expression of
 StratPal as interdisciplinary science
 :::
 
-## Example: evolution in the time domain {.smaller}
+------------------------------------------------------------------------
+
+### Example: evolution in the time domain {.smaller}
 
 ![](../figs/evolution.png)
 
-## Example: evolution in the stratigraphic domain {.smaller}
+------------------------------------------------------------------------
+
+### Example: evolution in the stratigraphic domain {.smaller}
 
 ![](../figs/PatzkowskyHolland_5-4.png){width="80%"}
 
@@ -35,7 +39,9 @@ StratPal as interdisciplinary science
 From @patzkowsky2012stratigraphic
 :::
 
-## Aims
+------------------------------------------------------------------------
+
+### Aims
 
 Combine models of stratigraphy with evolutionary biology and ecology into stratigraphic paleobiology modeling pipelines
 
@@ -51,7 +57,9 @@ Combine models of stratigraphy with evolutionary biology and ecology into strati
 45 mins on each topic working independently, then we will discuss the results together.
 :::
 
-## Stratigraphic forward modeling {.smaller}
+## Stratigraphic architectures
+
+### Stratigraphic forward modeling {.smaller}
 
 ::::: columns
 ::: {.column width="70%"}
@@ -67,15 +75,21 @@ Combine models of stratigraphy with evolutionary biology and ecology into strati
 :::
 :::::
 
-## Example data {.smaller}
+------------------------------------------------------------------------
+
+### Example data {.smaller}
 
 ![](../figs/platform_profile.png)
 
-## Wheeler diagram {.smaller}
+------------------------------------------------------------------------
+
+### Wheeler diagram {.smaller}
 
 ![](../figs/platform_wheeler_diagram.png)
 
-## Age-depth models (ADMs)
+------------------------------------------------------------------------
+
+### Age-depth models (ADMs)
 
 ```{r}
 set.seed(13)
@@ -102,7 +116,9 @@ title("Age-depth model")
 -   contain more info: empty spaces are hiatuses, slope is sedimentation rate
 :::
 
-## Piping
+------------------------------------------------------------------------
+
+### Piping
 
 ```{r}
 #| echo: true
@@ -117,7 +133,9 @@ Read the code like text!
 We use piping to create pipelines advantages: you can read the code like text: from top left to bottom right syntactically, \|\> means: take what is left of \|\> and use it as first argument on the right side less intermediate variables
 :::
 
-## Piping example
+------------------------------------------------------------------------
+
+#### Piping example
 
 ```{r}
 #| echo: true
@@ -133,7 +151,9 @@ seq(from = 0, to = 1, by = 0.01) |>  # fix time steps of evaluation
 More than one pipe can be combined. This allows to build more elaborate pipeline we make heavy use of these pipelines
 :::
 
-## Tasks ADMs and incompleteness {.smaller}
+------------------------------------------------------------------------
+
+### Tasks ADMs and incompleteness {.smaller}
 
 *45 min*
 
@@ -148,7 +168,9 @@ These task (incl. the basin transect and Wheeler diagram) are in the material we
 Includes template code and cheat sheets Go through the tasks, ask us any questions In 40 mins we discuss the results Participants presents Then 15 mins break
 :::
 
-## Results
+------------------------------------------------------------------------
+
+### Results
 
 ## Break (15 min)
 
