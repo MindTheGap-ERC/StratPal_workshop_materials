@@ -26,4 +26,6 @@ Funded by the European Union (ERC, MindTheGap, StG project no 101041077). Views 
 
 ## License
 
-Creative Commons Attribution 4.0 International
+Text - [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.en)
+
+Code - [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
