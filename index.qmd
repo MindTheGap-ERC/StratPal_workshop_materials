@@ -47,16 +47,6 @@ The webpage and workshop is structured as follows:
 
 -   [**Advanced Topics**](advanced_topics.qmd) covers miscellaneous topics, e.g., combining niche models with trait evolution, and modification of phylogenetic trees.
 
-## Citation
-
-To cite this repository, please use
-
--   REPO CITATION TBA
-
--   Package citation version 0.7
-
--   @hohmann_stratpal_mee_2025
-
 ## Contributing
 
 Did you find a typo, a mistake, or do you thing some topics are not sufficiently covered? Please post your issue in the GitHub repo.

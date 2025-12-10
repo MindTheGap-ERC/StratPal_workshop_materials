@@ -5,10 +5,6 @@ editor: visual
 bibliography: refs/refs.bib
 ---
 
-ToDo:
-
--   write Intro
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 set.seed(15487)
@@ -19,6 +15,14 @@ set.seed(15487)
 This practical explores how trait evolution is influenced by stratigraphic architectures.
 
 ## Introduction
+
+Fossils found in a section can provide important insight into evolutionary dynamics over timescales not accessible to direct observations in the presents. The morphological evolution of these fossils allows us to construct *stratophenetic series*, which are successions of fossils and their traits observed within a stratigraphic section [@dzik]. Such fossil time or stratigraphic series allow us to examine how the mode of evolution changes over macroevolutionary timescales, and what the dominant mode of evolution is.
+
+There are multiple different "modes of evolution" discussed in the literature, such as stasis, random walk, or Ornstein-Uhlenbeck, which represents convergence to a phenotypic optimum. Each mode reflects an idea of the driving forces of evolution, e.g., the random walk model assumes change in traits is cumulative and random.
+
+Because of the incompleteness of the fossil record, evolutionary biologists tend to be generally sceptical of inferences inferences made from fossil time series, which is most famously reflected in the gradualism vs. punctuated equilibrium debate [@eldredge1972].
+
+In this practical, we will build on our understanding of age-depth models and stratigraphic architectures to explore how the stratigraphic record shapes our understanding of morphological evolution along a lineage. Specifically, we will examine when and how stratigraphy can lead to erroneous identification of the mode of evolution.
 
 ## Coding cheat sheet
 
