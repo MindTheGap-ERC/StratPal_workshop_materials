@@ -191,7 +191,7 @@ div.csl-indent {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#fossil-occurrences-niche-modeling-and-last-occurrences-45-min" id="toc-fossil-occurrences-niche-modeling-and-last-occurrences-45-min" class="nav-link active" data-scroll-target="#fossil-occurrences-niche-modeling-and-last-occurrences-45-min">3. Fossil occurrences, niche modeling and last occurrences (45 min)</a></li>
+  <li><a href="#fossil-occurrences-niche-modeling-and-last-occurrences-45-min" id="toc-fossil-occurrences-niche-modeling-and-last-occurrences-45-min" class="nav-link active" data-scroll-target="#fossil-occurrences-niche-modeling-and-last-occurrences-45-min">Fossil occurrences, niche modeling and last occurrences (45 min)</a></li>
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#coding-cheat-sheet" id="toc-coding-cheat-sheet" class="nav-link" data-scroll-target="#coding-cheat-sheet">Coding cheat sheet</a>
   <ul class="collapse">
@@ -230,14 +230,20 @@ div.csl-indent {
 
 
 <section id="fossil-occurrences-niche-modeling-and-last-occurrences-45-min" class="level2">
-<h2 class="anchored" data-anchor-id="fossil-occurrences-niche-modeling-and-last-occurrences-45-min">3. Fossil occurrences, niche modeling and last occurrences (45 min)</h2>
-<p>In this practical, we explore niche models, and how you can build your own mass extinction (BYOME) using stratigraphic paleobiology.</p>
+<h2 class="anchored" data-anchor-id="fossil-occurrences-niche-modeling-and-last-occurrences-45-min">Fossil occurrences, niche modeling and last occurrences (45 min)</h2>
+<p>In this practical, we explore niche models, and how you can Build Your Own Mass Extinction (BYOME) using stratigraphic paleobiology.</p>
 </section>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>A classic question in Stratigraphic Paleobiology is how stratigraphic architectures shape where we can find fossils, how abundant they are, and how this changes our understanding of origination and extinction events.</p>
-<p>For computational simplicity, here we group first/last occurrences of a group of taxa and fossil occurrences of a single taxon together and refer to them as “event type data”, which is similarily transformed by stratigraphic effects <span class="citation" data-cites="hohmann_stratpal_mee_2025">(<a href="#ref-hohmann_stratpal_mee_2025" role="doc-biblioref">Hohmann and Jarochowska 2025</a>)</span>.</p>
-<p>Event type data encompasses all types of data that are a loose, unordered collection of events that are associated with a time/age or a stratigraphic position. As such, sampling locations, times of extinctions, and sequence stratigraphic boundaries are all examples of event type data.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/PatzkowskyHolland_5-6.png" class="img-fluid figure-img"></p>
+<figcaption>Patzkowsky &amp; Holland (2012)</figcaption>
+</figure>
+</div>
+<p>For computational simplicity, here we group first/last occurrences of a group of taxa and fossil occurrences of a single taxon together and refer to them as “event type data”, which is similarly overprinted by stratigraphic effects <span class="citation" data-cites="hohmann_stratpal_mee_2025">(<a href="#ref-hohmann_stratpal_mee_2025" role="doc-biblioref">Hohmann and Jarochowska 2025</a>)</span>.</p>
+<p>Event type data encompasses all types of data that are associated with a time/age or a stratigraphic position. As such, sampling locations, times of extinctions, and sequence stratigraphic boundaries are all examples of event type data.</p>
 <p>For this practical, we focus on the most relevant event type data for paleontologists, which is fossil abundance and the derived first and last occurrences. We explore how stratigraphic and ecological effects change fossil abundance, how stratigraphic architectures generate artefactual peaks of last occurrences that can be mistaken for mass extinctions, and explore some implications for geochronology, more specifically the precision of biostratigraphy.</p>
 </section>
 <section id="coding-cheat-sheet" class="level2">
@@ -272,10 +278,10 @@ div.csl-indent {
 <h3 class="anchored" data-anchor-id="transforming-fossil-occurrences-to-the-stratigraphic-domain">Transforming fossil occurrences to the stratigraphic domain</h3>
 <p>You can transform fossil ages directly using <code>time_to_strat</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>foss_per_myr <span class="ot">=</span> <span class="dv">300</span>                                                           <span class="co"># fossils per Myr</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>foss_per_myr <span class="ot">=</span> <span class="dv">300</span>                                            <span class="co"># fossils per Myr</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">p3</span>(<span class="at">rate =</span> foss_per_myr, <span class="at">from =</span> <span class="fu">min_time</span>(adm), <span class="at">to =</span> <span class="fu">max_time</span>(adm)) <span class="sc">|&gt;</span>         <span class="co"># constant rate in time domain</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span>                                  <span class="co"># transform into depth domain</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="fu">paste0</span>(<span class="st">"Stratigraphic height ["</span>,<span class="fu">get_L_unit</span>(adm),<span class="st">"]"</span>),          <span class="co"># plot</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span>         <span class="co"># transform into depth domain</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="fu">paste0</span>(<span class="st">"Stratigraphic height ["</span>,<span class="fu">get_L_unit</span>(adm),<span class="st">"]"</span>),     <span class="co"># plot</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Fossil abundance 2 km offshore"</span>,</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"# Fossils"</span>,</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min_height</span>(adm), <span class="at">to =</span> <span class="fu">max_height</span>(adm), <span class="at">length.out =</span> <span class="dv">20</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -295,7 +301,8 @@ div.csl-indent {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>my_niche <span class="ot">=</span> <span class="fu">snd_niche</span>(<span class="at">opt =</span> <span class="dv">10</span>,       <span class="co"># preferred water depth </span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">tol =</span> <span class="dv">5</span>,        <span class="co"># tolerance to water depth fluctuations</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">cutoff_val =</span> <span class="dv">0</span>) <span class="co"># cut off negative values - the taxon does not survive on land</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                     <span class="co"># cut off negative values - the taxon does not survive on land</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">cutoff_val =</span> <span class="dv">0</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>To visualize the niche you can plot it using the following code:</p>
 <div class="cell">
@@ -334,9 +341,10 @@ div.csl-indent {
 <p>To define a function that returns the water depth with time, you can use the following code:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span>                 <span class="co"># position in the platform we want water depth from</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> scenarioA<span class="sc">$</span>t_myr         <span class="co"># time steps where water depth is determined by the model</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>wd <span class="ot">=</span> scenarioA<span class="sc">$</span>wd_m[,pos]   <span class="co"># water depth 2 km from shore</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>gc <span class="ot">=</span> <span class="fu">approxfun</span>(t, wd)       <span class="co"># use linear interpolation between known water depths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># time steps where water depth is determined by the model</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> scenarioA<span class="sc">$</span>t_myr         </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>wd <span class="ot">=</span> scenarioA<span class="sc">$</span>wd_m[,pos]   <span class="co"># water depth 2 km from shore</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>gc <span class="ot">=</span> <span class="fu">approxfun</span>(t, wd)       <span class="co"># use linear interpolation between known water depths</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You can visualize this function using the following code:</p>
 <div class="cell">
@@ -376,10 +384,10 @@ div.csl-indent {
 <h3 class="anchored" data-anchor-id="simulating-and-transforming-last-occurrences">Simulating and transforming last occurrences</h3>
 <p>Timing of last occurrences can be simulated using <code>p3</code> or <code>p3_var_rate</code> just as fossil occurrence (or any other type of “event” data). They can be transformed using <code>time_to_strat</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rolo <span class="ot">=</span> <span class="dv">100</span>                                                               <span class="co"># rate of last occurrences [per Myr]</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">p3</span>(<span class="at">rate =</span> rolo, <span class="at">from =</span> <span class="fu">min_time</span>(adm), <span class="at">to =</span> <span class="fu">max_time</span>(adm)) <span class="sc">|&gt;</span>             <span class="co"># constant rate of last occ</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span>                             <span class="co"># non-destructive transformation!</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="fu">paste0</span>(<span class="st">"Stratigraphic height ["</span>,<span class="fu">get_L_unit</span>(adm),<span class="st">"]"</span>),      <span class="co"># plot histogram</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rolo <span class="ot">=</span> <span class="dv">100</span>                          <span class="co"># rate of last occurrences [per Myr]</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">p3</span>(<span class="at">rate =</span> rolo, <span class="at">from =</span> <span class="fu">min_time</span>(adm), <span class="at">to =</span> <span class="fu">max_time</span>(adm)) <span class="sc">|&gt;</span>  <span class="co"># constant rate of LOs</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span>      <span class="co"># non-destructive transformation!</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="fu">paste0</span>(<span class="st">"Stratigraphic height ["</span>,<span class="fu">get_L_unit</span>(adm),<span class="st">"]"</span>), <span class="co"># plot histogram</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="st">"Last occurrences 2 km offshore"</span>,</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"# Last occurrences"</span>,</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min_height</span>(adm), <span class="at">to =</span> <span class="fu">max_height</span>(adm), <span class="at">length.out =</span> <span class="dv">20</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -423,7 +431,7 @@ div.csl-indent {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Simulate an abundant taxon, and transform the fossil ages into the stratigraphic domain.</p>
+<p>Simulate an abundant taxon and transform the fossil ages into the stratigraphic domain.</p>
 <p>At which locations and stratigraphic heights do you observe peaks in fossil abundance?<br>
 With which stratigraphic effects are these peaks associated?</p>
 </div>
@@ -438,7 +446,7 @@ With which stratigraphic effects are these peaks associated?</p>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Define a niche for a taxon, and add the niche model to your pipeline.</p>
+<p>Define a niche for a taxon and add the niche model to your pipeline from task 1.</p>
 <p>How and why do your results change?<br>
 How could you misinterpret the results?</p>
 </div>
@@ -494,9 +502,9 @@ How do your results change when you add a niche model to your code?</p>
 <p>At which locations and stratigraphic heights do you observe peaks in fossil abundance?With which stratigraphic effects are these peaks associated?</p>
 <p>We start by collecting all age-depth models for convenience.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>adm_list <span class="ot">=</span> <span class="fu">list</span>()                                     <span class="co"># storage for age-depth models</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>adm_list <span class="ot">=</span> <span class="fu">list</span>()                                 <span class="co"># storage for age-depth models</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">=</span> <span class="fu">paste</span>(<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">12</span>, <span class="at">by =</span> <span class="dv">2</span>), <span class="st">"km"</span>, <span class="at">sep =</span> <span class="st">""</span>)      <span class="co"># distances from shore</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pos <span class="cf">in</span> dist){                                    <span class="co"># construct ADMs for all distances</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pos <span class="cf">in</span> dist){                            <span class="co"># construct ADMs for all distances</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  adm_list[[pos]] <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        </span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>

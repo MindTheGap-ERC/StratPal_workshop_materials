@@ -32,7 +32,7 @@ In this workshop, we use an example stratigraphic architecture simulated using C
 
 The simulated carbonate platform consists of three carbonate producing factories, one euphotic, one oligophotic, and one aphotic. The production profile of the factories are shown below.
 
-![Production profiles of the three carbonate factories.](figs/platform_production_curve.png){alt="Production profiles of the three carbonate factories."}
+![Production profiles of the three carbonate factories.](figs/platform_production_curve.png)
 
 The tree factories compete for space and propagate according to a cellular automaton as described in @burgess_2013. The simulation was run for 2 Myr in increments of 1 kyr.
 
