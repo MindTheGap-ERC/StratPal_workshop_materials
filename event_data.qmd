@@ -145,7 +145,7 @@ p3(rate = rolo, from = min_time(adm), to = max_time(adm)) |>  # constant rate of
        breaks = seq(from = min_height(adm), to = max_height(adm), length.out = 20))
 ```
 
-Note that we use the option `destructive = FALSE` in `time_to_strat`. This is because last occurrences during a hiatus will appear at the hiatus surface in the stratigraphic domain
+Note that we use the option `destructive = FALSE` in `time_to_strat`. This is because last occurrences during a hiatus will appear at the hiatus surface in the stratigraphic domain given the taxon is sufficiently abundant.
 
 ### Biostratigraphic precision (range offset)
 
@@ -244,7 +244,10 @@ The constant fossil abundance in the time domain is expressed as irregular patte
 ::: {.callout-note collapse="true"}
 ### Solution Task 3.2: Ecological controls on fossil abundance.
 
-Define a niche for a taxon, and add the niche model to your pipeline. - How and why do your results change? - How could you misinterpret the results?
+Define a niche for a taxon, and add the niche model to your pipeline.
+
+How and why do your results change?\
+How could you misinterpret the results?
 
 ```{r task_3_2_solution_ecology}
 pos = "2km"              # select position on the platform
@@ -290,7 +293,7 @@ For example, the water depth on the platform decreases with time, as the carbona
 ::: {.callout-note collapse="true"}
 ### Solution Task 3.3: Last occurrences and artefactual mass extinctions
 
-Simulate last occurrences based on the assumption of a constant rate of last occurrences and transform them into the stratigraphic domain
+Simulate last occurrences based on the assumption of a constant rate of last occurrences and transform them into the stratigraphic domain.
 
 -   Where do you observe clusters of last occurrences?
 
@@ -313,11 +316,11 @@ p3(from = min_time(adm), to = max_time(adm), rate = rate) |>
        main = paste0(" # Last occurrences ", pos, " from shore"))
 ```
 
-On the platform, the clusters are associated with prolonged hiatuses, caused by drops in sea level. On the slope, the clusters are associated with intervals of stratigraphic condensation (low sedimentation rate), also caused by drops in sea level.
+On the platform, the clusters are associated with prolonged hiatuses, caused by drops in sea level..
 
 In the absence of stratigraphic information, these clusters could be misinterpreted as extinction intervals, as there is an elevated rate of last occurrences. If information on sea level change is available, this could be misinterpreted as a causal relationship between sea level and extinction rate, where drops in sea level increase extinction rates.
 
-A stratigraphic null hypothesis might be that times of dropping sea level cause hiatuses (close to shore) and condensation (on the slope), which lead apparent elevated extinction rates.
+A stratigraphic null hypothesis might be that times of dropping sea level cause hiatuses close to shore, which lead apparent elevated extinction rates.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -358,9 +361,9 @@ hist(range_offsets$t,
 
 Running this code across the platform with varying rates and true extinction times, the following patterns emerge:
 
--   Range offset increases as fossil abundance decreases - the fewer fossils there are to find the further the last observed occurrence will be from the true extinction, an effect called the Signor-Lipps effect [@signor1982]
+-   Range offset increases as fossil abundance decreases - the fewer fossils there are to find the further the last observed occurrence will be from the true extinction, an effect called the Signor-Lipps effect [@signor1982].
 
--   Temporal range offset is highest when the true extinction lies at the end of a gap. As a result, range offset is highest on the platform top in the presence of prolonged hiatuses caused by drops in sea level
+-   Temporal range offset is highest when the true extinction lies at the end of a gap. As a result, range offset is highest on the platform top in the presence of prolonged hiatuses caused by drops in sea level.
 
 -   Adding niche models to the code does further increase the range offset (and, as a result, decrease stratigraphic precision) as it further decreases fossil abundance, and adds extirpation effects to range offset.
 :::

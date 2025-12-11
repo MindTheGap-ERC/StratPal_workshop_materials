@@ -72,6 +72,17 @@ plot(x = wds,
      ylim = c(0,1))
 ```
 
+Combining both functions yields the preservation probability with time:
+
+```{r}
+plot(x = t, 
+     y = pres_potential(ctc(t)),
+     xlab = "Time [Myr]",
+     ylab = "Preservaton probability",
+     type = "l",
+     main = "Preservation probability with time")
+```
+
 You can now incorporate taphonomic effects into your pipeline by passing those functions to `apply_taphonomy`:
 
 ```{r advanced_topic_taphonomy_3}

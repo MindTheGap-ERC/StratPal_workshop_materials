@@ -348,7 +348,7 @@ URW-Stasis   -23.79642 5  61.59284   0.000000     0.469
 GRW-Stasis   -23.22798 6  64.45596   2.863122     0.112</code></pre>
 </div>
 </div>
-<p>See <code>?fit4models</code> to understand the output and <code>fitSimple</code> to fit more specialized models; more information can be found in <span class="citation" data-cites="hunt2006">(<a href="#ref-hunt2006" role="doc-biblioref">Hunt and G. 2006</a>)</span>.</p>
+<p>See the help of the <code>paleoTS</code> package for details on the output and <code>fitSimple</code> to fit more specialized models; more information can be found in <span class="citation" data-cites="hunt2006">(<a href="#ref-hunt2006" role="doc-biblioref">Hunt and G. 2006</a>)</span>.</p>
 </section>
 </section>
 <section id="tasks" class="level2">
@@ -530,7 +530,7 @@ Do you see any systematic changes?</p>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>y0 <span class="ot">=</span> <span class="dv">0</span>                   <span class="co"># model paramters</span></span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> adm_list[[pos]]    <span class="co"># select age-depth model</span></span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>t_step <span class="ot">=</span> <span class="fl">0.001</span>           <span class="co"># temporal resolution [Myr]</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="do">## plot trait evolution in the time domain</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="do">## plot trait evolution in the stratigraphic domain</span></span>
 <span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from  =</span> <span class="fu">min_time</span>(adm), <span class="at">to =</span> <span class="fu">max_time</span>(adm), <span class="at">by =</span> t_step) <span class="sc">|&gt;</span></span>
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk</span>(<span class="at">sigma =</span> sigma, <span class="at">mu =</span> mu, <span class="at">y0 =</span> y0) <span class="sc">|&gt;</span></span>
 <span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
@@ -672,7 +672,7 @@ GRW-Stasis    -28.12606 6  74.25212   0.8123017     0.397</code></pre>
 </div>
 <p>General observation are:</p>
 <ul>
-<li>Results are sensitive to randomness inherent in the randomness of the simulation, e.g., occasionally a random walk simulation will be identified as stasis even in the abscence of biases. This effect is additionally sensitive to parameters such as sample size and intrapopulation variance (<code>intrapop_var</code> and <code>n_per_sample</code>), reducing the power of the procedure and potentially leading to “analytical stasis”, where low statistical power favors the recovery of stasis <span class="citation" data-cites="hannisdal2006">(<a href="#ref-hannisdal2006" role="doc-biblioref">Hannisdal 2006</a>)</span></li>
+<li>Results are sensitive to randomness inherent in the randomness of the simulation, e.g., occasionally a random walk simulation will be identified as stasis even in the abscence of biases. This effect is additionally sensitive to parameters such as sample size and intrapopulation variance (<code>intrapop_var</code> and <code>n_per_sample</code>), reducing the power of the procedure and potentially leading to “analytical stasis”, where low statistical power favors the recovery of stasis <span class="citation" data-cites="hannisdal2006">(<a href="#ref-hannisdal2006" role="doc-biblioref">Hannisdal 2006</a>)</span>.</li>
 <li>Recovery of the correct (meaning, simulated) mode of evolution is better in the time domain, whereas model selection in the stratigraphic domain favors the recognition of punctuated modes of evolution <span class="citation" data-cites="hohmann_identification_2024">(<a href="#ref-hohmann_identification_2024" role="doc-biblioref">Hohmann et al. 2024</a>)</span>. This effect is strongest in the on the platform top, and disappears on the proximal slope as stratigraphic biases disappear.</li>
 <li>As in the visual comparison, stratigraphic effects are strongest the more directional the mode of evolution is, and disappear for stasis.</li>
 <li>Stratophenetic time series will thus favor both the recogniton of stasis and punctuated modes of evolution.</li>

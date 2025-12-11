@@ -96,7 +96,7 @@ seq(min_time(adm), max_time(adm), by = temp_res) |>           # time steps where
   fit9models(pool = FALSE)
 ```
 
-See `?fit4models` to understand the output and `fitSimple` to fit more specialized models; more information can be found in [@hunt2006].
+See the help of the `paleoTS` package for details on the output and `fitSimple` to fit more specialized models; more information can be found in [@hunt2006].
 
 ## Tasks
 
@@ -232,7 +232,7 @@ sigma = 1                # model parameters
 y0 = 0                   # model paramters
 adm = adm_list[[pos]]    # select age-depth model
 t_step = 0.001           # temporal resolution [Myr]
-## plot trait evolution in the time domain
+## plot trait evolution in the stratigraphic domain
 seq(from  = min_time(adm), to = max_time(adm), by = t_step) |>
   random_walk(sigma = sigma, mu = mu, y0 = y0) |>
   time_to_strat(adm, destructive = FALSE) |>
@@ -290,7 +290,7 @@ traits_strat_domain |> fit9models(pool = FALSE)
 
 General observation are:
 
--   Results are sensitive to randomness inherent in the randomness of the simulation, e.g., occasionally a random walk simulation will be identified as stasis even in the abscence of biases. This effect is additionally sensitive to parameters such as sample size and intrapopulation variance (`intrapop_var` and `n_per_sample`), reducing the power of the procedure and potentially leading to "analytical stasis", where low statistical power favors the recovery of stasis [@hannisdal2006]
+-   Results are sensitive to randomness inherent in the randomness of the simulation, e.g., occasionally a random walk simulation will be identified as stasis even in the abscence of biases. This effect is additionally sensitive to parameters such as sample size and intrapopulation variance (`intrapop_var` and `n_per_sample`), reducing the power of the procedure and potentially leading to "analytical stasis", where low statistical power favors the recovery of stasis [@hannisdal2006].
 -   Recovery of the correct (meaning, simulated) mode of evolution is better in the time domain, whereas model selection in the stratigraphic domain favors the recognition of punctuated modes of evolution [@hohmann_identification_2024]. This effect is strongest in the on the platform top, and disappears on the proximal slope as stratigraphic biases disappear.
 -   As in the visual comparison, stratigraphic effects are strongest the more directional the mode of evolution is, and disappear for stasis.
 -   Stratophenetic time series will thus favor both the recogniton of stasis and punctuated modes of evolution.

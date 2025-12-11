@@ -272,13 +272,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>Combining both functions yields the preservation probability with time:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> t, </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">pres_potential</span>(<span class="fu">ctc</span>(t)),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Preservaton probability"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Preservation probability with time"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="advanced_topics_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>You can now incorporate taphonomic effects into your pipeline by passing those functions to <code>apply_taphonomy</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p3</span>(<span class="at">rate =</span> <span class="dv">10</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">2</span>, <span class="at">n =</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply_taphonomy</span>(<span class="at">pres_potential =</span> pres_potential, <span class="at">ctc =</span> ctc) <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">main =</span> <span class="st">"Fossil abundance after taphonomic effects"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"# Fossils"</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p3</span>(<span class="at">rate =</span> <span class="dv">10</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">2</span>, <span class="at">n =</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply_taphonomy</span>(<span class="at">pres_potential =</span> pres_potential, <span class="at">ctc =</span> ctc) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">main =</span> <span class="st">"Fossil abundance after taphonomic effects"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"# Fossils"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -289,21 +305,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Note that because of the generality of the implementation, taphonomic effects can immediately be incorporated into a model selection workflows in combination with the <code>paleoTS</code> package and stratigraphic effects:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paleoTS) <span class="co"># load paleoTS package for model selection &amp; plotting</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">L_unit =</span> <span class="st">"m"</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>temp_res <span class="ot">=</span> <span class="fl">0.1</span>                                             <span class="co"># temporal resolution in Myr</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="fu">min_time</span>(adm), <span class="fu">max_time</span>(adm), <span class="at">by =</span> temp_res) <span class="sc">|&gt;</span>           <span class="co"># time steps where the trait evolution is simulated</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk_sl</span>(<span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">mu =</span> <span class="dv">3</span>, <span class="at">y0 =</span> <span class="dv">0</span>, <span class="at">intrapop_var =</span> <span class="dv">1</span>, <span class="at">n_per_sample =</span> <span class="dv">5</span>) <span class="sc">|&gt;</span>                   <span class="co"># simulate trait evolution</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply_taphonomy</span>(<span class="at">pres_potential =</span> pres_potential, <span class="at">ctc =</span> ctc) <span class="sc">|&gt;</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reduce_to_paleoTS</span>() <span class="sc">|&gt;</span><span class="co"># transform into stratigraphic domain</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">xlab =</span> <span class="fu">paste0</span>(<span class="st">"Stratigraphic position ["</span>,<span class="fu">get_L_unit</span>(adm),<span class="st">"]"</span>), <span class="co"># plot</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"Trait value"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paleoTS) <span class="co"># load paleoTS package for model selection &amp; plotting</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">L_unit =</span> <span class="st">"m"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>temp_res <span class="ot">=</span> <span class="fl">0.1</span>                                             <span class="co"># temporal resolution in Myr</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="fu">min_time</span>(adm), <span class="fu">max_time</span>(adm), <span class="at">by =</span> temp_res) <span class="sc">|&gt;</span>           <span class="co"># time steps where the trait evolution is simulated</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">random_walk_sl</span>(<span class="at">sigma =</span> <span class="dv">1</span>, <span class="at">mu =</span> <span class="dv">3</span>, <span class="at">y0 =</span> <span class="dv">0</span>, <span class="at">intrapop_var =</span> <span class="dv">1</span>, <span class="at">n_per_sample =</span> <span class="dv">5</span>) <span class="sc">|&gt;</span>                   <span class="co"># simulate trait evolution</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply_taphonomy</span>(<span class="at">pres_potential =</span> pres_potential, <span class="at">ctc =</span> ctc) <span class="sc">|&gt;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reduce_to_paleoTS</span>() <span class="sc">|&gt;</span><span class="co"># transform into stratigraphic domain</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">xlab =</span> <span class="fu">paste0</span>(<span class="st">"Stratigraphic position ["</span>,<span class="fu">get_L_unit</span>(adm),<span class="st">"]"</span>), <span class="co"># plot</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"Trait value"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -317,11 +333,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="phylogenetics">Phylogenetics</h3>
 <p>Age-depth models can be used to transform any type of data from the time to the stratigraphic domain. Here we give an example using phylogenetic trees (time trees).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FossilSim)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">=</span> ape<span class="sc">::</span><span class="fu">rbdtree</span>(<span class="at">birth =</span> <span class="dv">2</span>, <span class="at">death =</span> <span class="dv">1</span>, <span class="at">Tmax =</span> <span class="fu">max_time</span>(adm))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fossils <span class="ot">=</span> FossilSim<span class="sc">::</span><span class="fu">sim.fossils.poisson</span>(<span class="at">rate =</span> <span class="dv">2</span>, <span class="at">tree =</span> tree)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fossils, tree)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FossilSim)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">=</span> ape<span class="sc">::</span><span class="fu">rbdtree</span>(<span class="at">birth =</span> <span class="dv">2</span>, <span class="at">death =</span> <span class="dv">1</span>, <span class="at">Tmax =</span> <span class="fu">max_time</span>(adm))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>fossils <span class="ot">=</span> FossilSim<span class="sc">::</span><span class="fu">sim.fossils.poisson</span>(<span class="at">rate =</span> <span class="dv">2</span>, <span class="at">tree =</span> tree)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fossils, tree)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -331,10 +347,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot phylogenetic tree in stratigraphic domain</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>tree_strat <span class="ot">=</span> tree <span class="sc">|&gt;</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree_strat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot phylogenetic tree in stratigraphic domain</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>tree_strat <span class="ot">=</span> tree <span class="sc">|&gt;</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree_strat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -344,14 +360,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add fossils to plot - note that the reversal via `rev_dir`</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># this is necessary bc fossils are represented in time before present</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># whereas the age-depth model counts time from 0 forwards</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>fossils_strat <span class="ot">=</span> fossils <span class="sc">|&gt;</span> </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rev_dir</span>(<span class="at">ref =</span> <span class="fu">max_time</span>(adm)) <span class="sc">|&gt;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm) <span class="sc">|&gt;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rev_dir</span>(<span class="at">ref =</span> <span class="fu">max_height</span>(adm)) <span class="sc">|&gt;</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(tree_strat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add fossils to plot - note that the reversal via `rev_dir`</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># this is necessary bc fossils are represented in time before present</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># whereas the age-depth model counts time from 0 forwards</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>fossils_strat <span class="ot">=</span> fossils <span class="sc">|&gt;</span> </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rev_dir</span>(<span class="at">ref =</span> <span class="fu">max_time</span>(adm)) <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm) <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rev_dir</span>(<span class="at">ref =</span> <span class="fu">max_height</span>(adm)) <span class="sc">|&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(tree_strat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -412,31 +428,31 @@ Solution Task 4.1: Taphonomic effects
 <p>How abundant is this taxon at different locations on the platform? From your modeling results along, is there any way to distinguish these taphonomic effect from an ecological effect?</p>
 <p>Let’s first collect all age-depth models in a list for easy access:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>adm_list <span class="ot">=</span> <span class="fu">list</span>()                                     <span class="co"># storage for age-depth models</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">=</span> <span class="fu">paste</span>(<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">12</span>, <span class="at">by =</span> <span class="dv">2</span>), <span class="st">"km"</span>, <span class="at">sep =</span> <span class="st">""</span>)      <span class="co"># distances from shore</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pos <span class="cf">in</span> dist){                                    <span class="co"># construct ADMs for all distances</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  adm_list[[pos]] <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        </span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">L_unit =</span> <span class="st">"m"</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>adm_list <span class="ot">=</span> <span class="fu">list</span>()                                     <span class="co"># storage for age-depth models</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">=</span> <span class="fu">paste</span>(<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">12</span>, <span class="at">by =</span> <span class="dv">2</span>), <span class="st">"km"</span>, <span class="at">sep =</span> <span class="st">""</span>)      <span class="co"># distances from shore</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pos <span class="cf">in</span> dist){                                    <span class="co"># construct ADMs for all distances</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  adm_list[[pos]] <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> scenarioA<span class="sc">$</span>t_myr,        </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">h =</span> scenarioA<span class="sc">$</span>h_m[,pos],</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">T_unit =</span> <span class="st">"Myr"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">L_unit =</span> <span class="st">"m"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># focus on 2 km offshore</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>amd <span class="ot">=</span> adm_list[[pos]]</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>pres_potential<span class="ot">=</span> <span class="cf">function</span>(x){</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(x))</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  p[ x <span class="sc">&lt;=</span> <span class="dv">20</span>] <span class="ot">=</span> <span class="fl">0.2</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  p[x<span class="sc">&gt;</span> <span class="dv">20</span> ] <span class="ot">=</span> <span class="fl">0.9</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(p)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>wds <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">35</span>, <span class="at">by =</span> <span class="fl">0.1</span>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> wds,</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">pres_potential</span>(wds),</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Water depth [m]"</span>,</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Preservation probability"</span>,</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># focus on 2 km offshore</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>amd <span class="ot">=</span> adm_list[[pos]]</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>pres_potential<span class="ot">=</span> <span class="cf">function</span>(x){</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(x))</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  p[ x <span class="sc">&lt;=</span> <span class="dv">20</span>] <span class="ot">=</span> <span class="fl">0.2</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  p[x<span class="sc">&gt;</span> <span class="dv">20</span> ] <span class="ot">=</span> <span class="fl">0.9</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(p)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>wds <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">35</span>, <span class="at">by =</span> <span class="fl">0.1</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> wds,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">pres_potential</span>(wds),</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Water depth [m]"</span>,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Preservation probability"</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -444,13 +460,13 @@ Solution Task 4.1: Taphonomic effects
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ctc <span class="ot">=</span> <span class="fu">approxfun</span>(<span class="at">x =</span> scenarioA<span class="sc">$</span>t_myr, scenarioA<span class="sc">$</span>wd_m[,pos])</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> scenarioA<span class="sc">$</span>t_myr</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> t, </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">ctc</span>(t),</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Taphonomic gradient - Water depth [m]"</span>,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Taphonomic gradient"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ctc <span class="ot">=</span> <span class="fu">approxfun</span>(<span class="at">x =</span> scenarioA<span class="sc">$</span>t_myr, scenarioA<span class="sc">$</span>wd_m[,pos])</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> scenarioA<span class="sc">$</span>t_myr</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> t, </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">ctc</span>(t),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time [Myr]"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Taphonomic gradient - Water depth [m]"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Taphonomic gradient"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -458,12 +474,12 @@ Solution Task 4.1: Taphonomic effects
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p3</span>(<span class="at">rate =</span> <span class="dv">10</span>, <span class="at">from =</span> <span class="fu">min_time</span>(adm), <span class="at">to =</span> <span class="fu">max_time</span>(adm), <span class="at">n =</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply_taphonomy</span>(<span class="at">pres_potential =</span> pres_potential, <span class="at">ctc =</span> ctc) <span class="sc">|&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="st">"Stratigraphic height [m]"</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"# Fossils"</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Fossil abundance "</span>, pos, <span class="st">" from shore"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p3</span>(<span class="at">rate =</span> <span class="dv">10</span>, <span class="at">from =</span> <span class="fu">min_time</span>(adm), <span class="at">to =</span> <span class="fu">max_time</span>(adm), <span class="at">n =</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply_taphonomy</span>(<span class="at">pres_potential =</span> pres_potential, <span class="at">ctc =</span> ctc) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm, <span class="at">destructive =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(<span class="at">xlab =</span> <span class="st">"Stratigraphic height [m]"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"# Fossils"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"Fossil abundance "</span>, pos, <span class="st">" from shore"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -497,11 +513,11 @@ Solution Task 4.2: Phylogenetic trees in stratigraphic context
 <p>How are the trees affected at the different locations? What are the most obvious visual changes in their topology?</p>
 <p>Based on the above code snippets, we get</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> adm_list[[pos]]</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">=</span> ape<span class="sc">::</span><span class="fu">rbdtree</span>(<span class="at">birth =</span> <span class="dv">2</span>, <span class="at">death =</span> <span class="dv">1</span>, <span class="at">Tmax =</span> <span class="fu">max_time</span>(adm))</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>fossils <span class="ot">=</span> FossilSim<span class="sc">::</span><span class="fu">sim.fossils.poisson</span>(<span class="at">rate =</span> <span class="dv">2</span>, <span class="at">tree =</span> tree)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fossils, tree)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pos <span class="ot">=</span> <span class="st">"2km"</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> adm_list[[pos]]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">=</span> ape<span class="sc">::</span><span class="fu">rbdtree</span>(<span class="at">birth =</span> <span class="dv">2</span>, <span class="at">death =</span> <span class="dv">1</span>, <span class="at">Tmax =</span> <span class="fu">max_time</span>(adm))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>fossils <span class="ot">=</span> FossilSim<span class="sc">::</span><span class="fu">sim.fossils.poisson</span>(<span class="at">rate =</span> <span class="dv">2</span>, <span class="at">tree =</span> tree)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fossils, tree)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -509,14 +525,14 @@ Solution Task 4.2: Phylogenetic trees in stratigraphic context
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>tree_strat <span class="ot">=</span> tree <span class="sc">|&gt;</span> </span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>fossils_strat <span class="ot">=</span> fossils <span class="sc">|&gt;</span> </span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rev_dir</span>(<span class="at">ref =</span> <span class="fu">max_time</span>(adm)) <span class="sc">|&gt;</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm) <span class="sc">|&gt;</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rev_dir</span>(<span class="at">ref =</span> <span class="fu">max_height</span>(adm)) <span class="sc">|&gt;</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(tree_strat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>tree_strat <span class="ot">=</span> tree <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>fossils_strat <span class="ot">=</span> fossils <span class="sc">|&gt;</span> </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rev_dir</span>(<span class="at">ref =</span> <span class="fu">max_time</span>(adm)) <span class="sc">|&gt;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">time_to_strat</span>(adm) <span class="sc">|&gt;</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rev_dir</span>(<span class="at">ref =</span> <span class="fu">max_height</span>(adm)) <span class="sc">|&gt;</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(tree_strat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
