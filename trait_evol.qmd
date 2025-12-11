@@ -18,9 +18,15 @@ This practical explores how trait evolution is influenced by stratigraphic archi
 
 Fossils found in a section can provide important insight into evolutionary dynamics over timescales not accessible to direct observations in the presents. The morphological evolution of these fossils allows us to construct *stratophenetic series*, which are successions of fossils and their traits observed within a stratigraphic section [@dzik]. Such fossil time or stratigraphic series allow us to examine how the mode of evolution changes over macroevolutionary timescales, and what the dominant mode of evolution is.
 
-There are multiple different "modes of evolution" discussed in the literature, such as stasis, random walk, or Ornstein-Uhlenbeck, which represents convergence to a phenotypic optimum. Each mode reflects an idea of the driving forces of evolution, e.g., the random walk model assumes change in traits is cumulative and random.
+There are multiple "modes of evolution" discussed in the literature, such as stasis, random walk, or Ornstein-Uhlenbeck, which represents convergence to a phenotypic optimum. Each mode reflects an idea of the driving forces of evolution, e.g., the random walk model assumes change in traits is cumulative and random.
 
-Because of the incompleteness of the fossil record, evolutionary biologists tend to be generally sceptical of inferences inferences made from fossil time series, which is most famously reflected in the gradualism vs. punctuated equilibrium debate [@eldredge1972].
+::: callout-tip
+## Experience the modes of evolution
+
+See our interactive app DarwinCAT at <https://utrecht-university.shinyapps.io/DarwinCAT/> and the associated [Open Educational Resource](https://zenodo.org/records/15667235) if you want to use it for teaching yourself.
+:::
+
+Because of the incompleteness of the fossil record, evolutionary biologists tend to be generally skeptical of inferences made from fossil time series, which is most famously reflected in the gradualism vs. punctuated equilibrium debate [@eldredge1972]. However, it seems that current methods of reconstructing the mode of evolution are surprisingly robust with respect to records with regular gaps [@hohmann_identification_2024].
 
 In this practical, we will build on our understanding of age-depth models and stratigraphic architectures to explore how the stratigraphic record shapes our understanding of morphological evolution along a lineage. Specifically, we will examine when and how stratigraphy can lead to erroneous identification of the mode of evolution.
 
