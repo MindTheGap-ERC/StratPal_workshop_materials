@@ -3,6 +3,9 @@ title: "Modeling Stratigraphic Paleobiology in R"
 format: html
 editor: visual
 bibliography: refs/refs.bib
+website:
+  repo-url: https://github.com/MindTheGap-ERC/StratPal_workshop_materials
+  repo-actions: [edit, source, issue]
 ---
 
 ## Introduction
@@ -23,13 +26,13 @@ All depositional systems have their defining physical, chemical and biological p
 
 By the end of this workshop, you will be able to
 
-1\. build age-depth models to quantify stratigraphic incompleteness and hiatus distributions across depositional environments,
+1.  build age-depth models to quantify stratigraphic incompleteness and hiatus distributions across depositional environments,
 
-2\. simulate and analyze different modes of trait evolution (stasis, random walk, and Ornstein-Uhlenbeck processes) and identify how stratigraphy affects their expression in the fossil record,
+2. simulate and analyze different modes of trait evolution (stasis, random walk, and Ornstein-Uhlenbeck processes) and identify how stratigraphy affects their expression in the fossil record,
 
-3\. model ecological niche preferences and understand how environmental gradients control fossil abundance patterns, and
+3. model ecological niche preferences and understand how environmental gradients control fossil abundance patterns, and
 
-4\. simulate last occurrence data to recognize how stratigraphic phenomena like hiatuses and condensation surfaces can create artifactual "mass extinction" signals.
+4. simulate last occurrence data to recognize how stratigraphic phenomena like hiatuses and condensation surfaces can create artifactual "mass extinction" signals.
 
 You will develop proficiency in using R's pipe operator `|>` to build reproducible, modular analysis workflows that combine the `StratPal` and `admtools` packages.
 
@@ -49,7 +52,7 @@ The webpage and workshop is structured as follows:
 
 ## Contributing
 
-Did you find a typo, a mistake, or do you thing some topics are not sufficiently covered? Please post your issue in the GitHub repo.
+Did you find a typo, a mistake, or do you thing some topics are not sufficiently covered? Please post [your issue](https://github.com/MindTheGap-ERC/StratPal_workshop_materials/issues) in [the GitHub repo](https://mindthegap-erc.github.io/StratPal_workshop_materials/).
 
 ## Funding
 
