@@ -207,6 +207,10 @@ See @hohmann_identification_2024 for a detailed study
     -   Which modes are most/least affected by stratigraphic biases?\
     -   Do you see any systematic changes?
 
+3.  Run model selection on your simulations in the time and stratigraphic domain.
+
+    -   Do you see any systematic biases?
+
 ::: notes
 These task are in the material we send to you.\
 Includes template code and cheat sheets Keep the stratigraphic context in mind (Wheeler diagram, basin transect) Go through the tasks, ask us any questions In 40 mins we discuss the results Participants presents Then 15 mins break
@@ -284,6 +288,15 @@ Includes template code and cheat sheets Keep the stratigraphic context in mind (
 
 ------------------------------------------------------------------------
 
+### Task on range offset and biostratigraphic precision
+
+4.  Explore how biostratigraphic precision (range offset) changes with the true time of extinction, fossil abundance, and position along shore.
+    -   Where and why is biostratigraphic precision best/worst?
+
+    -   How do your results change when you add a niche model to your code?
+
+------------------------------------------------------------------------
+
 ### Results
 
 ------------------------------------------------------------------------
@@ -293,8 +306,10 @@ Includes template code and cheat sheets Keep the stratigraphic context in mind (
 -   Other forward models
 -   Other biological models (niches, trait evolution)
 -   Other data structures (phylogenetic trees)
+-   Other effects (taphonomy)
 
-Contributors welcome!
+Contributors welcome!  
+https://github.com/MindTheGap-ERC/StratPal_workshop_materials
 
 ## Acknowledgements
 
