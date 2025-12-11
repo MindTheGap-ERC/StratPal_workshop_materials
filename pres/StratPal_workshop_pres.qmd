@@ -151,6 +151,36 @@ seq(from = 0, to = 1, by = 0.01) |>  # fix time steps of evaluation
 More than one pipe can be combined. This allows to build more elaborate pipeline we make heavy use of these pipelines
 :::
 
+## Schedule
+
++--------------+-------------------------------------------------------------------+
+| Time         | Activity                                                          |
++==============+===================================================================+
+| 9:00-9:20    | Introduction                                                      |
++--------------+-------------------------------------------------------------------+
+| 9:20-10:05   | Tasks on age-depth models and completeness                        |
+|              |                                                                   |
+|              | Discuss results together                                          |
++--------------+-------------------------------------------------------------------+
+| 10:05-10:20  | Break                                                             |
++--------------+-------------------------------------------------------------------+
+| 10:20-10:30  | Trait evolution introduction                                      |
++--------------+-------------------------------------------------------------------+
+| 10:30-11:15  | Tasks on trait evolution                                          |
+|              |                                                                   |
+|              | Discuss results together                                          |
++--------------+-------------------------------------------------------------------+
+| 11:15-11:30  | Break                                                             |
++--------------+-------------------------------------------------------------------+
+| 11:30-11:40  | Intro occurrence data                                             |
++--------------+-------------------------------------------------------------------+
+| 11:40-12:30  | Tasks on event data                                               |
+|              |                                                                   |
+|              | Discuss results together                                          |
++--------------+-------------------------------------------------------------------+
+| 12:30        | **Lunch!** Portland Building Atrium and Richmond Building Atrium, |
++--------------+-------------------------------------------------------------------+
+
 ------------------------------------------------------------------------
 
 ### Tasks ADMs and incompleteness {.smaller}
@@ -186,6 +216,8 @@ How do traits evolve in a lineage?
 -   **Random walk** - random accumulation of change
 
 -   **Ornstein-Uhlenbeck (OU) process** - convergence towards an optimum
+
+See our interactive app DarwinCAT at <https://utrecht-university.shinyapps.io/DarwinCAT/> and the associated [Open Educational Resource](https://zenodo.org/records/15667235) if you want to use it for teaching yourself.
 
 ## Question
 
@@ -308,7 +340,7 @@ Includes template code and cheat sheets Keep the stratigraphic context in mind (
 -   Other data structures (phylogenetic trees)
 -   Other effects (taphonomy)
 
-Contributors welcome!  
+Contributors welcome!\
 https://github.com/MindTheGap-ERC/StratPal_workshop_materials
 
 ## Acknowledgements
