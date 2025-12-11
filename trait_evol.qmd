@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 set.seed(15487)
 ```
 
-## 2. Trait evolution in stratigraphic context
+## Trait evolution in stratigraphic context
 
 This practical explores how trait evolution is influenced by stratigraphic architectures.
 
