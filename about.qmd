@@ -18,6 +18,10 @@ email: n.h.hohmann \[at\] uu.nl
 
 email: e.b.jarochowska \[at\] uu.nl
 
+## Acknowledgements
+
+Thanks to Joël Koelewijn (ORCID: [0000-0002-4668-3797](https://orcid.org/0000-0002-4668-3797)) for helping out with the workshop at the annual meeting of the Paleontological Association 2025 in Portsmouth, UK.
+
 ## Funding information
 
 ![](figs/EC_logo.png)

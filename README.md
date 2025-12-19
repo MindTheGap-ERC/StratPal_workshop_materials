@@ -10,23 +10,27 @@ This is an open educational resource (OER). It contains materials for 3 to 4 h w
 
 ## Authors
 
-__Niklas Hohmann__  
-Utrecht University  
-email: n.h.hohmann [at] uu.nl  
-Web page: [www.uu.nl/staff/NHohmann](https://www.uu.nl/staff/NHHohmann)  
+**Niklas Hohmann**\
+Utrecht University\
+email: n.h.hohmann \[at\] uu.nl\
+Web page: [www.uu.nl/staff/NHohmann](https://www.uu.nl/staff/NHHohmann)\
 ORCID: [0000-0003-1559-1838](https://orcid.org/0000-0003-1559-1838)
 
-__Emilia Jarochowska__  
-Utrecht University  
-email: e.b.jarochowska [at] uu.nl  
-Web page: [www.uu.nl/staff/EBJarochowska](https://www.uu.nl/staff/EBJarochowska)  
+**Emilia Jarochowska**\
+Utrecht University\
+email: e.b.jarochowska \[at\] uu.nl\
+Web page: [www.uu.nl/staff/EBJarochowska](https://www.uu.nl/staff/EBJarochowska)\
 ORCID: [0000-0001-8937-9405](https://orcid.org/0000-0001-8937-9405)
 
-__Xianyi Liu__  
-Utrecht University  
-email: x.liu6 [at] uu.nl  
-Web page: [www.uu.nl/staff/XLiu6](https://www.uu.nl/staff/XLiu6)  
+**Xianyi Liu**\
+Utrecht University\
+email: x.liu6 \[at\] uu.nl\
+Web page: [www.uu.nl/staff/XLiu6](https://www.uu.nl/staff/XLiu6)\
 ORCID: [0000-0002-3851-116X](https://orcid.org/0000-0002-3851-116X)
+
+## Acknowledgements
+
+Thanks to Joël Koelewijn (ORCID: [0000-0002-4668-3797](https://orcid.org/0000-0002-4668-3797)) for helping out with the workshop at the annual meeting of the Paleontological Association 2025 in Portsmouth, UK.
 
 ## Copyright
 
@@ -38,15 +42,15 @@ Code in this repository is published under an Apache 2.0 License, see LICENSE fi
 
 ## Repository structure
 
-* figs: folder for figures
-* pres: folder with slides for presentation
-* refs: references for materials
-* solutions: solutions for the task
-* tasks: workshop tasks for the participants
-* .gitignore: untracked files
-* LICENSE: Apache 2.0 License text
-* README: Readme file
-* StratPal_workshop_materials.Rproj: Rproject file
+-   figs: folder for figures
+-   pres: folder with slides for presentation
+-   refs: references for materials
+-   solutions: solutions for the task
+-   tasks: workshop tasks for the participants
+-   .gitignore: untracked files
+-   LICENSE: Apache 2.0 License text
+-   README: Readme file
+-   StratPal_workshop_materials.Rproj: Rproject file
 
 ## References
 
@@ -60,12 +64,10 @@ The figure `figs/PatzkowskyHolland_5-4.png` is from
 
 ## Citation
 
-To cite these materials, please use 
+To cite these materials, please use
 
-* Hohmann, N., Liu, X., & Jarochowska, E. (2024). Materials for workshop on building modeling pipelines in stratigraphic paleobiology (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.13769443
+-   Hohmann, N., Liu, X., & Jarochowska, E. (2024). Materials for workshop on building modeling pipelines in stratigraphic paleobiology (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.13769443
 
 ## Funding information
 
-Funded by the European Union (ERC, MindTheGap, StG project no 101041077). Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Research Council. Neither the European Union nor the granting authority can be held responsible for them.
-![European Union and European Research Council logos](https://erc.europa.eu/sites/default/files/2023-06/LOGO_ERC-FLAG_FP.png)
-
+Funded by the European Union (ERC, MindTheGap, StG project no 101041077). Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Research Council. Neither the European Union nor the granting authority can be held responsible for them. ![European Union and European Research Council logos](https://erc.europa.eu/sites/default/files/2023-06/LOGO_ERC-FLAG_FP.png)
